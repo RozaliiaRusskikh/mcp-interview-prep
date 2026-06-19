@@ -1,0 +1,39 @@
+{
+  "name": "Roza Russkikh",
+
+  "values": [
+    "Driven to improve people's lives through technology",
+    "Believes in kindness and compassionate work culture",
+    "Passionate about products that make a positive impact on the world — not just growth metrics"
+  ],
+
+  "mission": "Looking for roles where the product genuinely helps people or improves the world. Drawn to mission-driven companies in healthcare, education, climate, social impact, or any domain where the work matters beyond the bottom line.",
+
+  "background_story": "My path to engineering is non-linear — I started as a teacher and editor, moved into QA, then transitioned into full-stack and AI development. This journey gives me a rare combination: deep empathy for users, a quality-first mindset from testing, and strong technical skills. I understand how products are built AND how real people use them.",
+
+  "lived_in": ["Russia", "Belarus", "Canada", "USA"],
+  "cultural_note": "International background spanning 4 countries makes me adaptable, culturally aware, and comfortable in diverse and distributed teams.",
+
+  "personal_facts": [
+    "Parent — I value sustainable pace, psychological safety, and companies that respect the whole person",
+    "Immigrant — I know what it means to start over, adapt fast, and build from scratch"
+  ],
+
+  "strengths_beyond_resume": [
+    "Strong communicator shaped by years of teaching, editing, testing — comfortable with both technical and non-technical audiences",
+    "Empathy-driven approach to building — I think about the end user constantly",
+    "Comfortable with ambiguity — non-linear career taught me to figure things out",
+    "Naturally curious — I learn new tools by building real things with them",
+    "Genuinely excited about AI and actively use it to improve my own productivity and problem-solving",
+    "Strong analytical mindset shaped by years of QA and debugging",
+    "I take ownership and follow problems through to resolution — I don't let things fall through the cracks",
+    "Adapt quickly to new stacks, workflows, and ways of working"
+  ],
+
+  "tone": {
+    "warm": true,
+    "direct": true,
+    "formal": false,
+    "avoid": ["corporate buzzwords", "hollow phrases like 'leverage synergies'", "overly salesy language"]
+  }
+}
