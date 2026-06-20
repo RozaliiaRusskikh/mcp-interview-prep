@@ -38,3 +38,35 @@ Split into two phases:
 This MCP server is consumed two ways, both already in scope:
 1. Directly by Claude Code (project-scoped `.mcp.json`) — useful for your own interview practice sessions.
 2. By the FastAPI backend acting as MCP client, which calls these same tools/resources before calling Gemini — this is what powers the public-facing chat bot.
+
+## Phase 2 — detailed steps
+
+### Backend (`backend/` folder, FastAPI)
+1. `uv add fastapi uvicorn google-generativeai mcp` (or a separate `pyproject.toml` under `backend/` if kept as its own package).
+2. **MCP client connection** — use the `mcp` SDK's stdio client to launch `server.py` as a subprocess and open a session (same pattern as Claude Code does, just in your own code instead of Claude Code's host).
+3. **Keyword router** — a small function mapping question text to a tool call:
+   - category keywords (conflict, leadership, failure, ambiguity) → `get_situation(category)`
+   - company/title names from `resume.json` → `get_experience(...)`
+   - known skill names → `get_skill(...)`
+   - "contact" / "email" / "linkedin" / "github" → `get_contact()`
+   - no confident match → fall through to LLM path
+4. **Deterministic formatter** — turns each tool's JSON result into a short, readable paragraph (template strings per tool, not LLM-generated).
+5. **LLM fallback** — only reached when no keyword matches: call the MCP `answer_as_roza` prompt to build the final prompt text, fetch `personal://info` for tone, then call Gemini via `google-generativeai`.
+6. **`/chat` endpoint** — `POST {question: str} → {answer: str}`. Wires steps 3–5 together: router → formatter or LLM fallback → JSON response.
+7. **CORS** — allow the Next.js frontend's origin (localhost during dev, the Vercel domain in prod).
+8. Test locally with `curl` or the FastAPI `/docs` Swagger UI before touching the frontend.
+
+### Frontend (`frontend/` folder, Next.js + Tailwind)
+9. `npx create-next-app@latest frontend --tailwind` (App Router, TypeScript).
+10. One page (`app/page.tsx`): message list state + text input + send button.
+11. On send: `fetch(BACKEND_URL + "/chat", { method: "POST", body: JSON.stringify({ question }) })`, append the response to the message list.
+12. `BACKEND_URL` as an environment variable (`.env.local` locally, Vercel env var in prod) — never hardcoded.
+13. Basic styling only (Tailwind) — chat bubbles, scroll-to-bottom, loading state while waiting for a response.
+14. Test locally against the FastAPI backend running on `localhost:8000`.
+
+### Deployment
+15. **Backend → Fly.io**: add a `Dockerfile` (or use `fly launch` which generates one for a Python app), set the `GOOGLE_API_KEY` as a Fly secret (`fly secrets set`), deploy with `fly deploy`.
+16. **Frontend → Vercel**: `vercel` CLI or GitHub integration, set `BACKEND_URL` as a Vercel environment variable pointing at the deployed Fly.io URL.
+17. **End-to-end verification**: open the Vercel URL, ask a keyword-matchable question (should be instant, deterministic) and an open-ended question (should hit Gemini), confirm both return sensible answers.
+
+No database, no auth, no rate limiting in this first pass — those are reasonable additions later if the bot gets real traffic, not needed for a portfolio demo.
