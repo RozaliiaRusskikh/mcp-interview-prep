@@ -2,9 +2,57 @@
   {
     "id": 1,
     "category": "conflict",
-    "situation": "PLACEHOLDER — describe a disagreement with a teammate, reviewer, or stakeholder.",
-    "task": "PLACEHOLDER — what needed to be resolved and why it mattered.",
-    "action": "PLACEHOLDER — what you specifically did.",
-    "result": "PLACEHOLDER — the outcome, ideally with a concrete detail or metric."
+    "situation": "I was working as a frontend engineer on a financial application. The backend engineer I depended on for a key integration was based in a timezone roughly 12 hours apart from mine, which left very little overlap in our working hours. Communication was also harder than usual because of a strong accent on his side and the fact that I'm not a native English speaker myself, so quick verbal exchanges often led to misunderstandings.",
+    "task": "I needed to resolve integration issues on an important feature, but the time difference meant we rarely could just hop on a call to sort things out, and when we did talk, language friction made it easy to misinterpret technical details. I had to find a way to keep the integration moving without constant real-time back-and-forth.",
+    "action": "I pushed for us to write proper API documentation describing how the integration was supposed to work, so expectations were captured in writing rather than depending on verbal explanations that were easy to lose across the time zone and language gap.",
+    "result": "The integration issues got resolved without needing to force overlapping hours, and the API documentation became something the wider team adopted going forward, so other developers could understand how the integration worked without needing a live conversation either."
+  },
+  {
+    "id": 2,
+    "category": "challenge",
+    "situation": "I was working as a frontend engineer on a web dashboard product that gathered knowledge base content from multiple sources — including Zendesk and other admin-entered URLs — crawled that content, and stored it in Azure AI Search and Azure Blob Storage. At one point my manager flagged that a key feature was falling behind schedule and that the team needed to catch up.",
+    "task": "I was asked to take on work on this feature even though it required backend and AI/crawling knowledge I didn't have prior experience with. I needed to get up to speed quickly and deliver without slowing the team down further.",
+    "action": "I didn't hesitate to take it on despite the knowledge gap. I used AI-assisted development tools to help me learn the unfamiliar stack quickly and apply it correctly. I worked on building out the crawler logic — the part of the system that crawled the source data and saved it into Azure Blob Storage and Azure AI Search.",
+    "result": "I successfully got the crawled data saving correctly into Blob Storage and  Azure AI Search, and the feature shipped. Taking on that stretch work outside my usual frontend scope contributed to my being promoted to team lead afterward."
+  },
+  {
+    "id": 3,
+    "category": "deadline",
+    "situation": "I was moved from another project onto AgencyOS, a large application that handles AI agent workflows, even though I didn't have as much prior experience with this kind of system as the project required. I was assigned to a specific workflow: a Front-Airtable integration, where the system analyzes incoming messages to determine if they represent a task. If so, it posts a description to a Slack channel, where the responsible person can approve, reject, or edit it — and depending on their decision. If it is approved, a corresponding task gets created in Airtable. We had just one week to get this working.",
+    "task": "When I started, the hop logic — the core branching logic that routed the workflow between steps — was broken to the point where I couldn't even get it to run. I needed to fix this and get the integration working reliably within the one-week deadline, despite limited familiarity with the codebase and the AI agent workflow patterns it used.",
+    "action": "I went through extensive troubleshooting and testing to isolate and fix the broken hop logic, working through one issue after another as I uncovered them. Once it was running, to make sure the LLM-driven task-classification logic wasn't hallucinating or misclassifying messages, I built and used evaluation pipelines to systematically validate its outputs rather than just spot-checking manually.",
+    "result": "Within the one-week deadline, I got the integration to a stable beta state, and it passed beta testing with good results from the client. The feature was then deployed to production."
+  },
+  {
+    "id": 4,
+    "category": "disagreement",
+    "situation": "I was asked to integrate Google Maps into an address input field. However, I felt this didn't fit well with the client's existing stack, since they were already using Azure tools extensively across the project — Azure Search, Azure Blob Storage, and others. The client, though, was set on using Google Maps.",
+    "task": "I needed to make the case for switching to Azure Maps instead, despite the client already having a clear preference for Google Maps, and back it up with more than just a gut feeling about stack consistency.",
+    "action": "Instead of just pushing back verbally, I did research comparing the two options and found that Azure Maps would actually come out cheaper than Google Maps for our use case, on top of fitting better with the rest of the client's Azure-based infrastructure. I wrote up documentation laying out the research and presented it to the client.",
+    "result": "After seeing the research, the client decided to switch to Azure Maps instead of insisting on their original choice. I implemented the Azure Maps integration myself, and it has been working properly in production with no complaints since."
+  },
+  {
+    "id": 5,
+    "category": "initiative",
+    "situation": "I was asked to create a Statement of Work (SOW) document for a client based only on meeting notes and a conversation with my manager. The client was an editing company that wanted a CMS to manage versions and comments. During the meeting where the SOW was discussed, I picked up that the client wasn't happy — they felt the price was too high, and they were actually hoping for something with more advanced AI integration rather than just a standard CMS.",
+    "task": "I needed to respond to the client's concerns in real time, even though my role was to deliver the SOW, not necessarily to redesign the proposed solution on the spot.",
+    "action": "Drawing on my background as a generalist — having worked as an editor, teacher, QA engineer, and full-stack engineer — I recognized that a traditional CMS with manual editing workflows didn't match what the client actually needed. I proposed an alternative: skip building a custom UI initially, and instead start with AI integration that could flag potential issues during proofreading, like an automated first-pass review.",
+    "result": "The client responded positively over email, expressing real interest in the idea."
+  },
+  {
+    "id": 6,
+    "category": "ownership",
+    "situation": "We were working on a merchant onboarding application meant to be a single standard flow for an acquirer's merchants. The problem was that one-size-fits-all didn't really work — a small single-shop merchant had to go through the same onboarding process as a high-risk merchant like a casino. To address this, I was given the task of creating an onboarding flow that could be customized based on merchant risk level. The only direction I had was a very high-level, hand-drawn sketch from my team lead.",
+    "task": "I needed to take that rough sketch and turn it into a working feature that let the onboarding flow and its questions be configured differently depending on risk level, with very little detailed specification to go on.",
+    "action": "Based on the hand-drawn mockup, I built out the full CRUD functionality for the onboarding flow — the ability to create, read, update, and delete both the flow itself and its associated questions. After testing and shipping the initial version, I didn't stop there: I added further improvements on my own initiative, including drag-and-drop reordering for the flow steps and additional styling refinements to make it more usable.",
+    "result": "The feature is currently working well in production with no complaints. It noticeably improved onboarding speed — merchants now move through the risk-based onboarding process much faster than before."
+  },
+  {
+    "id": 7,
+    "category": "problem-solving",
+    "situation": "On the frontend team, we relied on a third-party UI library for components. That library had a lot of complicated underlying code, and from time to time we'd wake up to find things broken on the frontend due to issues in that library — even though it had nothing to do with our own code. It was frustrating having to explain to clients that something was broken because of a dependency we didn't control, not because of our own work.",
+    "task": "We needed a way to reduce our reliance on this fragile third-party library, especially for simple, frequently-used components, so that bugs in their code would stop becoming our problem.",
+    "action": "I built a small internal component library for simple, common elements like buttons and similar basic UI pieces, using our own styles instead of the third-party library's. We also set up a single source of truth for design through tokenization — shared values for fonts, colors, and other design tokens — so our styling stayed consistent and reusable across the app. For some elements, we didn't even need full custom components; we relied on simple global CSS, reserving custom components only for cases where that level of structure was actually needed.",
+    "result": "This significantly reduced the number of UI bugs we ran into, since we were no longer exposed to the third-party library's issues for the components we'd replaced. The design tokenization also made our styling more consistent and easier to maintain across the app."
   }
 ]
