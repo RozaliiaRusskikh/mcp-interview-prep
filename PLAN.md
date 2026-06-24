@@ -70,3 +70,22 @@ This MCP server is consumed two ways, both already in scope:
 17. **End-to-end verification**: open the Vercel URL, ask a keyword-matchable question (should be instant, deterministic) and an open-ended question (should hit Gemini), confirm both return sensible answers.
 
 No database, no auth, no rate limiting in this first pass — those are reasonable additions later if the bot gets real traffic, not needed for a portfolio demo.
+
+## Phase 3 — eval harness (LLM regression testing)
+
+Mirrors real eval-engineering work (offline eval pipelines, precision/recall scoring, regression detection before deployment) — also doubles as practice for evaluation-focused ML roles. Tool: **Langfuse** (not LangChain — LangChain is an orchestration framework, not an eval tool; Langfuse has datasets, LLM-as-judge scoring, and run-over-run comparison built in, which is what regression detection actually needs).
+
+1. **Instrument `/chat`** — wrap each request in a Langfuse trace (question in, router decision, tool call result, final answer out). `langfuse` Python SDK, just decorators/context managers around the existing Phase 2 code — no architecture change.
+2. **Build an eval dataset in Langfuse** — a set of test questions with expected outputs:
+   - Router cases: question → expected tool + expected category/argument (tests the deterministic path's precision/recall — did it pick the right tool, did it miss/misfire).
+   - LLM fallback cases: open-ended question → a short rubric of facts that must appear (e.g. "mentions El Paso Labs", "mentions FastAPI") — tests the Gemini path for hallucination/drift.
+3. **Tiered scoring — LLM-as-judge only where cheap checks can't do the job:**
+   - Router cases: plain string/field assertions (expected tool name == actual tool name). No LLM call at all — it's deterministic, a judge would be pure waste.
+   - LLM fallback cases, tier 1: keyword/fact-presence check (does the answer contain the required facts as substrings) — cheap, deterministic, catches most regressions (missing facts, wrong company name, etc.).
+   - LLM fallback cases, tier 2 (only if tier 1 is ambiguous or the rubric item can't be substring-matched — e.g. tone, "does this contradict a fact" paraphrased differently): escalate that single case to an LLM-as-judge call. Most cases should never reach this tier.
+4. **Pass threshold = 0.8** — a dataset run passes if ≥80% of cases score correct (router precision/recall combined with fallback pass-rate). Below 0.8 = regression, flagged before deploying.
+5. **Run the eval suite offline** — triggered manually (or in CI before a deploy), against the fixed dataset, not on live production traffic. `langfuse` dataset run, scoring every test case via the tiered logic above, producing one aggregate score checked against the 0.8 threshold. Live/online eval on real user questions is a possible future addition, not part of this pass.
+6. **Regression detection** — re-run the same dataset after any change (new situations, prompt tweak, model swap) and diff scores against the previous run; a drop below 0.8, or any drop relative to the prior run even if still above 0.8, gets flagged — the same way the resume's "offline eval pipeline... detect LLM regressions before production deployment" describes.
+7. **Explainability** — for each failed case, Langfuse shows the trace (input → router decision → tool result → LLM call → output) so a failure can be diagnosed, not just flagged — mirrors "explain a score to a candidate who believes they were assessed unfairly" from the job description.
+
+Depends on Phase 2 existing (router + Gemini fallback) — nothing to regression-test before that.
