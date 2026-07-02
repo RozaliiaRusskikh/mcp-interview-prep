@@ -4,7 +4,7 @@ An AI clone of Roza Russkikh that answers interview-style questions — resume f
 
 ## How it works
 
-A Python MCP server (`server.py`) exposes Roza's data — `personal.json`, `resume.json`, `situations.json` — as MCP resources, tools, and prompts. Eventually a FastAPI backend acts as the MCP client: it tries deterministic keyword matching first (e.g. "conflict" → `get_situation("conflict")`, formatted directly from JSON, no LLM), and only falls back to Gemini for open-ended questions it can't confidently match. A Next.js + Tailwind chat UI talks to FastAPI over HTTP — it never talks to MCP directly.
+A Python MCP server (`server.py`) exposes Roza's data — `data/personal.json`, `data/resume.json`, `data/situations.json` — as MCP resources, tools, and prompts. Eventually a FastAPI backend acts as the MCP client: it tries deterministic keyword matching first (e.g. "conflict" → `get_situation("conflict")`, formatted directly from JSON, no LLM), and only falls back to Gemini for open-ended questions it can't confidently match. A Next.js + Tailwind chat UI talks to FastAPI over HTTP — it never talks to MCP directly.
 
 ## Stack
 
@@ -16,7 +16,7 @@ A Python MCP server (`server.py`) exposes Roza's data — `personal.json`, `resu
 
 ## Status
 
-**Phase 1** (current): build the MCP server and test it directly with Claude Code — no custom client needed, Claude Code is already an MCP host.
+**Phase 1** (current): MCP server built, unit-tested, and verified via the MCP Inspector. Final step: live-test all resources/tools/prompts through Claude Code itself (`.mcp.json` is already configured to auto-connect).
 
 **Phase 2** (later): build the FastAPI backend as MCP client + Gemini fallback, then the Next.js frontend, then deploy.
 
@@ -30,7 +30,7 @@ See [PLAN.md](PLAN.md) for full design details.
 - `resume://full` — experience, education, skills
 
 **Tools**
-- `get_situation(category: str)` — behavioral story by category (conflict, leadership, failure, ambiguity)
+- `get_situation(category: str)` — behavioral story by category (conflict, challenge, deadline, disagreement, initiative, ownership, problem-solving)
 - `get_experience(company_or_title: str)` — one job entry
 - `get_skill(skill: str)` — skill category + supporting experience highlights
 - `get_contact()` — email, LinkedIn, GitHub
@@ -43,4 +43,5 @@ See [PLAN.md](PLAN.md) for full design details.
 
 ```bash
 uv run mcp dev server.py   # MCP Inspector
+uv run pytest tests/       # unit tests
 ```
