@@ -1,8 +1,11 @@
 [project]
 name = "mcp-interview-prep"
 version = "0.1.0"
-description = "Add your description here"
+description = "MCP server that exposes Roza Russkikh's resume, skills, and STAR-format behavioral stories as tools/resources for AI-driven interview prep"
 readme = "README.md"
+authors = [
+    { name = "Roza Russkikh", email = "rrrusskikh@gmail.com" },
+]
 requires-python = ">=3.11"
 dependencies = [
     "mcp[cli]>=1.28.0",

@@ -1,12 +1,14 @@
 {
-  "name": "Roza Russkikh",
+  "name": "Rozaliia (Roza) Russkikh",
   "title": "Software Engineer | Full-Stack & AI Systems",
   "contact": {
     "email": "rrrusskikh@gmail.com",
+    "phone": "+1 650 315 6519",
     "linkedin": "linkedin.com/in/roza-russkikh",
-    "github": "github.com/RozaliiaRusskikh"
+    "github": "github.com/RozaliiaRusskikh",
+    "location": "San Jose, CA"
   },
-  "summary": "Full-stack software engineer with 4+ years of experience, recently focused on AI-powered systems and agentic workflows in production. Hands-on experience with LLM integration, RAG pipelines, and human-in-the-loop automation.",
+  "summary": "Software engineer (4+ years) building features end to end — React/Next.js/Angular UI through Python, FastAPI services, SQL databases, and LLM eval pipelines. Recently focused on production AI: LLM integration, RAG, MCP, agentic workflows, and human-in-the-loop automation.",
 
   "experience": [
     {
@@ -14,19 +16,20 @@
       "company": "El Paso Labs",
       "dates": "Apr 2024 – Present",
       "highlights": [
-        "Contributed to building a production agentic AI workflow using GPT-4o that processes client emails, classifies intent, and routes tasks through a human-in-the-loop Slack integration before writing to Airtable — orchestrated with LittleHorse workflow engine",
-        "Fixed bugs and improved the reviewer feedback loop — approve/reject buttons, free-text edit handling, intent classification, and inline clarification",
-        "Worked on an offline eval pipeline with precision/recall scorers to detect LLM regressions before production deployment",
-        "Built Angular + Python/FastAPI RAG dashboard integrating Azure AI Search and Azure Blob Storage for document ingestion, vector search, and embeddings — including web crawling and Zendesk API integration as data sources",
-        "Supported development of a fintech partner portal — built Angular UI components and REST API integrations for merchant onboarding platform"
+        "Revived a stalled Python-based agentic AI workflow that reads each Front email and decides whether a task needs to be created in Airtable. Added a human-in-the-loop Slack approval step — including approve/reject, free-text edits, intent classification, and inline clarification with Pydantic-enforced structured LLM output — and shipped to beta with positive client feedback",
+        "Built an offline eval pipeline with deterministic scorers using Langfuse and tuned scoring to a 0.8 quality threshold to block LLM regressions before deployment",
+        "Developed an Angular + Python/FastAPI + PostgreSQL RAG dashboard integrating Azure AI Search and Azure Blob Storage for document ingestion, vector search, and embeddings — unifying web-crawled content and Zendesk data into a single searchable knowledge base",
+        "Delivered a configurable merchant onboarding flow builder for PXP (fintech partner) — a questionnaire-driven tool that let admins set up onboarding flows, with requirements branching by merchant risk level",
+        "Created a reusable Angular component library for PXP partner portal with design tokens and form components to power the onboarding UI, and built REST API integrations to connect to .NET backend services",
+        "Collaborated directly with stakeholders to translate business requirements into technical solutions, ensuring high-quality delivery and alignment with project goals"
       ]
     },
     {
       "title": "Full Stack Software Engineer",
-      "company": "Freelance",
+      "company": "Independent Consultant",
       "dates": "May 2023 – Mar 2024",
       "highlights": [
-        "Developed client-facing Next.js applications with Tailwind CSS, Sanity CMS, and server-side logic"
+        "Developed front-end features and Sanity CMS integrations for two corporate client websites built with Next.js and Tailwind CSS, working within a small team"
       ]
     },
     {
@@ -34,29 +37,24 @@
       "company": "Intergalactic Agency Inc.",
       "dates": "Apr 2021 – Aug 2023",
       "highlights": [
-        "Contributed to full-stack React/Next.js/TypeScript applications across 6+ client projects",
-        "Implemented serverless features on AWS (Lambda, S3, Bridge) and automated E2E testing with Cypress"
-      ]
-    },
-    {
-      "title": "Software Test Engineer",
-      "company": "Yandex",
-      "dates": "Sep 2020 – Mar 2021",
-      "highlights": [
-        "Functional and regression testing across web, mobile, and desktop applications"
+        "Owned QA across 6+ client React/Next.js/TypeScript projects — built automated Cypress test suites and investigated defects using browser dev tools, helping improve release quality and catch defects before they reached production",
+        "Led User Acceptance Testing (UAT) to ensure solutions met both functional and technical standards",
+        "Transitioned into development by reading through source code to trace root causes, reproducing issues, and partnering with developers on fixes",
+        "Built a Puppeteer automation on AWS Lambda, EventBridge-scheduled every 3 days, that logs into a client's Mosyle MDM dashboard, exports iPad app-usage logs through the admin UI, reshapes the data into a custom 'which iPads used which apps' report, uploads it to S3, and emails the client a link — replacing a manual process 100%"
       ]
     }
   ],
 
   "skills": {
-    "ai_and_backend": ["Python", "FastAPI", "LLM Integration", "GPT-4", "Agentic Workflows", "RAG", "Vector Search", "Embeddings", "Workflow Orchestration", "Azure AI Search", "SQLAlchemy", "PostgreSQL", "REST APIs"],
-    "frontend": ["React", "Angular", "Next.js", "TypeScript", "JavaScript", "TailwindCSS", "HTML5", "CSS", "Sass"],
-    "tools": ["Docker", "Git", "GitHub Actions", "CI/CD", "AWS", "Azure"]
+    "ai_and_backend": ["Python", "Pydantic", "FastAPI", "FastMCP", "LLM Integration", "LLM Evals", "Agentic Workflows", "RAG", "Embeddings", "Workflow Orchestration", "Azure AI Search", "LangGraph", "Langfuse", "REST APIs", "SQL"],
+    "frontend": ["React", "Angular", "Next.js", "TypeScript", "JavaScript", "Tailwind CSS", "HTML5", "CSS", "Sass", "Figma"],
+    "tools": ["Claude Code", "Git", "GitHub Actions", "CI/CD", "AWS", "Azure", "Docker", "Puppeteer", "Playwright"]
   },
 
   "education": [
-    {"school": "BrainStation", "credential": "Diploma in Web Development, 95.1 GPA", "year": 2023},
+    {"school": "BrainStation", "credential": "Diploma in Web Development", "year": 2023},
     {"school": "Hitek Computer School", "credential": "Certificate in Software QA & Testing", "year": 2021},
-    {"school": "Belarusian State University", "credential": "Diploma in Software Engineering", "year": 2020}
+    {"school": "Belarusian State University", "credential": "Diploma in Software Engineering", "year": 2020},
+    {"school": "Perm State Pedagogical University", "credential": "Master's degree, Linguistics", "year": 2012}
   ]
 }
