@@ -8,7 +8,7 @@
     "github": "github.com/RozaliiaRusskikh",
     "location": "San Jose, CA"
   },
-  "summary": "Software engineer (4+ years) building features end to end — React/Next.js/Angular UI through Python, FastAPI services, SQL databases, and LLM eval pipelines. Recently focused on production AI: LLM integration, RAG, MCP, agentic workflows, and human-in-the-loop automation.",
+  "summary": "Software engineer with 5+ years of client-facing engineering experience, including building full-stack features end to end — React/Next.js/Angular UI through Python, FastAPI, FastMCP services, SQL databases, AI multi-agent workflows, and LLM eval pipelines. Recently focused on production AI: LLM integration, RAG, MCP, multi-agent workflows, and human-in-the-loop automation.",
 
   "experience": [
     {
@@ -16,8 +16,8 @@
       "company": "El Paso Labs",
       "dates": "Apr 2024 – Present",
       "highlights": [
-        "Revived a stalled Python-based agentic AI workflow that reads each Front email and decides whether a task needs to be created in Airtable. Added a human-in-the-loop Slack approval step — including approve/reject, free-text edits, intent classification, and inline clarification with Pydantic-enforced structured LLM output — and shipped to beta with positive client feedback",
-        "Built an offline eval pipeline with deterministic scorers using Langfuse and tuned scoring to a 0.8 quality threshold to block LLM regressions before deployment",
+        "Revived a stalled Python-based multi-agent AI workflow that reads each Front email and decides whether a task needs to be created in Airtable. Added a human-in-the-loop Slack approval step — including approval/rejection, free-text edits, intent classification, and inline clarification with Pydantic-enforced structured LLM output — and shipped to beta with positive client feedback",
+        "Built an offline evaluation pipeline with deterministic scorers using Langfuse, tuning scoring to a 0.8 quality threshold to block LLM regressions before deployment",
         "Developed an Angular + Python/FastAPI + PostgreSQL RAG dashboard integrating Azure AI Search and Azure Blob Storage for document ingestion, vector search, and embeddings — unifying web-crawled content and Zendesk data into a single searchable knowledge base",
         "Delivered a configurable merchant onboarding flow builder for PXP (fintech partner) — a questionnaire-driven tool that let admins set up onboarding flows, with requirements branching by merchant risk level",
         "Created a reusable Angular component library for PXP partner portal with design tokens and form components to power the onboarding UI, and built REST API integrations to connect to .NET backend services",
@@ -40,7 +40,7 @@
         "Owned QA across 6+ client React/Next.js/TypeScript projects — built automated Cypress test suites and investigated defects using browser dev tools, helping improve release quality and catch defects before they reached production",
         "Led User Acceptance Testing (UAT) to ensure solutions met both functional and technical standards",
         "Transitioned into development by reading through source code to trace root causes, reproducing issues, and partnering with developers on fixes",
-        "Built a Puppeteer automation on AWS Lambda, EventBridge-scheduled every 3 days, that logs into a client's Mosyle MDM dashboard, exports iPad app-usage logs through the admin UI, reshapes the data into a custom 'which iPads used which apps' report, uploads it to S3, and emails the client a link — replacing a manual process 100%"
+        "Built a Puppeteer automation on AWS Lambda, EventBridge-scheduled every 3 days, that logs into a client's Mosyle MDM dashboard, exports iPad app-usage logs through the admin UI, reshapes the data into a custom 'which iPads used which apps' report, uploads it to S3, and emails the client a link — eliminating a 100% manual reporting process"
       ]
     }
   ],
