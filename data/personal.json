@@ -27,7 +27,10 @@
     "Genuinely excited about AI and actively use it to improve my own productivity and problem-solving",
     "Strong analytical mindset shaped by years of QA and debugging",
     "I take ownership and follow problems through to resolution — I don't let things fall through the cracks",
-    "Adapt quickly to new stacks, workflows, and ways of working"
+    "Adapt quickly to new stacks, workflows, and ways of working",
+    "Ask 'why' before building — I dig into the real problem behind a request instead of executing a brief at face value",
+    "Care about doing it right over doing it fast — I build eval gates and safety checks before shipping, not just after something breaks",
+    "Thrive on technical complexity — drawn to the gnarly problems (agent workflows, crawler edge cases, brittle third-party integrations) rather than avoiding them"
   ],
 
   "tone": {
