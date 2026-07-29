@@ -1,17 +1,22 @@
 # Plan: AI Clone / Interview-Prep Bot (full scope)
 
 ## Context
-Building a portfolio piece: an AI clone of Roza that answers interview-style questions (including behavioral/STAR situations), doubling as hands-on MCP practice. Stack already agreed:
+Building a portfolio piece: an AI clone of Roza that answers interview-style questions (including behavioral/STAR situations), doubling as hands-on MCP + React practice. Stack already agreed:
 - **MCP server** (Python, `mcp[cli]`) — exposes personal data as resources/tools/prompts
-- **Backend** (Python, FastAPI) — MCP client; on each request calls MCP tool(s), then calls Gemini with that context + the question
-- **LLM**: Gemini via `google-generativeai` SDK
-- **Frontend**: Next.js + Tailwind chat UI, POSTs to FastAPI `/chat`
-- **Hosting**: Fly.io (backend), Vercel (frontend)
+- **Backend** (Python, FastAPI) — MCP client; on each request calls MCP tool(s), then calls Gemini with that context + the question. Pydantic models validate both the `/chat` request/response shape and the data coming back from MCP tool calls (see Backend step 3) — a deliberate practice goal alongside FastAPI.
+- **LLM**: Gemini via `google-generativeai` SDK — Roza's own free-tier key, server-side only. No bring-your-own-key flow: recruiters are the audience, and requiring them to get an API key before they can chat is friction that defeats the point of the demo.
+- **Frontend**: React (Vite, TypeScript) + Tailwind chat UI, POSTs to FastAPI `/chat`. Plain React (not Next.js) — the point of this project includes hands-on React practice (routing/state/fetch without framework magic).
+- **Hosting**: Render (backend, free web service tier), Vercel (frontend). Not Fly.io — its free tier now requires a card on file and isn't a good fit for a zero-cost portfolio demo; Render's free tier needs no card (tradeoff: it sleeps after ~15 min idle and cold-starts on the next request, which is fine for a demo people click into occasionally).
+- **Eval**: offline eval pipeline (Langfuse) run against a versioned dataset, gated before deploy — see Phase 3 below. Included in scope, not a maybe-later.
+
+**Monolith structure**: MCP's client/server split is a real process boundary (FastAPI launches `server.py` as a stdio subprocess), so it can't fully merge away — but it stays an implementation detail *inside* the backend, not a third service. One repo, subfolders (`mcp/` or repo root for the server, `backend/`, `frontend/`), and exactly **two deployable units**: the backend (FastAPI process that spawns the MCP server itself) and the frontend (static React build). Deployed and operated like a normal two-tier app.
+
+**What "deterministic" means here**: MCP is just a transport — it isn't deterministic or not by itself. What's deterministic is the tools on the other end (`get_situation`, `get_experience`, `get_skill`, `get_contact`): plain Python functions doing JSON lookups/string matching, same input → same output every time, no model involved. The only non-deterministic step in the whole system is the Gemini fallback (an LLM can phrase things differently call to call) — the router's job is to minimize how often that path is hit.
 
 Split into two phases:
 - **Phase 1 (this pass)**: build the MCP server, test it directly with Claude Code — Claude Code is already an MCP host/client, so no custom client code needed yet.
-- **Phase 2 (later)**: build the FastAPI backend as a custom MCP client connecting to this same `server.py`. It calls the MCP tools/resources, then passes that context to Gemini. The Next.js frontend only talks to FastAPI over HTTP — it never talks to MCP directly.
-  - Request flow in `/chat`: try deterministic keyword matching first (map the question to a tool call — e.g. "conflict" → `get_situation("conflict")` — and format the returned JSON into readable text directly, no LLM involved). Only fall back to Gemini + the `answer_as_roza` prompt when no keyword match is confident enough. This keeps most answers fast, free, and 100% accurate (no hallucination risk on factual data), and reserves the LLM for open-ended/ambiguous questions where rigid matching would fail.
+- **Phase 2 (later)**: build the FastAPI backend as a custom MCP client connecting to this same `server.py`. It calls the MCP tools/resources, then passes that context to Gemini. The React frontend only talks to FastAPI over HTTP — it never talks to MCP directly.
+  - Request flow in `/chat`: try deterministic keyword matching first (map the question to a tool call — e.g. "conflict" → `get_situation("conflict")` — and format the returned JSON into readable text directly, no LLM involved). Only fall back to Gemini + the `answer_as_roza` prompt when no keyword match is confident enough. This keeps most answers fast, free, and 100% accurate (no hallucination risk on factual data), and reserves the LLM for open-ended/ambiguous questions where rigid matching would fail — which also keeps Gemini usage low enough that a single free-tier key, rate-capped, comfortably covers portfolio-level traffic.
 
 ## MCP server design
 
@@ -44,34 +49,38 @@ This MCP server is consumed two ways, both already in scope:
 ## Phase 2 — detailed steps
 
 ### Backend (`backend/` folder, FastAPI)
-1. `uv add fastapi uvicorn google-generativeai mcp` (or a separate `pyproject.toml` under `backend/` if kept as its own package).
+1. `uv add fastapi uvicorn google-generativeai mcp pydantic` (or a separate `pyproject.toml` under `backend/` if kept as its own package; `pydantic` ships with FastAPI but pin it explicitly since schemas are a deliberate practice goal here).
 2. **MCP client connection** — use the `mcp` SDK's stdio client to launch `server.py` as a subprocess and open a session (same pattern as Claude Code does, just in your own code instead of Claude Code's host).
-3. **Keyword router** — a small function mapping question text to a tool call:
+3. **Pydantic schemas** (`backend/schemas.py`) — two layers:
+   - **API I/O**: `ChatRequest` (`question: str`) and `ChatResponse` (`answer: str`, `source: Literal["deterministic", "llm", "rate_capped"]` — useful for the frontend to badge how an answer was produced, and for the eval pipeline to check trajectory). FastAPI uses these directly as the `/chat` endpoint's request/response models, so validation and OpenAPI docs (`/docs`) come for free.
+   - **MCP tool output validation**: one model per tool result shape (`Situation`, `Experience`, `Skill`, `Contact`), parsed immediately after each MCP tool call (`Situation.model_validate(result)`) before it reaches the formatter. This catches drift between `data/*.json` and what the formatter/LLM prompt expects at the boundary, rather than failing deep in string-templating code.
+4. **Keyword router** — a small function mapping question text to a tool call:
    - category keywords (conflict, leadership, failure, ambiguity) → `get_situation(category)`
    - company/title names from `resume.json` → `get_experience(...)`
    - known skill names → `get_skill(...)`
    - "contact" / "email" / "linkedin" / "github" → `get_contact()`
    - no confident match → fall through to LLM path
-4. **Deterministic formatter** — turns each tool's JSON result into a short, readable paragraph (template strings per tool, not LLM-generated).
-5. **LLM fallback** — only reached when no keyword matches: call the MCP `answer_as_roza` prompt to build the final prompt text, fetch `personal://info` for tone, then call Gemini via `google-generativeai`.
-6. **`/chat` endpoint** — `POST {question: str} → {answer: str}`. Wires steps 3–5 together: router → formatter or LLM fallback → JSON response.
-7. **CORS** — allow the Next.js frontend's origin (localhost during dev, the Vercel domain in prod).
-8. Test locally with `curl` or the FastAPI `/docs` Swagger UI before touching the frontend.
+5. **Deterministic formatter** — turns each tool's JSON result into a short, readable paragraph (template strings per tool, not LLM-generated).
+6. **LLM fallback** — only reached when no keyword matches: call the MCP `answer_as_roza` prompt to build the final prompt text, fetch `personal://info` for tone, then call Gemini via `google-generativeai`, using Roza's own `GOOGLE_API_KEY` (server-side env var/secret, never sent to the frontend).
+7. **Rate cap on the Gemini path** — a simple counter (in-memory is fine for a single Render instance; e.g. a module-level dict keyed by UTC date) tracking calls made today, capped well under Gemini's free-tier daily limit (e.g. 100/day vs. Gemini's ~1500/day). When the cap is hit, skip the Gemini call and return a graceful deterministic message instead (e.g. "I'm not sure how to match that one — try asking about my experience, skills, a specific project, or a behavioral situation like conflict/ownership/deadlines"). This is the only "quota" concept in the app — there's no per-user key, so no BYOK UI, no key-entry form, nothing for a visitor to configure.
+8. **`/chat` endpoint** — `POST` using the `ChatRequest`/`ChatResponse` Pydantic models from step 3. Wires steps 4–7 together: router → formatter or (capped) LLM fallback → JSON response.
+9. **CORS** — allow the React frontend's origin (localhost during dev, the Vercel domain in prod).
+10. Test locally with `curl` or the FastAPI `/docs` Swagger UI before touching the frontend.
 
-### Frontend (`frontend/` folder, Next.js + Tailwind)
-9. `npx create-next-app@latest frontend --tailwind` (App Router, TypeScript).
-10. One page (`app/page.tsx`): message list state + text input + send button.
-11. On send: `fetch(BACKEND_URL + "/chat", { method: "POST", body: JSON.stringify({ question }) })`, append the response to the message list.
-12. `BACKEND_URL` as an environment variable (`.env.local` locally, Vercel env var in prod) — never hardcoded.
-13. Basic styling only (Tailwind) — chat bubbles, scroll-to-bottom, loading state while waiting for a response.
-14. Test locally against the FastAPI backend running on `localhost:8000`.
+### Frontend (`frontend/` folder, React + Vite + Tailwind)
+11. `npm create vite@latest frontend -- --template react-ts`, then add Tailwind.
+12. One main view (`src/App.tsx` or a `Chat` component): message list state + text input + send button.
+13. On send: `fetch(BACKEND_URL + "/chat", { method: "POST", body: JSON.stringify({ question }) })`, append the response to the message list.
+14. `BACKEND_URL` as a Vite env var (`VITE_BACKEND_URL` in `.env.local` locally, Vercel env var in prod) — never hardcoded.
+15. Basic styling only (Tailwind) — chat bubbles, scroll-to-bottom, loading state while waiting for a response.
+16. Test locally against the FastAPI backend running on `localhost:8000`.
 
 ### Deployment
-15. **Backend → Fly.io**: add a `Dockerfile` (or use `fly launch` which generates one for a Python app), set the `GOOGLE_API_KEY` as a Fly secret (`fly secrets set`), deploy with `fly deploy`.
-16. **Frontend → Vercel**: `vercel` CLI or GitHub integration, set `BACKEND_URL` as a Vercel environment variable pointing at the deployed Fly.io URL.
-17. **End-to-end verification**: open the Vercel URL, ask a keyword-matchable question (should be instant, deterministic) and an open-ended question (should hit Gemini), confirm both return sensible answers.
+17. **Backend → Render**: free web service tier, no card required. Add a `Dockerfile` (or use Render's native Python runtime with a start command), set `GOOGLE_API_KEY` as a Render environment secret, deploy via GitHub integration (auto-deploy on push). Note: free tier sleeps after ~15 min idle and cold-starts (~30-60s) on the next request — acceptable for a portfolio demo, not for real traffic.
+18. **Frontend → Vercel**: `vercel` CLI or GitHub integration, set `VITE_BACKEND_URL` as a Vercel environment variable pointing at the deployed Render URL.
+19. **End-to-end verification**: open the Vercel URL, ask a keyword-matchable question (should be instant, deterministic) and an open-ended question (should hit Gemini), confirm both return sensible answers, and confirm the rate-cap fallback message appears once the daily cap is (manually, for testing) hit.
 
-No database, no auth, no rate limiting in this first pass — those are reasonable additions later if the bot gets real traffic, not needed for a portfolio demo.
+No database, no auth in this first pass — the rate cap covers the cost-control need; auth/db are reasonable additions later if the bot gets real traffic, not needed for a portfolio demo.
 
 ## Phase 3 — eval harness (LLM regression testing)
 

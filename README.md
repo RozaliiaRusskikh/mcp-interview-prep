@@ -4,21 +4,24 @@ An AI clone of Roza Russkikh that answers interview-style questions — resume f
 
 ## How it works
 
-A Python MCP server (`server.py`) exposes Roza's data — `data/personal.json`, `data/resume.json`, `data/situations.json` — as MCP resources, tools, and prompts. Eventually a FastAPI backend acts as the MCP client: it tries deterministic keyword matching first (e.g. "conflict" → `get_situation("conflict")`, formatted directly from JSON, no LLM), and only falls back to Gemini for open-ended questions it can't confidently match. A Next.js + Tailwind chat UI talks to FastAPI over HTTP — it never talks to MCP directly.
+A Python MCP server (`server.py`) exposes Roza's data — `data/personal.json`, `data/resume.json`, `data/situations.json` — as MCP resources, tools, and prompts. Eventually a FastAPI backend acts as the MCP client: it tries deterministic keyword matching first (e.g. "conflict" → `get_situation("conflict")`, formatted directly from JSON, no LLM), and only falls back to Gemini (rate-capped, Roza's own key — no user key required) for open-ended questions it can't confidently match. Pydantic models validate the `/chat` request/response shape and the data loaded from the MCP tools. A React + Tailwind chat UI talks to FastAPI over HTTP — it never talks to MCP directly.
 
 ## Stack
 
 - **MCP server**: Python, `mcp[cli]`
-- **Backend** (Phase 2): Python, FastAPI — the MCP client, also calls Gemini as a fallback
-- **LLM**: Gemini via `google-generativeai`
-- **Frontend** (Phase 2): Next.js + Tailwind
-- **Hosting** (Phase 2): Fly.io (backend), Vercel (frontend)
+- **Backend** (Phase 2): Python, FastAPI — the MCP client (spawns the MCP server as a subprocess), also calls Gemini as a rate-capped fallback; Pydantic models for all request/response/tool-output schemas
+- **LLM**: Gemini via `google-generativeai`, Roza's own free-tier key, server-side only
+- **Frontend** (Phase 2): React (Vite, TypeScript) + Tailwind
+- **Hosting** (Phase 2): Render (backend, free tier), Vercel (frontend)
+- **Eval** (Phase 3): offline eval pipeline (Langfuse) — see PLAN.md
 
 ## Status
 
 **Phase 1** (current): MCP server built, unit-tested, and verified via the MCP Inspector. Final step: live-test all resources/tools/prompts through Claude Code itself (`.mcp.json` is already configured to auto-connect).
 
-**Phase 2** (later): build the FastAPI backend as MCP client + Gemini fallback, then the Next.js frontend, then deploy.
+**Phase 2** (later): build the FastAPI backend as MCP client + Gemini fallback, then the React frontend, then deploy.
+
+**Phase 3** (later): offline eval pipeline for regression testing the router + Gemini fallback.
 
 See [PLAN.md](PLAN.md) for full design details.
 
