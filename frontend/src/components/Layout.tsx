@@ -40,9 +40,9 @@ export default function Layout() {
           </p>
         </div>
         <img
-          src="/roza-bot-avatar.png"
+          src="/roza.jpg"
           alt="Roza Russkikh"
-          className="hidden sm:block w-32 h-32 object-cover border border-ink/20 shadow-sm rotate-2 shrink-0"
+          className="hidden sm:block w-44 h-44 object-cover object-top border border-ink/20 shadow-sm rotate-2 shrink-0"
         />
       </header>
 
