@@ -1,4 +1,4 @@
-// Mirrors ../../data/recommendations.json. Duplicated here because the frontend has no
+// Mirrors ../../../data/recommendations.json. Duplicated here because the frontend has no
 // backend/API to fetch this from yet (Phase 2) — keep both in sync until then.
 export type Recommendation = {
   name: string;

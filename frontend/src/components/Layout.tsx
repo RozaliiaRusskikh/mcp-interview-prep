@@ -1,9 +1,5 @@
 import { NavLink, Outlet } from "react-router-dom";
-
-const TABS = [
-  { to: "/", label: "Chat", end: true },
-  { to: "/recommendations", label: "Recommendations", end: false },
-];
+import { TABS } from "../constants/nav";
 
 export default function Layout() {
   return (

@@ -1,8 +1,9 @@
 import { useState, type FormEvent } from "react";
+import AssistantIcon from "../components/AssistantIcon";
+import { PROMPTS } from "../constants/prompts";
+import { STAMP, type Source } from "../constants/chat";
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL ?? "http://localhost:8000";
-
-type Source = "deterministic" | "llm" | "rate_capped";
 
 type Exchange = {
   id: number;
@@ -11,35 +12,6 @@ type Exchange = {
   source?: Source;
   error?: string;
 };
-
-const PROMPTS = [
-  "What's your mission?",
-  "What do people say about you?",
-  "How do I reach you?",
-];
-
-const STAMP: Record<Source, { label: string; className: string }> = {
-  deterministic: {
-    label: "Filed — resume data",
-    className: "text-stamp border-stamp",
-  },
-  llm: {
-    label: "In Roza's words",
-    className: "text-ledger border-ledger",
-  },
-  rate_capped: {
-    label: "Filed — daily limit reached",
-    className: "text-ink/50 border-ink/30",
-  },
-};
-
-function AssistantIcon() {
-  return (
-    <span className="relative inline-block w-9 h-9 shrink-0 overflow-hidden border border-ink/15">
-      <img src="/roza-bot-avatar.png" alt="Roza's assistant" className="w-full h-full object-cover" />
-    </span>
-  );
-}
 
 export default function ChatPage() {
   const [exchanges, setExchanges] = useState<Exchange[]>([]);

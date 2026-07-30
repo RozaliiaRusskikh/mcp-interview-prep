@@ -1,7 +1,7 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import Layout from "./Layout";
-import ChatPage from "./ChatPage";
-import RecommendationsPage from "./RecommendationsPage";
+import Layout from "./components/Layout";
+import ChatPage from "./pages/ChatPage";
+import RecommendationsPage from "./pages/RecommendationsPage";
 
 export default function App() {
   return (
