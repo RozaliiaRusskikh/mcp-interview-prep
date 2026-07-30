@@ -31,12 +31,14 @@ See [PLAN.md](PLAN.md) for full design details.
 - `personal://info` — values, mission, background, tone
 - `situations://all` — STAR-format behavioral stories
 - `resume://full` — experience, education, skills
+- `recommendations://all` — LinkedIn recommendations from managers, colleagues, mentors, teachers
 
 **Tools**
 - `get_situation(category: str)` — behavioral story by category (conflict, challenge, deadline, disagreement, initiative, ownership, problem-solving)
 - `get_experience(company_or_title: str)` — one job entry
 - `get_skill(skill: str)` — skill category + supporting experience highlights
 - `get_contact()` — email, LinkedIn, GitHub
+- `get_recommendations(name: str = "")` — one person's recommendation, or all of them if no name given
 
 **Prompts**
 - `find_gaps()` — reports which standard interview competencies have no situation yet

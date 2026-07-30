@@ -48,6 +48,12 @@ def full_resume() -> dict:
     return _load_json("resume.json")
 
 
+@mcp.resource("recommendations://all")
+def all_recommendations() -> list:
+    """All LinkedIn recommendations from managers, colleagues, mentors, and teachers."""
+    return _load_json("recommendations.json")
+
+
 # --- Tools ---------------------------------------------------------
 
 @mcp.tool()
@@ -118,6 +124,22 @@ def get_contact() -> dict:
     return resume["contact"]
 
 
+@mcp.tool()
+def get_recommendations(name: str = "") -> list[dict] | str:
+    """Get LinkedIn recommendations about Roza from managers, colleagues, mentors, and
+    teachers. Pass a name to get one person's recommendation, or omit it to get all of them.
+    """
+    recommendations = _load_json("recommendations.json")
+    if not name:
+        return recommendations
+    query = name.lower()
+    matches = [r for r in recommendations if query in r["name"].lower()]
+    if not matches:
+        available = ", ".join(r["name"] for r in recommendations)
+        return f"No recommendation found from '{name}'. Available: {available}"
+    return matches
+
+
 # --- Prompts ---------------------------------------------------------
 
 @mcp.prompt()
@@ -146,9 +168,9 @@ def answer_as_roza(question: str) -> str:
         f"Background: {personal['background_story']}\n"
         f"Tone: warm={personal['tone']['warm']}, direct={personal['tone']['direct']}, "
         f"avoid: {', '.join(personal['tone']['avoid'])}\n\n"
-        f"Use the get_situation, get_experience, get_skill, and get_contact tools, or the "
-        f"resume://full and situations://all resources, to ground your answer in real facts — "
-        f"do not invent experience.\n\n"
+        f"Use the get_situation, get_experience, get_skill, get_contact, and get_recommendations "
+        f"tools, or the resume://full, situations://all, and recommendations://all resources, "
+        f"to ground your answer in real facts — do not invent experience.\n\n"
         f"Question: {question}"
     )
 

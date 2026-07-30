@@ -43,6 +43,24 @@ def test_get_contact():
     assert "github.com" in contact["github"]
 
 
+def test_get_recommendations_all():
+    result = server.get_recommendations()
+    assert isinstance(result, list)
+    assert len(result) == 5
+
+
+def test_get_recommendations_known_name():
+    matches = server.get_recommendations("Daria")
+    assert isinstance(matches, list)
+    assert matches[0]["name"] == "Daria Bryleva"
+
+
+def test_get_recommendations_unknown_name():
+    result = server.get_recommendations("Not A Real Person")
+    assert isinstance(result, str)
+    assert "No recommendation found" in result
+
+
 def test_find_gaps_lists_missing_competencies():
     result = server.find_gaps()
     assert "leadership" in result
@@ -59,3 +77,4 @@ def test_resources_load():
     assert isinstance(server.personal_info(), dict)
     assert isinstance(server.all_situations(), list)
     assert isinstance(server.full_resume(), dict)
+    assert isinstance(server.all_recommendations(), list)

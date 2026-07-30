@@ -2,3 +2,6 @@
 __pycache__/
 *.py[oc]
 build/
+
+# Playwright MCP debug artifacts (console logs, page snapshots)
+.playwright-mcp/

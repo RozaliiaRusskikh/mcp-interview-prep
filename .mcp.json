@@ -3,6 +3,10 @@
     "interview-prep": {
       "command": "uv",
       "args": ["run", "server.py"]
+    },
+    "playwright": {
+      "command": "npx",
+      "args": ["@playwright/mcp@latest"]
     }
   }
 }

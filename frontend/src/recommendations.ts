@@ -1,0 +1,52 @@
+// Mirrors ../../data/recommendations.json. Duplicated here because the frontend has no
+// backend/API to fetch this from yet (Phase 2) — keep both in sync until then.
+export type Recommendation = {
+  name: string;
+  title: string;
+  relationship: string;
+  date: string;
+  quote: string;
+};
+
+export const RECOMMENDATIONS: Recommendation[] = [
+  {
+    name: "Michael Farquhar",
+    title: "Managing Director and Partner at Intergalactic",
+    relationship: "Michael managed Roza directly",
+    date: "September 2023",
+    quote:
+      "Hardworking, smart, dedicated, eager to learn and a self-starter. I have no faint praise for Rozaliia and I know she will progress quickly in this career. During her time with Intergalactic she constantly pushed herself to learn and do more while displaying honest humility; looking to learn from and actively collaborate with her team. She also never allowed herself to be idle nor stuck - something I appreciated in the agency. Good luck Roza!",
+  },
+  {
+    name: "Matt Banh",
+    title: "Senior Technical Project Manager - Enterprise Shopify Implementation Specialist",
+    relationship: "Matt managed Roza directly",
+    date: "August 2023",
+    quote:
+      "I've known Roza since her time as a software engineering student, where she displayed great enthusiasm and curiosity towards her education, ending up at the top of the class. Now, I have the rewarding experience of working directly with Roza on web development projects. Her solid foundation in JavaScript and CSS has allowed her to develop a strong command of modern web development technologies including React, NextJS, and TailwindCSS. Roza has taken the lead on front-end tasks, as well as designing, building, and implementing a user-friendly content management system in Sanity. Along with her technical prowess, Roza exhibits exceptional communication skills, providing consistent updates and she is never afraid to ask clarifying questions to ensure her work aligns perfectly with project goals. Roza would be an asset to any team and I, without reservation, would recommend her for any full-stack development role!",
+  },
+  {
+    name: "Beth Wolfe",
+    title: "Account Manager, Event Professional, Community Volunteer",
+    relationship: "Beth worked with Roza but they were at different companies",
+    date: "August 2023",
+    quote:
+      "I worked with Roza on a challenging project with unique and frequently changing needs. She was focused, incredibly detailed, and ensured she had a thorough understanding of the client's changing requirements. Her ability to adapt and creatively problem solve made a huge difference in the successful launch of the project. Later on, when software updates resulted in our reporting needs no longer being met, Roza worked with the provider to develop a new reporting system that provided a client experience that was even better than before. I would be thrilled to work with Roza on another project.",
+  },
+  {
+    name: "Daria Bryleva",
+    title: "Frontend Developer | React | Vue | Node.js",
+    relationship: "Daria was Roza's mentor",
+    date: "August 2023",
+    quote:
+      "I am pleased to give Roza a strong recommendation as a web developer. She has proven to be a valuable member of the team and can work independently as well. During the work, she showed very good code quality. I have complete confidence in her reliability and her ability to deliver results effectively and would be glad to work with her again in the future.",
+  },
+  {
+    name: "Oleg Vertlib",
+    title: "Director of Hitek Computer School",
+    relationship: "Oleg was Roza's teacher",
+    date: "August 2023",
+    quote:
+      "I know Rozaliia as a student of Hitek Computer School and Software tester on Academic project. I would like to take this opportunity to recommend Rozaliia for potential employer. I feel confident that she will continue to succeed in her career. Rozaliia is a dedicated tester and demonstrated good qa/testing skills. I believe her drive and abilities will truly be an asset to your establishment.",
+  },
+];
