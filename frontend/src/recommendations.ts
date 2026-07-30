@@ -49,4 +49,12 @@ export const RECOMMENDATIONS: Recommendation[] = [
     quote:
       "I know Rozaliia as a student of Hitek Computer School and Software tester on Academic project. I would like to take this opportunity to recommend Rozaliia for potential employer. I feel confident that she will continue to succeed in her career. Rozaliia is a dedicated tester and demonstrated good qa/testing skills. I believe her drive and abilities will truly be an asset to your establishment.",
   },
+  {
+    name: "Ivan Vigliante",
+    title: "Software Engineer at El Paso Labs",
+    relationship: "Ivan was Roza's mentor",
+    date: "July 2026",
+    quote:
+      "I highly recommend Roza for any Full-Stack or AI Engineering role. Joining El Paso Labs as one of our early hires, she immediately stood out for her exceptional work ethic, clear communication, and relentless drive to grow. Initially focused on frontend development, Roza proactively sought out mentorship and quickly expanded her skill set to become a formidable full-stack engineer. She seamlessly transitioned into complex backend architecture, becoming a core contributor to our RAG Dashboard's Python backend. Furthermore, her crucial work on our internal AI workflow engine showcased her ability to rapidly master and implement cutting-edge technologies. Roza is the kind of proactive engineer who elevates the team's capabilities through her eagerness to learn and take on new domains. Roza would be a highly valued addition to any forward-thinking technical team.",
+  },
 ];
