@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 /*
- * Design tokens for the "recruiter's desk" concept — see ../DESIGN.md for rationale.
+ * Design tokens
  * Single source of truth: Tailwind generates both CSS variables and utilities
  * (bg-paper, text-ink, font-display, ...) directly from this block.
  */
@@ -27,7 +27,7 @@
 @keyframes cardIn {
   from {
     opacity: 0;
-    transform: translateY(4px) scale(0.98);
+    transform: translateY(8px) scale(0.97);
   }
   to {
     opacity: 1;

@@ -1,7 +1,6 @@
 import { useState, type FormEvent } from "react";
 import AssistantIcon from "../components/AssistantIcon";
 import { PROMPTS } from "../constants/prompts";
-import { STAMP, type Source } from "../constants/chat";
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL ?? "http://localhost:8000";
 
@@ -9,7 +8,6 @@ type Exchange = {
   id: number;
   question: string;
   answer?: string;
-  source?: Source;
   error?: string;
 };
 
@@ -32,9 +30,9 @@ export default function ChatPage() {
         body: JSON.stringify({ question }),
       });
       if (!res.ok) throw new Error(`Backend returned ${res.status}`);
-      const data: { answer: string; source: Source } = await res.json();
+      const data: { answer: string } = await res.json();
       setExchanges((prev) =>
-        prev.map((e) => (e.id === id ? { ...e, answer: data.answer, source: data.source } : e))
+        prev.map((e) => (e.id === id ? { ...e, answer: data.answer } : e))
       );
     } catch {
       setExchanges((prev) =>
@@ -99,15 +97,9 @@ export default function ChatPage() {
             </div>
           )}
 
-          {ex.answer && ex.source && (
-            <div className="relative flex items-start gap-3 bg-card border border-ink/15 px-5 py-4 motion-safe:animate-[cardIn_0.25s_ease-out]">
+          {ex.answer && (
+            <div className="flex items-start gap-3 bg-card border border-ink/15 px-5 py-4 motion-safe:animate-[cardIn_0.35s_ease-out]">
               <AssistantIcon />
-              <span
-                className={`absolute -top-3 right-4 -rotate-6 bg-card border font-mono
-                            text-[10px] uppercase tracking-wide px-2 py-1 ${STAMP[ex.source].className}`}
-              >
-                {STAMP[ex.source].label}
-              </span>
               <p className="text-ink leading-relaxed pt-1">{ex.answer}</p>
             </div>
           )}
