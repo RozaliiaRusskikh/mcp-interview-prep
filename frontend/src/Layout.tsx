@@ -38,8 +38,9 @@ export default function Layout() {
               Resume ↓
             </a>
           </div>
-          <p className="font-display text-xl text-ink/85 leading-snug mt-6 max-w-[36ch]">
-            Teacher, then QA, now full-stack and AI engineer: I build software that actually helps people.
+          <p className="font-script text-xl sm:text-4xl text-ink/85 leading-none mt-6 max-w-[44ch]">
+            Teacher, then QA, now full-stack and AI engineer: I build products that actually{" "}
+            <span className="font-semibold text-ink">help people</span>, and I take ownership — quality first.
           </p>
         </div>
         <img

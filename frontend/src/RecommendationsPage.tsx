@@ -12,9 +12,6 @@ function RecommendationCard({ r, onExpand }: { r: Recommendation; onExpand: () =
 
   return (
     <div className="relative flex flex-col h-105 bg-card border border-ink/15 px-5 py-4">
-      <span className="absolute -top-3 right-4 rotate-3 bg-card border border-ink/30 text-ink/50 font-mono text-[10px] uppercase tracking-wide px-2 py-1">
-        Recommendation
-      </span>
       <div className="relative">
         <p ref={quoteRef} className="font-display italic text-ink/90 leading-relaxed pt-1 line-clamp-11">
           "{r.quote}"

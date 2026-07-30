@@ -15,6 +15,7 @@
   --font-display: "Fraunces", ui-serif, serif;
   --font-body: "Inter", ui-sans-serif, system-ui, sans-serif;
   --font-mono: "IBM Plex Mono", ui-monospace, monospace;
+  --font-script: "Caveat", cursive;
 }
 
 @layer base {
