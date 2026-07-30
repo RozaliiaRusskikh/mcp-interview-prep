@@ -88,7 +88,7 @@ export default function ChatPage() {
         <h1 className="font-display text-4xl sm:text-5xl font-medium mb-4">
           Ask my assistant anything about my work.
         </h1>
-        <p className="text-ink/70 max-w-[52ch]">
+        <p className="text-ink/70">
           It's trained on my professional experience, so it answers using my resume,
           real engineering stories, projects I've delivered, and recommendations from
           colleagues — all in my voice.
