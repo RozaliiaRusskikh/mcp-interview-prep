@@ -46,7 +46,7 @@ def test_get_contact():
 def test_get_recommendations_all():
     result = server.get_recommendations()
     assert isinstance(result, list)
-    assert len(result) == 5
+    assert len(result) == 6
 
 
 def test_get_recommendations_known_name():
