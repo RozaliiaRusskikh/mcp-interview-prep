@@ -5,7 +5,7 @@ export default function Layout() {
   return (
     <div className="min-h-screen px-4">
       <div className="max-w-175 mx-auto">
-        <header className="pt-14 pb-6 flex items-start gap-4">
+        <header className="pt-12 pb-6 flex items-start gap-4">
           <div className="flex-1">
             <p className="font-mono text-xs tracking-[0.18em] uppercase text-ink/60">
               Roza Russkikh · Skills showcase
@@ -35,15 +35,15 @@ export default function Layout() {
                 Resume ↓
               </a>
             </div>
-            <p className="font-script text-xl sm:text-4xl text-ink/85 leading-none mt-6 max-w-[44ch]">
+            <p className="font-script text-xl sm:text-4xl text-ink/80 leading-none mt-4">
               Full-stack and AI engineer: I build products that actually{" "}
-              <span className="font-semibold text-ink">help people</span>, and I take ownership — quality first.
+              <span className="font-bold text-ink">help people</span>, and I take ownership — quality first.
             </p>
           </div>
           <img
             src="/roza.jpg"
             alt="Roza Russkikh"
-            className="hidden sm:block w-44 h-44 object-cover object-top border border-ink/20 shadow-sm rotate-2 shrink-0"
+            className="hidden sm:block w-44 h-44 object-cover object-top border border-ink/20 shadow-sm shrink-0"
           />
         </header>
 
