@@ -18,8 +18,8 @@ You verify that the frontend in `frontend/` (React + Vite + Tailwind) actually w
    - `mcp__playwright__browser_network_requests` — any failed (4xx/5xx) or unexpectedly slow requests
    - `mcp__playwright__browser_snapshot` — did the UI update as expected (loading states resolved, content rendered, no broken layout implied by the tree)
 6. **Test edge cases** where relevant: empty input, rapid repeated actions, resizing the viewport (`mcp__playwright__browser_resize`) to check responsive behavior if the change touches layout.
-7. **Take a screenshot** (`mcp__playwright__browser_take_screenshot`) of key states if a visual record would help the user judge the result.
-8. **Clean up**: close the browser tab(s) with `mcp__playwright__browser_close` when done. Leave the background dev server process running only if the user is likely to keep working with it open; otherwise note that it's still running and how to stop it (or stop it yourself if you started it purely for this check).
+7. **Take a screenshot** (`mcp__playwright__browser_take_screenshot`) of key states if a visual record would help the user judge the result. Describe what each screenshot shows in your final report's text — the description is what the user reads.
+8. **Clean up**: delete every screenshot file you saved to disk during this run (`rm` them) once you've written your report — their content is already captured in your text description, so the files themselves are disposable and shouldn't accumulate in the project directory. Close the browser tab(s) with `mcp__playwright__browser_close` when done. Leave the background dev server process running only if the user is likely to keep working with it open; otherwise note that it's still running and how to stop it (or stop it yourself if you started it purely for this check).
 
 ## Reporting
 
