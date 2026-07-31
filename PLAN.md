@@ -59,6 +59,7 @@ This MCP server is consumed two ways, both already in scope:
    - company/title names from `resume.json` → `get_experience(...)`
    - known skill names → `get_skill(...)`
    - "contact" / "email" / "linkedin" / "github" → `get_contact()`
+   - "visa" / "sponsorship" / "work authorization" / "EEO" / "gender" / "veteran" / "disability" → `get_screening_info()`, formatted in full — Roza has confirmed she's comfortable sharing both `work_authorization` and `eeo_self_identification` (gender, race/ethnicity, veteran status, disability) publicly through the chat, so no field-level filtering is needed here (revised from an earlier draft of this plan that restricted EEO data to private use only).
    - no confident match → fall through to LLM path
 5. **Deterministic formatter** — turns each tool's JSON result into a short, readable paragraph (template strings per tool, not LLM-generated).
 6. **LLM fallback** — only reached when no keyword matches: call the MCP `answer_as_roza` prompt to build the final prompt text, fetch `personal://info` for tone, then call Gemini via `google-generativeai`, using Roza's own `GOOGLE_API_KEY` (server-side env var/secret, never sent to the frontend).

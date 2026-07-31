@@ -5,7 +5,7 @@ export default function Layout() {
   return (
     <div className="min-h-screen px-4">
       <div className="max-w-175 mx-auto">
-        <header className="pt-12 pb-6 flex items-start gap-4">
+        <header className="pt-12 pb-6 flex items-start gap-8">
           <div className="flex-1">
             <p className="font-mono text-xs tracking-[0.18em] uppercase text-ink/60">
               <span>Roza Russkikh</span>
@@ -58,7 +58,7 @@ export default function Layout() {
           <img
             src="/roza_avatar.jpg"
             alt="Roza Russkikh"
-            className="hidden sm:block w-50 h-50 object-cover border rounded-full border-ink/20 shadow-sm shrink-0"
+            className="hidden sm:block h-50 object-contain rotate-2 shrink-0"
           />
         </header>
 
