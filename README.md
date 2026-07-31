@@ -10,7 +10,7 @@ A Python MCP server (`mcp/server.py`) exposes Roza's data — `mcp/data/personal
 
 - **MCP server**: Python, `mcp[cli]`
 - **Backend** (Phase 2): Python, FastAPI — the MCP client (spawns the MCP server as a subprocess), also calls Gemini as a rate-capped fallback; Pydantic models for all request/response/tool-output schemas
-- **LLM**: Gemini via `google-generativeai`, Roza's own free-tier key, server-side only
+- **LLM**: Gemini via `google-genai`, Roza's own free-tier key, server-side only
 - **Frontend** (Phase 2): React (Vite, TypeScript) + Tailwind
 - **Hosting** (Phase 2): Render (backend, free tier), Vercel (frontend)
 - **Eval** (Phase 3): offline eval pipeline (Langfuse) — see PLAN.md

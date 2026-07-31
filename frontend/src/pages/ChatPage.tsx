@@ -93,22 +93,22 @@ export default function ChatPage() {
             <span className="font-mono text-xs text-ink/40 whitespace-nowrap">
               Question {ex.id}
             </span>
-            <p className="font-display italic text-lg text-ink/90 max-w-full sm:max-w-[80%] border border-ink/15 rounded-sm bg-card px-4 py-2">
+            <p className="font-display text-base italic text-ink/90 max-w-full sm:max-w-[80%] border border-ink/15 rounded-sm bg-card px-4 py-2">
               {ex.question}
             </p>
           </div>
 
           {ex.error && (
-            <div className="flex items-start gap-3 bg-card border border-ink/15 px-5 py-4 rounded-sm max-w-full sm:max-w-[90%] mr-auto">
+            <div className="flex items-center gap-3 bg-card border border-ink/15 px-4 py-2 rounded-sm max-w-full sm:max-w-[90%] mr-auto">
               <AssistantIcon />
-              <p className="text-sm text-stamp pt-1">{ex.error}</p>
+              <p className="text-sm text-stamp">{ex.error}</p>
             </div>
           )}
 
           {ex.answer && (
-            <div className="flex items-start gap-3 bg-card border rounded-sm border-ink/15 px-5 py-4 max-w-full sm:max-w-[90%] mr-auto motion-safe:animate-[cardIn_0.35s_ease-out]">
+            <div className="flex items-start gap-3 bg-card border rounded-sm border-ink/15 px-4 py-2 max-w-full sm:max-w-[90%] mr-auto motion-safe:animate-[cardIn_0.35s_ease-out]">
               <AssistantIcon />
-              <p className="text-ink leading-relaxed pt-1">{ex.answer}</p>
+              <p className="text-base font-displaytext-ink italic leading-relaxed pt-1">{ex.answer}</p>
             </div>
           )}
 

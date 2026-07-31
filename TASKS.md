@@ -30,7 +30,7 @@ Conventions:
 
 ## Phase 1: Backend (`backend/`) — FastAPI MCP client + Gemini fallback
 
-- [ ] T006 Scaffold `backend/` with its own `pyproject.toml`; add deps: `fastapi`, `uvicorn`, `google-generativeai`, `mcp`, `pydantic`
+- [x] T006 Scaffold `backend/` with its own `pyproject.toml`; add deps: `fastapi`, `uvicorn`, `google-genai`, `mcp`, `pydantic` — swapped from `google-generativeai` (deprecated/unmaintained as of this build; `google-genai` is Google's current SDK) before any code was written against it
 - [ ] T007 `backend/mcp_client.py` — stdio client that launches `mcp/server.py` as a subprocess and opens an MCP session
 - [ ] T008 [P] `backend/schemas.py` — `ChatRequest`, `ChatResponse` (`answer`, `source: Literal["deterministic","llm","rate_capped"]`)
 - [ ] T009 [P] `backend/schemas.py` — per-tool output models: `Situation`, `Experience`, `Skill`, `Contact`
@@ -41,13 +41,13 @@ Conventions:
 - [ ] T014 `backend/main.py` — `POST /chat` wiring T010–T013 together, validated against T008/T009 schemas; CORS for the frontend origin
 - [ ] T015 Verify: run backend locally, exercise `/chat` via `curl`/Swagger (`/docs`) for both a deterministic and an LLM-fallback question
 
-## Phase 3: Local end-to-end verification
+## Phase 2: Local end-to-end verification
 
 - [ ] T021 Ask a keyword-matchable question through the UI — confirm deterministic path, no Gemini call
 - [ ] T022 Ask an open-ended question — confirm Gemini fallback answers correctly, grounded in real data
 - [ ] T023 Manually trip the rate cap — confirm graceful fallback message
 
-## Phase 4: Deployment (Render backend + Vercel frontend)
+## Phase 3: Deployment (Render backend + Vercel frontend)
 
 **Prerequisites**: Phase 1 (backend) and Phase 3 (local e2e verification) complete — don't deploy an unverified backend.
 

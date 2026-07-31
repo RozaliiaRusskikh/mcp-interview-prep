@@ -1,0 +1,21 @@
+[project]
+name = "mcp-interview-prep-backend"
+version = "0.1.0"
+description = "FastAPI backend: MCP client for Roza's interview-prep server, with a rate-capped Gemini fallback for open-ended questions"
+readme = "README.md"
+authors = [
+    { name = "Roza Russkikh", email = "rrrusskikh@gmail.com" },
+]
+requires-python = ">=3.11"
+dependencies = [
+    "fastapi>=0.115.0",
+    "uvicorn>=0.32.0",
+    "mcp>=1.28.0",
+    "pydantic>=2.9.0",
+    "google-genai>=2.16.0",
+]
+
+[dependency-groups]
+dev = [
+    "pytest>=9.1.1",
+]
