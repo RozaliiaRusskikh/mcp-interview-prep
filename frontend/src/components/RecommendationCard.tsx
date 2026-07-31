@@ -32,7 +32,6 @@ export default function RecommendationCard({ r, onExpand }: { r: Recommendation;
         <p className="font-mono text-xs text-ink/60">
           {r.name} — {r.title}
         </p>
-        <p className="font-mono text-[11px] text-ink/40 mt-1">{r.relationship}</p>
       </div>
     </div>
   );

@@ -8,7 +8,7 @@ export default function RecommendationsPage() {
 
   return (
     <section>
-      <h1 className="font-display text-3xl font-medium mb-6">What people say about me</h1>
+      <h1 className="font-display text-3xl font-medium mb-8">What people say about me</h1>
       <div className="grid sm:grid-cols-2 gap-4">
         {RECOMMENDATIONS.map((r) => (
           <RecommendationCard key={r.name} r={r} onExpand={() => setSelected(r)} />
