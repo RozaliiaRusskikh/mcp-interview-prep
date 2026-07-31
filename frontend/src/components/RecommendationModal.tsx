@@ -34,7 +34,7 @@ export default function RecommendationModal({
           ref={closeRef}
           onClick={onClose}
           aria-label="Close"
-          className="absolute top-1 right-3 font-mono text-lg text-stamp cursor-pointer transition-colors hover:text-stamp/70"
+          className="absolute top-1 right-3 font-mono text-lg text-stamp cursor-pointer transition-colors hover:text-stamp/70 focus-visible:outline-2 focus-visible:outline-ledger"
         >
           ✕
         </button>

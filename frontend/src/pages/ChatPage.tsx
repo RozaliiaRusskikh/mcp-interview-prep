@@ -65,7 +65,7 @@ export default function ChatPage() {
         <p className="text-ink/70">
           It's trained on my professional experience, so it answers using my
           resume, real engineering stories, recommendations from colleagues, and
-          projects I've delivered — all in my voice. Ask anything about my
+          projects I've delivered — all in my voice. Ask me anything about my
           experience, skills, or projects. Get real, grounded answers in
           seconds. Happy to meet if you'd like to talk further.
         </p>
@@ -79,7 +79,7 @@ export default function ChatPage() {
               onClick={() => ask(p)}
               className="font-mono text-xs uppercase tracking-wide border border-ink text-ink px-3 py-2
                          cursor-pointer transition-colors hover:bg-ink hover:text-paper
-                         focus-visible:outline-2 focus-visible:outline-ledger"
+                         focus-visible:outline-2 focus-visible:outline-ledger rounded-xl"
             >
               {p}
             </button>
@@ -130,10 +130,8 @@ export default function ChatPage() {
             value={input}
             onChange={(e) => setInput(e.target.value)}
             placeholder="Ask a question…"
-            className={`flex-1 bg-transparent border-b border-ink/30 py-2 outline-none
-                       focus:border-ledger placeholder:text-ink/40 ${
-                         exchanges.length === 0 ? "motion-safe:animate-pulse" : ""
-                       }`}
+            className="flex-1 bg-transparent border-b border-ink/30 py-2 outline-none
+                       focus:border-ledger placeholder:text-ink/40"
           />
           <button
             type="submit"

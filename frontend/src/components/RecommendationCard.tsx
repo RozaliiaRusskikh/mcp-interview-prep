@@ -32,7 +32,7 @@ export default function RecommendationCard({
       {truncated && (
         <button
           onClick={onExpand}
-          className="font-mono text-xs text-ledger cursor-pointer border-b border-transparent transition-colors hover:border-ledger mt-2 self-start"
+          className="font-mono text-xs text-ledger cursor-pointer border-b border-transparent transition-colors hover:border-ledger mt-2 self-start focus-visible:outline-2 focus-visible:outline-ledger"
         >
           Read more →
         </button>

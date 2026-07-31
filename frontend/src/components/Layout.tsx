@@ -12,14 +12,14 @@ export default function Layout() {
               <span> · </span>
               <a
                 href="mailto:rrrusskikh@gmail.com"
-                className="cursor-pointer transition-colors hover:text-ink normal-case tracking-normal"
+                className="cursor-pointer transition-colors hover:text-ink normal-case tracking-normal focus-visible:outline-2 focus-visible:outline-ledger"
               >
                 rrrusskikh@gmail.com
               </a>
               <span> · </span>
               <a
                 href="tel:+16503156519"
-                className="cursor-pointer transition-colors hover:text-ink normal-case tracking-normal"
+                className="cursor-pointer transition-colors hover:text-ink normal-case tracking-normal focus-visible:outline-2 focus-visible:outline-ledger"
               >
                 +1 650 315 6519
               </a>
@@ -29,7 +29,7 @@ export default function Layout() {
                 href="https://www.linkedin.com/in/roza-russkikh/"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="font-mono font-medium text-xs uppercase tracking-wide text-ledger cursor-pointer border-b border-transparent transition-colors hover:border-ledger"
+                className="font-mono font-medium text-xs uppercase tracking-wide text-ledger cursor-pointer border-b border-transparent transition-colors hover:border-ledger focus-visible:outline-2 focus-visible:outline-ledger"
               >
                 LinkedIn ↗
               </a>
@@ -37,14 +37,14 @@ export default function Layout() {
                 href="https://github.com/RozaliiaRusskikh"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="font-mono font-medium text-xs uppercase tracking-wide text-ledger cursor-pointer border-b border-transparent transition-colors hover:border-ledger"
+                className="font-mono font-medium text-xs uppercase tracking-wide text-ledger cursor-pointer border-b border-transparent transition-colors hover:border-ledger focus-visible:outline-2 focus-visible:outline-ledger"
               >
                 GitHub ↗
               </a>
               <a
                 href="/resume.pdf"
                 download="Roza_Russkikh_Resume.pdf"
-                className="font-mono font-medium text-xs uppercase tracking-wide text-ledger cursor-pointer border-b border-transparent transition-colors hover:border-ledger"
+                className="font-mono font-medium text-xs uppercase tracking-wide text-ledger cursor-pointer border-b border-transparent transition-colors hover:border-ledger focus-visible:outline-2 focus-visible:outline-ledger"
               >
                 Resume ↓
               </a>
@@ -58,7 +58,7 @@ export default function Layout() {
           <img
             src="/roza_avatar.jpg"
             alt="Roza Russkikh"
-            className="hidden sm:block h-50 object-contain rotate-2 shrink-0"
+            className="hidden sm:block h-50 object-contain rounded-sm rotate-2 shrink-0"
           />
         </header>
 
@@ -69,7 +69,7 @@ export default function Layout() {
               to={tab.to}
               end={tab.end}
               className={({ isActive }) =>
-                `font-mono text-xs uppercase tracking-wide cursor-pointer transition-colors ${
+                `font-mono text-xs uppercase tracking-wide cursor-pointer transition-colors focus-visible:outline-2 focus-visible:outline-ledger ${
                   isActive
                     ? "text-ink border-b-2 border-ledger pb-3 -mb-3"
                     : "text-ink/50 hover:text-ink"
