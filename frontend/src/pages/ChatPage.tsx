@@ -1,4 +1,4 @@
-import { useState, type FormEvent } from "react";
+import { useState, type SubmitEvent } from "react";
 import AssistantIcon from "../components/AssistantIcon";
 import { PROMPTS } from "../constants/prompts";
 
@@ -47,7 +47,7 @@ export default function ChatPage() {
     }
   }
 
-  function handleSubmit(e: FormEvent) {
+  function handleSubmit(e: SubmitEvent) {
     e.preventDefault();
     ask(input);
   }
