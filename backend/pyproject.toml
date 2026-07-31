@@ -1,7 +1,7 @@
 [project]
 name = "mcp-interview-prep-backend"
 version = "0.1.0"
-description = "FastAPI backend: MCP client for Roza's interview-prep server, with a rate-capped Gemini fallback for open-ended questions"
+description = "FastAPI backend (MCP client) + the MCP server itself (mcp/), with a rate-capped Gemini fallback for open-ended questions. One deployable unit: Render only sees this directory's root."
 readme = "README.md"
 authors = [
     { name = "Roza Russkikh", email = "rrrusskikh@gmail.com" },
@@ -10,9 +10,10 @@ requires-python = ">=3.11"
 dependencies = [
     "fastapi>=0.115.0",
     "uvicorn>=0.32.0",
-    "mcp>=1.28.0",
+    "mcp[cli]>=1.28.0,<2.0.0",  # server.py uses the FastMCP API, removed/renamed in mcp 2.0
     "pydantic>=2.9.0",
     "google-genai>=2.16.0",
+    "loguru>=0.7.3",
 ]
 
 [dependency-groups]

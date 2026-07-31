@@ -126,7 +126,11 @@ export default function ChatPage() {
         className="fixed bottom-0 inset-x-0 bg-paper border-t border-ink/15"
       >
         <div className="max-w-175 mx-auto flex items-end gap-3 px-4 py-4">
+          <label htmlFor="chat-input" className="sr-only">
+            Ask a question
+          </label>
           <input
+            id="chat-input"
             value={input}
             onChange={(e) => setInput(e.target.value)}
             placeholder="Ask a question…"

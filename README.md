@@ -4,7 +4,7 @@ An AI clone of Roza Russkikh that answers interview-style questions — resume f
 
 ## How it works
 
-A Python MCP server (`mcp/server.py`) exposes Roza's data — `mcp/data/personal.json`, `mcp/data/resume.json`, `mcp/data/situations.json` — as MCP resources, tools, and prompts. Eventually a FastAPI backend acts as the MCP client: it tries deterministic keyword matching first (e.g. "conflict" → `get_situation("conflict")`, formatted directly from JSON, no LLM), and only falls back to Gemini (rate-capped, Roza's own key — no user key required) for open-ended questions it can't confidently match. Pydantic models validate the `/chat` request/response shape and the data loaded from the MCP tools. A React + Tailwind chat UI talks to FastAPI over HTTP — it never talks to MCP directly.
+A Python MCP server (`backend/mcp/server.py`) exposes Roza's data — `backend/mcp/data/personal.json`, `backend/mcp/data/resume.json`, `backend/mcp/data/situations.json` — as MCP resources, tools, and prompts. It lives inside `backend/` (not a sibling folder) so Render's backend deployment — scoped to the `backend/` directory only — can actually reach it; Render has no access to files outside a service's configured root directory. Eventually a FastAPI backend acts as the MCP client: it tries deterministic keyword matching first (e.g. "conflict" → `get_situation("conflict")`, formatted directly from JSON, no LLM), and only falls back to Gemini (rate-capped, Roza's own key — no user key required) for open-ended questions it can't confidently match. Pydantic models validate the `/chat` request/response shape and the data loaded from the MCP tools. A React + Tailwind chat UI talks to FastAPI over HTTP — it never talks to MCP directly.
 
 ## Stack
 

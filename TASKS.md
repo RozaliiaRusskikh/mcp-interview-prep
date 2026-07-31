@@ -12,7 +12,7 @@ Conventions:
 
 ---
 
-## Phase A: Frontend (`frontend/`) — React + Vite + Tailwind
+## Phase 1: Frontend (`frontend/`) — React + Vite + Tailwind
 
 - [x] T016 `npm create vite@latest frontend -- --template react-ts`; add Tailwind (v4, via `@tailwindcss/vite` + `@theme` tokens in `src/index.css`; design concept/rationale in `frontend/DESIGN.md`)
 - [x] T017 `frontend/src/Chat.tsx` — message list state, text input, send button
@@ -20,7 +20,7 @@ Conventions:
 - [x] T019 [P] `frontend/.env.local` — `VITE_BACKEND_URL=http://localhost:8000`
 - [x] T020 Verify: frontend dev server renders and handles input locally — confirmed via `npm run build` (clean) and Playwright-CLI screenshots of the empty state and the question/error-card state (backend not up yet, so the fetch fails gracefully as expected)
 
-## Phase 0: Monorepo restructure
+## Phase 2: Monorepo restructure
 
 - [x] T001 Create `mcp/` folder; `git mv server.py mcp/server.py`, `git mv data mcp/data`, `git mv tests mcp/tests`
 - [x] T002 Update `.mcp.json` command path to point at `mcp/server.py`
@@ -28,10 +28,10 @@ Conventions:
 - [x] T004 Verify: `uv run mcp dev mcp/server.py` (Inspector) and `uv run pytest mcp/tests/` both pass — pytest passes (13/13); server starts cleanly (exit 0, no errors) confirming no import collision between local `mcp/` folder and the `mcp` SDK package
 - [x] T005 Update `README.md` run instructions and `PLAN.md` file references to the new `mcp/` paths
 
-## Phase 1: Backend (`backend/`) — FastAPI MCP client + Gemini fallback
+## Phase 3: Backend (`backend/`) — FastAPI MCP client + Gemini fallback
 
 - [x] T006 Scaffold `backend/` with its own `pyproject.toml`; add deps: `fastapi`, `uvicorn`, `google-genai`, `mcp`, `pydantic` — swapped from `google-generativeai` (deprecated/unmaintained as of this build; `google-genai` is Google's current SDK) before any code was written against it
-- [ ] T007 `backend/mcp_client.py` — stdio client that launches `mcp/server.py` as a subprocess and opens an MCP session
+- [ ] T007 `backend/mcp_client.py` — stdio client that launches `backend/mcp/server.py` as a subprocess and opens an MCP session
 - [ ] T008 [P] `backend/schemas.py` — `ChatRequest`, `ChatResponse` (`answer`, `source: Literal["deterministic","llm","rate_capped"]`)
 - [ ] T009 [P] `backend/schemas.py` — per-tool output models: `Situation`, `Experience`, `Skill`, `Contact`
 - [ ] T010 `backend/router.py` — keyword router: category/company/skill/contact keywords → matching MCP tool call, else fall through
@@ -39,15 +39,16 @@ Conventions:
 - [ ] T012 `backend/llm.py` — Gemini fallback via `answer_as_roza` MCP prompt + `personal://info`, using server-side `GOOGLE_API_KEY`
 - [ ] T013 `backend/rate_limit.py` — in-memory daily counter capping Gemini calls; graceful deterministic message when capped
 - [ ] T014 `backend/main.py` — `POST /chat` wiring T010–T013 together, validated against T008/T009 schemas; CORS for the frontend origin
+- [ ] T014b Logging: `loguru`, configured once in `backend/main.py` (remove default handler, add one sink with the universal format string from `CLAUDE.md`); `router.py`/`llm.py`/`rate_limit.py` just `from loguru import logger` — log routing decisions, Gemini calls, and rate-cap hits
 - [ ] T015 Verify: run backend locally, exercise `/chat` via `curl`/Swagger (`/docs`) for both a deterministic and an LLM-fallback question
 
-## Phase 2: Local end-to-end verification
+## Phase 4: Local end-to-end verification
 
 - [ ] T021 Ask a keyword-matchable question through the UI — confirm deterministic path, no Gemini call
 - [ ] T022 Ask an open-ended question — confirm Gemini fallback answers correctly, grounded in real data
 - [ ] T023 Manually trip the rate cap — confirm graceful fallback message
 
-## Phase 3: Deployment (Render backend + Vercel frontend)
+## Phase 5: Deployment (Render backend + Vercel frontend)
 
 **Prerequisites**: Phase 1 (backend) and Phase 3 (local e2e verification) complete — don't deploy an unverified backend.
 
