@@ -11,7 +11,7 @@ export default function RecommendationCard({ r, onExpand }: { r: Recommendation;
   }, []);
 
   return (
-    <div className="relative flex flex-col h-105 bg-card border border-ink/15 px-5 py-4">
+    <div className="relative flex flex-col h-105 bg-card border border-ink/15 px-5 py-4 rounded-sm">
       <div className="relative">
         <p ref={quoteRef} className="font-display italic text-ink/90 leading-relaxed pt-1 line-clamp-11">
           "{r.quote}"

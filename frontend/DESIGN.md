@@ -1,9 +1,10 @@
 # Design concept: Recruiter's desk
 
-A card-catalog / personnel-dossier read, not a messaging-app chat. This is literally
-true to the architecture: the backend tags every answer `deterministic` (filed fact
-from resume/situations JSON) or `llm` (improvised). Most chat UIs have nothing real to
-say about provenance — this one does, so the design shows it.
+A card-catalog / personnel-dossier read. Originally conceived as deliberately *not* a
+messaging-app chat (everything centered, like filed index cards, no left/right
+bubbles) — since revised: questions are right-aligned, assistant answers left-aligned,
+adopting the familiar messaging-app convention (iMessage/WhatsApp/Slack/ChatGPT all use
+it) for instant "who said what" scannability.
 
 Tokens live in [src/index.css](src/index.css) (`@theme` block) — this doc is the
 rationale behind them, not a second copy of the values.
@@ -25,31 +26,22 @@ rationale behind them, not a second copy of the values.
   sequential numbering — ties to the JSON-data spine of the app
 
 ## Layout
-Single column, max-width ~700px. Each answer is a squared-corner card (zero-radius is
-literal here — real index cards have sharp corners, not a trend) with a rotated corner
-stamp reading its actual source: "FILED — Situations/Conflict" in oxblood, or
-"IN ROZA'S WORDS" in ledger green for the Gemini fallback. Questions render as
-centered slips in a plain white card (`bg-card`, neutral `border-ink/15`) — no color
-coding, since a question has no "source" to tag; ledger green is reserved for the
-answer side. Sequential numbering ("Question 001", 002…) is honest here — it's a real
-transcript, not decorative.
 
 Each assistant-side card (answer, loading, error) carries a small square avatar —
-`AssistantIcon` in `src/Chat.tsx` — representing "the assistant" persona the copy now
-refers to. The header photo uses the same file (`public/roza-bot-avatar.png`) for
-now — swap it for an actual headshot in `public/` and update the `src` in
-`Chat.tsx` whenever one's available.
+`AssistantIcon` in `src/components/AssistantIcon.tsx` — representing "the assistant"
+persona the copy refers to, using `public/roza-bot-avatar.png` (an illustrated
+avatar, distinct from the real headshot `public/roza.jpg` used in the page header).
 
-A "Recommendations" section (`src/recommendations.ts`) sits below the transcript,
-always visible regardless of conversation state — real LinkedIn recommendations,
-each in its own card with a "Recommendation" corner tag (neutral ink, not
-oxblood/green, since a third-party endorsement is neither a filed fact nor an LLM
-answer — it's its own category of provenance). Each card also states the specific
-relationship (managed directly / mentor / teacher / colleague at a different company)
-rather than summarizing all five under one label like "colleagues," which wasn't
-accurate for a manager or a teacher. Duplicated from `../data/recommendations.json`
-for now since there's no backend/API yet for the frontend to fetch it from; keep both
-in sync until Phase 2 exists.
+A "Recommendations" page (`src/pages/RecommendationsPage.tsx`, its own route rather
+than a section on the chat page) lists real LinkedIn recommendations, each in its own
+card (`src/components/RecommendationCard.tsx`) — no corner tag (removed along with the
+chat answer tags, for the same reason: uniform cards over per-item source labeling).
+Each card states the specific relationship (managed directly / mentor / teacher /
+colleague at a different company) rather than summarizing all under one label like
+"colleagues," which wasn't accurate for a manager or a teacher. Data lives in
+`src/constants/recommendations.ts`, duplicated from `../data/recommendations.json`
+since there's no backend/API yet for the frontend to fetch it from; keep both in sync
+until Phase 2 exists.
 
 Quotes are clamped to 11 lines (`line-clamp-11` on the quote paragraph) — chosen
 because that's Michael Farquhar's natural, untruncated line count, i.e. the shortest
@@ -66,7 +58,8 @@ kept on any button once tried, by direct instruction. Every clickable element
 rather than relying on browser defaults.
 
 ## Signature
-The corner stamp. One risk, spent in one place; everything else stays quiet.
+The cursive header tagline (`font-script`, Caveat) — one handwritten-feeling flourish
+against an otherwise typographically restrained, monospace-and-serif system.
 
 ## Self-check against generic AI-frontend defaults
 - Not cream+terracotta-serif: oxblood/ledger-teal read archival, not warm-minimal.

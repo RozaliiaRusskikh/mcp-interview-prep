@@ -15,7 +15,7 @@ export default function Layout() {
                 href="https://www.linkedin.com/in/roza-russkikh/"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="font-mono text-xs uppercase tracking-wide text-ledger cursor-pointer hover:underline"
+                className="font-mono font-medium text-xs uppercase tracking-wide text-ledger cursor-pointer hover:underline"
               >
                 LinkedIn ↗
               </a>
@@ -23,14 +23,14 @@ export default function Layout() {
                 href="https://github.com/RozaliiaRusskikh"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="font-mono text-xs uppercase tracking-wide text-ledger cursor-pointer hover:underline"
+                className="font-mono font-medium text-xs uppercase tracking-wide text-ledger cursor-pointer hover:underline"
               >
                 GitHub ↗
               </a>
               <a
                 href="/resume.pdf"
                 download="Roza_Russkikh_Resume.pdf"
-                className="font-mono text-xs uppercase tracking-wide text-ledger cursor-pointer hover:underline"
+                className="font-mono font-medium text-xs uppercase tracking-wide text-ledger cursor-pointer hover:underline"
               >
                 Resume ↓
               </a>
@@ -43,7 +43,7 @@ export default function Layout() {
           <img
             src="/roza.jpg"
             alt="Roza Russkikh"
-            className="hidden sm:block w-44 h-44 object-cover object-top border border-ink/20 shadow-sm shrink-0"
+            className="hidden sm:block w-44 h-44 object-cover object-top border border-ink/20 shadow-sm shrink-0 rounded-sm"
           />
         </header>
 
