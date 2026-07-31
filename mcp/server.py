@@ -125,6 +125,15 @@ def get_contact() -> dict:
 
 
 @mcp.tool()
+def get_screening_info() -> dict:
+    """Get work authorization/visa status and EEO voluntary self-identification
+    (gender, race/ethnicity, veteran status, disability status) for job application
+    screening questions."""
+    personal = _load_json("personal.json")
+    return personal["screening"]
+
+
+@mcp.tool()
 def get_recommendations(name: str = "") -> list[dict] | str:
     """Get LinkedIn recommendations about Roza from managers, colleagues, mentors, and
     teachers. Pass a name to get one person's recommendation, or omit it to get all of them.
@@ -168,9 +177,10 @@ def answer_as_roza(question: str) -> str:
         f"Background: {personal['background_story']}\n"
         f"Tone: warm={personal['tone']['warm']}, direct={personal['tone']['direct']}, "
         f"avoid: {', '.join(personal['tone']['avoid'])}\n\n"
-        f"Use the get_situation, get_experience, get_skill, get_contact, and get_recommendations "
-        f"tools, or the resume://full, situations://all, and recommendations://all resources, "
-        f"to ground your answer in real facts — do not invent experience.\n\n"
+        f"Use the get_situation, get_experience, get_skill, get_contact, get_recommendations, "
+        f"and get_screening_info tools, or the resume://full, situations://all, and "
+        f"recommendations://all resources, to ground your answer in real facts — do not invent "
+        f"experience.\n\n"
         f"Question: {question}"
     )
 

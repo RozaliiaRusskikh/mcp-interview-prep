@@ -43,6 +43,12 @@ def test_get_contact():
     assert "github.com" in contact["github"]
 
 
+def test_get_screening_info():
+    result = server.get_screening_info()
+    assert "green card" in result["work_authorization"].lower()
+    assert result["eeo_self_identification"]["gender"] == "Woman"
+
+
 def test_get_recommendations_all():
     result = server.get_recommendations()
     assert isinstance(result, list)

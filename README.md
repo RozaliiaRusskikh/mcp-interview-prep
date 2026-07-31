@@ -4,7 +4,7 @@ An AI clone of Roza Russkikh that answers interview-style questions — resume f
 
 ## How it works
 
-A Python MCP server (`server.py`) exposes Roza's data — `data/personal.json`, `data/resume.json`, `data/situations.json` — as MCP resources, tools, and prompts. Eventually a FastAPI backend acts as the MCP client: it tries deterministic keyword matching first (e.g. "conflict" → `get_situation("conflict")`, formatted directly from JSON, no LLM), and only falls back to Gemini (rate-capped, Roza's own key — no user key required) for open-ended questions it can't confidently match. Pydantic models validate the `/chat` request/response shape and the data loaded from the MCP tools. A React + Tailwind chat UI talks to FastAPI over HTTP — it never talks to MCP directly.
+A Python MCP server (`mcp/server.py`) exposes Roza's data — `mcp/data/personal.json`, `mcp/data/resume.json`, `mcp/data/situations.json` — as MCP resources, tools, and prompts. Eventually a FastAPI backend acts as the MCP client: it tries deterministic keyword matching first (e.g. "conflict" → `get_situation("conflict")`, formatted directly from JSON, no LLM), and only falls back to Gemini (rate-capped, Roza's own key — no user key required) for open-ended questions it can't confidently match. Pydantic models validate the `/chat` request/response shape and the data loaded from the MCP tools. A React + Tailwind chat UI talks to FastAPI over HTTP — it never talks to MCP directly.
 
 ## Stack
 
@@ -47,6 +47,6 @@ See [PLAN.md](PLAN.md) for full design details.
 ## Run locally
 
 ```bash
-uv run mcp dev server.py   # MCP Inspector
-uv run pytest tests/       # unit tests
+uv run mcp dev mcp/server.py   # MCP Inspector
+uv run pytest mcp/tests/       # unit tests
 ```

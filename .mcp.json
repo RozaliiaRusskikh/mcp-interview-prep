@@ -2,7 +2,7 @@
   "mcpServers": {
     "interview-prep": {
       "command": "uv",
-      "args": ["run", "server.py"]
+      "args": ["run", "mcp/server.py"]
     },
     "playwright": {
       "command": "npx",

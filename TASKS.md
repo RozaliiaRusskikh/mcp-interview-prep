@@ -22,11 +22,11 @@ Conventions:
 
 ## Phase 0: Monorepo restructure
 
-- [ ] T001 Create `mcp/` folder; `git mv server.py mcp/server.py`, `git mv data mcp/data`, `git mv tests mcp/tests`
-- [ ] T002 Update `.mcp.json` command path to point at `mcp/server.py`
-- [ ] T003 Update `DATA_DIR` in `mcp/server.py` if the relative path assumption changes (it shouldn't — `Path(__file__).parent` still resolves correctly after the move, but verify)
-- [ ] T004 Verify: `uv run mcp dev mcp/server.py` (Inspector) and `uv run pytest mcp/tests/` both pass
-- [ ] T005 Update `README.md` run instructions and `PLAN.md` file references to the new `mcp/` paths
+- [x] T001 Create `mcp/` folder; `git mv server.py mcp/server.py`, `git mv data mcp/data`, `git mv tests mcp/tests`
+- [x] T002 Update `.mcp.json` command path to point at `mcp/server.py`
+- [x] T003 Update `DATA_DIR` in `mcp/server.py` if the relative path assumption changes (it shouldn't — `Path(__file__).parent` still resolves correctly after the move, but verify) — confirmed no change needed
+- [x] T004 Verify: `uv run mcp dev mcp/server.py` (Inspector) and `uv run pytest mcp/tests/` both pass — pytest passes (13/13); server starts cleanly (exit 0, no errors) confirming no import collision between local `mcp/` folder and the `mcp` SDK package
+- [x] T005 Update `README.md` run instructions and `PLAN.md` file references to the new `mcp/` paths
 
 ## Phase 1: Backend (`backend/`) — FastAPI MCP client + Gemini fallback
 

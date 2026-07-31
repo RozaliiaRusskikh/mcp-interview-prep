@@ -19,6 +19,16 @@
     "Immigrant — I know what it means to start over, adapt fast, and build from scratch"
   ],
 
+  "screening": {
+    "work_authorization": "In the U.S. Green Card process. Holds a valid EAD that also serves as Form I-512 Advance Parole, authorizing work in the U.S. and travel while the Green Card application is pending. Also holds L2 visa status. Current EAD/Advance Parole valid May 8, 2026 – Nov 7, 2027.",
+    "eeo_self_identification": {
+      "gender": "Woman",
+      "race_ethnicity": "White",
+      "veteran_status": "Not a protected veteran",
+      "disability_status": "No disability"
+    }
+  },
+
   "strengths_beyond_resume": [
     "Strong communicator shaped by years of teaching, editing, testing — comfortable with both technical and non-technical audiences",
     "Empathy-driven approach to building — I think about the end user constantly",
