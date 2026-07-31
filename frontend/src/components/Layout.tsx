@@ -15,7 +15,7 @@ export default function Layout() {
                 href="https://www.linkedin.com/in/roza-russkikh/"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="font-mono font-medium text-xs uppercase tracking-wide text-ledger cursor-pointer hover:underline"
+                className="font-mono font-medium text-xs uppercase tracking-wide text-ledger cursor-pointer border-b border-transparent transition-colors hover:border-ledger"
               >
                 LinkedIn ↗
               </a>
@@ -23,14 +23,14 @@ export default function Layout() {
                 href="https://github.com/RozaliiaRusskikh"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="font-mono font-medium text-xs uppercase tracking-wide text-ledger cursor-pointer hover:underline"
+                className="font-mono font-medium text-xs uppercase tracking-wide text-ledger cursor-pointer border-b border-transparent transition-colors hover:border-ledger"
               >
                 GitHub ↗
               </a>
               <a
                 href="/resume.pdf"
                 download="Roza_Russkikh_Resume.pdf"
-                className="font-mono font-medium text-xs uppercase tracking-wide text-ledger cursor-pointer hover:underline"
+                className="font-mono font-medium text-xs uppercase tracking-wide text-ledger cursor-pointer border-b border-transparent transition-colors hover:border-ledger"
               >
                 Resume ↓
               </a>

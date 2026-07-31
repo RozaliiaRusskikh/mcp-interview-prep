@@ -23,7 +23,7 @@ export default function RecommendationCard({ r, onExpand }: { r: Recommendation;
       {truncated && (
         <button
           onClick={onExpand}
-          className="font-mono text-xs text-ledger cursor-pointer hover:underline mt-2 self-start"
+          className="font-mono text-xs text-ledger cursor-pointer border-b border-transparent transition-colors hover:border-ledger mt-2 self-start"
         >
           Read more →
         </button>
