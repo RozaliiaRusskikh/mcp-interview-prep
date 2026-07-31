@@ -1,7 +1,13 @@
 import { useEffect, useRef, useState } from "react";
 import type { Recommendation } from "../constants/recommendations";
 
-export default function RecommendationCard({ r, onExpand }: { r: Recommendation; onExpand: () => void }) {
+export default function RecommendationCard({
+  r,
+  onExpand,
+}: {
+  r: Recommendation;
+  onExpand: () => void;
+}) {
   const quoteRef = useRef<HTMLParagraphElement>(null);
   const [truncated, setTruncated] = useState(false);
 
@@ -13,7 +19,10 @@ export default function RecommendationCard({ r, onExpand }: { r: Recommendation;
   return (
     <div className="relative flex flex-col h-105 bg-card border border-ink/15 px-5 py-4 rounded-sm">
       <div className="relative">
-        <p ref={quoteRef} className="font-display italic text-ink/90 leading-relaxed pt-1 line-clamp-11">
+        <p
+          ref={quoteRef}
+          className="font-display italic text-ink/90 leading-relaxed pt-1 line-clamp-11"
+        >
           "{r.quote}"
         </p>
         {truncated && (

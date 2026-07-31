@@ -8,9 +8,23 @@ export default function Layout() {
         <header className="pt-12 pb-6 flex items-start gap-4">
           <div className="flex-1">
             <p className="font-mono text-xs tracking-[0.18em] uppercase text-ink/60">
-              Roza Russkikh · Skills showcase
+              <span>Roza Russkikh</span>
+              <span> · </span>
+              <a
+                href="mailto:rrrusskikh@gmail.com"
+                className="cursor-pointer transition-colors hover:text-ink normal-case tracking-normal"
+              >
+                rrrusskikh@gmail.com
+              </a>
+              <span> · </span>
+              <a
+                href="tel:+16503156519"
+                className="cursor-pointer transition-colors hover:text-ink normal-case tracking-normal"
+              >
+                +1 650 315 6519
+              </a>
             </p>
-            <div className="flex gap-4 mt-3">
+            <div className="flex flex-wrap gap-4 mt-3">
               <a
                 href="https://www.linkedin.com/in/roza-russkikh/"
                 target="_blank"
@@ -37,7 +51,8 @@ export default function Layout() {
             </div>
             <p className="font-script text-xl sm:text-4xl text-ink/80 leading-none mt-4">
               Full-stack and AI engineer: I build products that actually{" "}
-              <span className="font-bold text-ink">help people</span>, and I take ownership — quality first.
+              <span className="font-bold text-ink">help people</span>, and I
+              take ownership — quality first.
             </p>
           </div>
           <img
@@ -55,7 +70,9 @@ export default function Layout() {
               end={tab.end}
               className={({ isActive }) =>
                 `font-mono text-xs uppercase tracking-wide cursor-pointer transition-colors ${
-                  isActive ? "text-ink border-b-2 border-ledger pb-3 -mb-3" : "text-ink/50 hover:text-ink"
+                  isActive
+                    ? "text-ink border-b-2 border-ledger pb-3 -mb-3"
+                    : "text-ink/50 hover:text-ink"
                 }`
               }
             >

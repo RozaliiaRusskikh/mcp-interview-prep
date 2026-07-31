@@ -1,7 +1,13 @@
 import { useEffect, useRef } from "react";
 import type { Recommendation } from "../constants/recommendations";
 
-export default function RecommendationModal({ r, onClose }: { r: Recommendation; onClose: () => void }) {
+export default function RecommendationModal({
+  r,
+  onClose,
+}: {
+  r: Recommendation;
+  onClose: () => void;
+}) {
   const closeRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
@@ -32,11 +38,15 @@ export default function RecommendationModal({ r, onClose }: { r: Recommendation;
         >
           ✕
         </button>
-        <p className="font-display italic text-ink/90 leading-relaxed pr-6">"{r.quote}"</p>
+        <p className="font-display italic text-ink/90 leading-relaxed pr-6">
+          "{r.quote}"
+        </p>
         <p className="font-mono text-xs text-ink/60 mt-4">
           {r.name} — {r.title}
         </p>
-        <p className="font-mono text-[11px] text-ink/40 mt-1">{r.relationship}</p>
+        <p className="font-mono text-[11px] text-ink/40 mt-1">
+          {r.relationship}
+        </p>
       </div>
     </div>
   );

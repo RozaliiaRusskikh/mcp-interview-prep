@@ -32,15 +32,19 @@ export default function ChatPage() {
       if (!res.ok) throw new Error(`Backend returned ${res.status}`);
       const data: { answer: string } = await res.json();
       setExchanges((prev) =>
-        prev.map((e) => (e.id === id ? { ...e, answer: data.answer } : e))
+        prev.map((e) => (e.id === id ? { ...e, answer: data.answer } : e)),
       );
     } catch {
       setExchanges((prev) =>
         prev.map((e) =>
           e.id === id
-            ? { ...e, error: "Couldn't reach the backend. Confirm it's running, then ask again." }
-            : e
-        )
+            ? {
+                ...e,
+                error:
+                  "Couldn't reach the backend. Confirm it's running, then ask again.",
+              }
+            : e,
+        ),
       );
     } finally {
       setLoading(false);
@@ -59,9 +63,11 @@ export default function ChatPage() {
           Ask my assistant anything about my work.
         </h1>
         <p className="text-ink/70">
-          It's trained on my professional experience, so it answers using my resume,
-          real engineering stories, projects I've delivered, and recommendations from
-          colleagues — all in my voice.
+          It's trained on my professional experience, so it answers using my
+          resume, real engineering stories, recommendations from colleagues, and
+          projects I've delivered — all in my voice. Ask me anything about my
+          experience, skills, or projects. Get real, grounded answers in
+          seconds. Happy to meet if you'd like to talk further.
         </p>
       </div>
 
@@ -84,7 +90,9 @@ export default function ChatPage() {
       {exchanges.map((ex) => (
         <article key={ex.id} className="flex flex-col gap-4">
           <div className="flex flex-wrap items-baseline justify-end gap-3">
-            <span className="font-mono text-xs text-ink/40 whitespace-nowrap">Question {ex.id}</span>
+            <span className="font-mono text-xs text-ink/40 whitespace-nowrap">
+              Question {ex.id}
+            </span>
             <p className="font-display italic text-lg text-ink/90 max-w-full sm:max-w-[80%] border border-ink/15 rounded-sm bg-card px-4 py-2">
               {ex.question}
             </p>
