@@ -130,8 +130,10 @@ export default function ChatPage() {
             value={input}
             onChange={(e) => setInput(e.target.value)}
             placeholder="Ask a question…"
-            className="flex-1 bg-transparent border-b border-ink/30 py-2 outline-none
-                       focus:border-ledger placeholder:text-ink/40"
+            className={`flex-1 bg-transparent border-b border-ink/30 py-2 outline-none
+                       focus:border-ledger placeholder:text-ink/40 ${
+                         exchanges.length === 0 ? "motion-safe:animate-pulse" : ""
+                       }`}
           />
           <button
             type="submit"
