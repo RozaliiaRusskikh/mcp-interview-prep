@@ -32,11 +32,11 @@ Conventions:
 
 - [x] T006 Scaffold `backend/` with its own `pyproject.toml`; add deps: `fastapi`, `uvicorn`, `google-genai`, `mcp`, `pydantic` — swapped from `google-generativeai` (deprecated/unmaintained as of this build; `google-genai` is Google's current SDK) before any code was written against it
 - [ ] T007 `backend/mcp_client.py` — stdio client that launches `backend/mcp/server.py` as a subprocess and opens an MCP session
-- [ ] T008 [P] `backend/schemas.py` — `ChatRequest`, `ChatResponse` (`answer`, `source: Literal["deterministic","llm","rate_capped"]`)
+- [ ] T008 [P] `backend/schemas.py` — `ChatRequest` (`question: str = Field(min_length=1, max_length=500)`, structural bounds only — not a jailbreak defense, see `CLAUDE.md`), `ChatResponse` (`answer`, `source: Literal["deterministic","llm","rate_capped"]`)
 - [ ] T009 [P] `backend/schemas.py` — per-tool output models: `Situation`, `Experience`, `Skill`, `Contact`
 - [ ] T010 `backend/router.py` — keyword router: category/company/skill/contact keywords → matching MCP tool call, else fall through
 - [ ] T011 `backend/formatter.py` — deterministic tool-JSON → readable-text templates, one per tool
-- [ ] T012 `backend/llm.py` — Gemini fallback via `answer_as_roza` MCP prompt + `personal://info`, using server-side `GOOGLE_API_KEY`
+- [ ] T012 `backend/llm.py` — Gemini fallback via `answer_as_roza` MCP prompt + `personal://info`, using server-side `GOOGLE_API_KEY`; prompt must constrain model behavior (explicit role/limits, decline+redirect on jailbreak/roleplay attempts) and segregate the untrusted user question from trusted grounding data — see `CLAUDE.md`'s "Prompt injection defense"
 - [ ] T013 `backend/rate_limit.py` — in-memory daily counter capping Gemini calls; graceful deterministic message when capped
 - [ ] T014 `backend/main.py` — `POST /chat` wiring T010–T013 together, validated against T008/T009 schemas; CORS for the frontend origin
 - [ ] T014b Logging: `loguru`, configured once in `backend/main.py` (remove default handler, add one sink with the universal format string from `CLAUDE.md`); `router.py`/`llm.py`/`rate_limit.py` just `from loguru import logger` — log routing decisions, Gemini calls, and rate-cap hits
@@ -75,4 +75,4 @@ Conventions:
 
 ---
 
-Not included here (tracked separately in [PLAN.md](PLAN.md)): the Phase 3 eval harness (Langfuse) — add as a follow-up `TASKS.md` phase once the app is deployed end-to-end.
+Not included here (tracked separately in [PLAN.md](PLAN.md)): the Phase 3 eval harness (Langfuse) — add as a follow-up `TASKS.md` phase once the app is deployed end-to-end. Must include adversarial/jailbreak-style prompts as regression cases (see `CLAUDE.md`'s "Prompt injection defense") — confirm decline/redirect on every eval run, not just once.

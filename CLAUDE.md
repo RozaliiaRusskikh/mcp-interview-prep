@@ -30,3 +30,25 @@ everywhere, not varied per module or call site:
 ```
 Log request routing decisions, Gemini calls, and rate-cap hits — these are
 the events worth being able to see.
+
+## Prompt injection defense
+`ChatRequest.question` gets no special semantic validation — Pydantic
+checks structure (`min_length`/`max_length`), not intent; it cannot detect
+a jailbreak attempt. Real defenses, per OWASP's Top 10 for LLM Applications:
+- **Constrain model behavior**: the `answer_as_roza` prompt must explicitly
+  state its role/limits and instruct the model to decline and redirect if
+  asked to ignore instructions, roleplay as someone else, or reveal
+  anything outside the provided grounding data.
+- **Segregate untrusted content**: the user's question is untrusted input;
+  grounding data (resume/situations JSON) is trusted. Keep them clearly
+  separated in the prompt, never concatenated as if both were instructions.
+- **Privilege control already holds structurally** — the LLM only ever
+  sees what the MCP tools return (narrow, hardcoded lookups); it has no
+  direct data/file access. Don't weaken this.
+- **No real secrets ever enter the LLM's context** (no SSNs, financial
+  data, credentials in any data file) — the strongest defense against
+  LLM02 disclosure is having nothing sensitive to leak in the first place.
+- **Adversarial test cases**: the Phase 3 eval harness (Langfuse) must
+  include jailbreak-style prompts (e.g. "ignore previous instructions",
+  roleplay attempts) as regression cases — confirm decline/redirect, not
+  just once but on every eval run.
