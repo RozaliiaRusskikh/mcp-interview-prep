@@ -65,8 +65,7 @@ export default function ChatPage() {
         <p className="text-ink/70">
           It's trained on my professional experience, so it answers using my
           resume, real engineering stories, recommendations from colleagues, and
-          projects I've delivered — all in my voice. Ask me anything about my
-          experience, skills, or projects. Get real, grounded answers in
+          projects I've delivered — all in my voice. Get real, grounded answers in
           seconds. Happy to meet if you'd like to talk further.
         </p>
       </div>
