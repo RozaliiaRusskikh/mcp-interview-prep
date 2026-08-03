@@ -141,7 +141,7 @@ export default function ChatPage() {
             disabled={loading || !input.trim()}
             className="font-mono text-xs uppercase tracking-wide bg-ledger text-paper px-4 py-2
                        transition-colors cursor-pointer disabled:cursor-not-allowed disabled:opacity-40
-                       hover:bg-ledger/85 focus-visible:outline-2 focus-visible:outline-ledger"
+                       hover:bg-ledger/85 focus-visible:outline-2 focus-visible:outline-ledger rounded-sm"
           >
             {loading ? "Filing…" : "Ask →"}
           </button>

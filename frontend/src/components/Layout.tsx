@@ -58,7 +58,7 @@ export default function Layout() {
           <img
             src="/roza_avatar.jpg"
             alt="Roza Russkikh"
-            className="hidden sm:block h-55 object-contain rounded-sm rotate-2 shrink-0"
+            className="hidden sm:block h-55 object-contain rounded-md rotate-3 shrink-0 shadow-lg"
           />
         </header>
 
