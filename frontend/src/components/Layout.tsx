@@ -5,7 +5,7 @@ export default function Layout() {
   return (
     <div className="min-h-screen px-4">
       <div className="max-w-175 mx-auto">
-        <header className="pt-12 pb-6 flex items-start gap-8">
+        <header className="pt-8 pb-6 flex items-start gap-8">
           <div className="flex-1">
             <p className="font-mono text-xs tracking-[0.18em] uppercase text-ink/60">
               <span>Roza Russkikh</span>
