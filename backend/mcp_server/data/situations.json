@@ -97,14 +97,6 @@
   },
   {
     "id": 13,
-    "category": "technical judgment",
-    "situation": "At El Paso Labs, I was looking at two separate but related pain points. Merchants going through our fintech partner's onboarding application had no way to get quick, accurate answers to questions that came up mid-process — they'd stall out or open a support ticket. Separately, our own team had a tedious, error-prone manual process: every incoming client email in Front had to be read and triaged by hand to decide whether it warranted a task in Airtable.",
-    "task": "I needed to design and ship AI-powered solutions for each problem — one that let merchants self-serve accurate answers grounded in real documentation during onboarding, and one that automated email triage without sacrificing accuracy or giving up human oversight on what actually got created in Airtable.",
-    "action": "For onboarding, I built a RAG dashboard — Angular front end, Python/FastAPI backend, PostgreSQL — integrating Azure AI Search and Azure Blob Storage to unify web-crawled documentation and Zendesk content into a single searchable knowledge base, so merchants could ask questions directly inside the onboarding flow and get answers grounded in real source content instead of generic or hallucinated responses. For the Airtable problem, I revived a stalled Python-based multi-agent workflow that reads each Front email and decides whether a task should be created, and added a human-in-the-loop Slack approval step — approve/reject, free-text edits, intent classification, and inline clarification — using Pydantic-enforced structured LLM output so decisions were reliable and auditable. I also built an offline evaluation pipeline with Langfuse using deterministic scorers, tuned to a 0.8 quality threshold, specifically to catch hallucinated field values before they could ship.",
-    "result": "Merchants got self-serve, source-grounded answers during onboarding instead of stalling or opening support tickets, reducing drop-off and support load. The Airtable agent eliminated a fully manual email-triage process and shipped to beta with positive client feedback, and the eval gate became standard practice before any LLM-facing deploy."
-  },
-  {
-    "id": 14,
     "category": "what I would do differently",
     "situation": "At El Paso Labs, I built the multi-agent workflow that reads incoming Front emails and decides whether to create a task in Airtable, with a human-in-the-loop Slack approval step where the agent posts a generated task description for a person to approve, reject, or edit. I'd already built a deterministic eval scorer that catches one specific hallucination failure mode: the model inventing structured field values — like a due date or assignee — on fields where the correct answer was genuinely nothing.",
     "task": "That deterministic check only covers structured fields, though. The one genuinely generative piece of output in that flow is the task description itself, which the human approver reads and trusts rather than re-reading the full source email every time — and a rule-based scorer can't tell whether that free-text description faithfully represents the email or quietly adds a detail that isn't actually there.",
@@ -112,11 +104,11 @@
     "result": "This is a direct extension of a check I already trust in production, not a new philosophy — deterministic scorers stay for the parts that are genuinely rule-checkable (structured fields, enums, dates), and the judge only earns its cost on the one part of the flow where 'does this look right' isn't something a rule can verify."
   },
   {
-    "id": 15,
+    "id": 14,
     "category": "ambiguity",
-    "situation": "I was working as a frontend engineer and was assigned a UX onboarding workflow feature. The only direction I was given was a rough handwritten note — there wasn't nearly enough detail in it to know exactly what the feature needed to do or how it should connect to the rest of the system.",
+    "situation": "I was working as a frontend engineer and was assigned a UX onboarding workflow feature. The only direction I was given was a rough handwritten note — there wasn't nearly enough detail in it to know exactly what the feature needed to do, how it should look like, or how it should connect to the rest of the system.",
     "task": "I needed to turn that sparse, ambiguous spec into a concrete, working feature, which meant figuring out what was actually being asked before I could build anything.",
-    "action": "Instead of guessing, I dug in myself — asking clarifying questions and meeting with the backend team to pin down the actual API properties the feature would depend on. Once I had enough clarity, I built a simple MCP integration as a first pass, tested it, and deployed that minimal version rather than trying to get everything right upfront. From there I iterated, adding more functionality, animation, and UI polish in follow-up passes once the core was proven out.",
+    "action": "Instead of guessing, I dug in myself — asking clarifying questions and meeting with the backend team to pin down the actual API properties the feature would depend on. Once I had enough clarity, I built a simple MVP as a first pass, tested it, and deployed that minimal version rather than trying to get everything right upfront. From there I iterated (based on the client and team feedback), adding more functionality, animation, and UI polish in follow-up passes once the core was proven out.",
     "result": "The feature has been in use since with no complaints. Starting from a deliberately simple, tested version let me work through the initial ambiguity without over-building around assumptions that might have turned out wrong."
   }
 ]
