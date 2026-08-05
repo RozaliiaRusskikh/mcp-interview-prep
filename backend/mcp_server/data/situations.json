@@ -110,5 +110,13 @@
     "task": "That deterministic check only covers structured fields, though. The one genuinely generative piece of output in that flow is the task description itself, which the human approver reads and trusts rather than re-reading the full source email every time — and a rule-based scorer can't tell whether that free-text description faithfully represents the email or quietly adds a detail that isn't actually there.",
     "action": "If I'm asked what I'd add, it's an LLM-as-judge scorer specifically for faithfulness: given the source email and the generated description, does the description contain any claim or detail that isn't actually in the email? It's the same principle as the structured-field check — catching invented content the model states with full confidence — just applied to generative text instead of a single field, which needs semantic judgment rather than a fixed rule.",
     "result": "This is a direct extension of a check I already trust in production, not a new philosophy — deterministic scorers stay for the parts that are genuinely rule-checkable (structured fields, enums, dates), and the judge only earns its cost on the one part of the flow where 'does this look right' isn't something a rule can verify."
+  },
+  {
+    "id": 15,
+    "category": "ambiguity",
+    "situation": "I was working as a frontend engineer and was assigned a UX onboarding workflow feature. The only direction I was given was a rough handwritten note — there wasn't nearly enough detail in it to know exactly what the feature needed to do or how it should connect to the rest of the system.",
+    "task": "I needed to turn that sparse, ambiguous spec into a concrete, working feature, which meant figuring out what was actually being asked before I could build anything.",
+    "action": "Instead of guessing, I dug in myself — asking clarifying questions and meeting with the backend team to pin down the actual API properties the feature would depend on. Once I had enough clarity, I built a simple MCP integration as a first pass, tested it, and deployed that minimal version rather than trying to get everything right upfront. From there I iterated, adding more functionality, animation, and UI polish in follow-up passes once the core was proven out.",
+    "result": "The feature has been in use since with no complaints. Starting from a deliberately simple, tested version let me work through the initial ambiguity without over-building around assumptions that might have turned out wrong."
   }
 ]
