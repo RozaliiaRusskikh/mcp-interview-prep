@@ -33,7 +33,7 @@ Conventions:
 - [x] T006 Scaffold `backend/` with its own `pyproject.toml`; add deps: `fastapi`, `uvicorn`, `google-genai`, `mcp`, `pydantic` — swapped from `google-generativeai` (deprecated/unmaintained as of this build; `google-genai` is Google's current SDK) before any code was written against it
 - [x] T007 `backend/mcp_client/client.py` — stdio client that launches `backend/mcp_server/server.py` as a subprocess and opens an MCP session
 - [x] T007b Restructure for client/server symmetry: `git mv backend/mcp backend/mcp_server`; `backend/mcp_client.py` → `backend/mcp_client/client.py`; updated all path references (`.mcp.json`, `CLAUDE.md`, `README.md`, `backend/README.md`, `PLAN.md`)
-- [ ] T008 [P] `backend/schemas.py` — `ChatRequest` (`question: str = Field(min_length=1, max_length=500)`, structural bounds only — not a jailbreak defense, see `CLAUDE.md`), `ChatResponse` (`answer`, `source: Literal["deterministic","llm","rate_capped"]`)
+- [x] T008 [P] `backend/schemas.py` — `ChatRequest` (`question: str = Field(min_length=1, max_length=500)`, structural bounds only — not a jailbreak defense, see `CLAUDE.md`), `ChatResponse` (`answer`, `source: Literal["deterministic","llm","rate_capped"]`)
 - [ ] T009 [P] `backend/schemas.py` — per-tool output models: `Situation`, `Experience`, `Skill`, `Contact`
 - [ ] T010 `backend/router.py` — keyword router: category/company/skill/contact keywords → matching MCP tool call, else fall through
 - [ ] T011 `backend/formatter.py` — deterministic tool-JSON → readable-text templates, one per tool

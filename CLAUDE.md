@@ -8,6 +8,7 @@ Follow official docs as the source of truth over habit or assumption:
 - **Pydantic docs** — schema/validation patterns for the backend
 - **FastAPI docs** — routing, dependency injection, request/response models
 - **FastMCP docs** — `mcp.server.fastmcp.FastMCP` patterns (tools/resources/prompts) in `backend/mcp_server/server.py`
+- **MCP docs** (modelcontextprotocol.io/docs/) — client/server protocol behavior, e.g. `backend/mcp_client/client.py`
 
 ## Golden rule
 Only do what's necessary. No speculative abstractions, no unused options, no
