@@ -34,7 +34,7 @@ Conventions:
 - [x] T007 `backend/mcp_client/client.py` — stdio client that launches `backend/mcp_server/server.py` as a subprocess and opens an MCP session
 - [x] T007b Restructure for client/server symmetry: `git mv backend/mcp backend/mcp_server`; `backend/mcp_client.py` → `backend/mcp_client/client.py`; updated all path references (`.mcp.json`, `CLAUDE.md`, `README.md`, `backend/README.md`, `PLAN.md`)
 - [x] T008 [P] `backend/schemas.py` — `ChatRequest` (`question: str = Field(min_length=1, max_length=500)`, structural bounds only — not a jailbreak defense, see `CLAUDE.md`), `ChatResponse` (`answer`, `source: Literal["deterministic","llm","rate_capped"]`)
-- [ ] T009 [P] `backend/schemas.py` — per-tool output models: `Situation`, `Experience`, `Skill`, `Contact`
+- [x] T009 [P] `backend/schemas.py` — per-tool output models: `Situation`, `Experience`, `Skill`, `Contact`
 - [ ] T010 `backend/router.py` — keyword router: category/company/skill/contact keywords → matching MCP tool call, else fall through
 - [ ] T011 `backend/formatter.py` — deterministic tool-JSON → readable-text templates, one per tool
 - [ ] T012 `backend/llm.py` — Gemini fallback via `answer_as_roza` MCP prompt + `personal://info`, using server-side `GOOGLE_API_KEY`; prompt must constrain model behavior (explicit role/limits, decline+redirect on jailbreak/roleplay attempts) and segregate the untrusted user question from trusted grounding data — see `CLAUDE.md`'s "Prompt injection defense"
