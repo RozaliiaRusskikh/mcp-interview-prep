@@ -10,7 +10,7 @@ Tokens live in [src/index.css](src/index.css) (`@theme` block) — this doc is t
 rationale behind them, not a second copy of the values.
 
 ## Color
-- `paper` `#F5F1E6` — page background, bone paper (brightened from an earlier, dimmer draft)
+- `paper` `#F5F1E6` — bone paper (brightened from an earlier, dimmer draft)
 - `card` `#FFFDF8` — elevated card surface (brightened to near-white)
 - `ink` `#1E2A3A` — text/display, deep navy-charcoal
 - `stamp` `#A7362A` — filed/deterministic tag, rubber-stamp oxblood (not terracotta)
@@ -18,6 +18,7 @@ rationale behind them, not a second copy of the values.
   states. Shifted from a muted teal to a true emerald at Roza's request — "ledger
   green" still fits: bookkeepers historically wrote ledgers in green ink, so the name
   didn't need to change, just the value.
+- `green` `#F0F4E8` — page background wash (`body`).
 
 ## Type
 - **Fraunces** (display) — restrained, headline only

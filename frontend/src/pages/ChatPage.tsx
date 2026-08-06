@@ -92,27 +92,27 @@ export default function ChatPage() {
             <span className="font-mono text-xs text-ink/40 whitespace-nowrap">
               Question {ex.id}
             </span>
-            <p className="font-display text-base italic text-ink/90 max-w-full sm:max-w-[80%] border border-ink/15 rounded-sm bg-card px-4 py-2">
+            <p className="font-display text-base italic text-ink/90 max-w-full sm:max-w-[80%] border border-ink/15 rounded-md bg-card px-4 py-2">
               {ex.question}
             </p>
           </div>
 
           {ex.error && (
-            <div className="flex items-center gap-3 bg-card border border-ink/15 px-4 py-2 rounded-sm max-w-full sm:max-w-[90%] mr-auto">
+            <div className="flex items-center gap-3 bg-card border border-ink/15 px-4 py-2 rounded-md max-w-full sm:max-w-[90%] mr-auto">
               <AssistantIcon />
               <p className="text-sm text-stamp">{ex.error}</p>
             </div>
           )}
 
           {ex.answer && (
-            <div className="flex items-start gap-3 bg-card border rounded-sm border-ink/15 px-4 py-2 max-w-full sm:max-w-[90%] mr-auto motion-safe:animate-[cardIn_0.35s_ease-out]">
+            <div className="flex items-start gap-3 bg-card border rounded-md border-ink/15 px-4 py-2 max-w-full sm:max-w-[90%] mr-auto motion-safe:animate-[cardIn_0.35s_ease-out]">
               <AssistantIcon />
               <p className="text-base font-displaytext-ink italic leading-relaxed pt-1">{ex.answer}</p>
             </div>
           )}
 
           {!ex.answer && !ex.error && (
-            <div className="flex items-center gap-3 bg-card border border-ink/15 px-5 py-4 text-sm text-ink/50 font-mono max-w-full sm:max-w-[80%] mr-auto">
+            <div className="flex items-center gap-3 bg-card border rounded-md border-ink/15 px-5 py-4 text-sm text-ink/50 font-mono max-w-full sm:max-w-[80%] mr-auto">
               <AssistantIcon />
               Filing…
             </div>
@@ -122,7 +122,7 @@ export default function ChatPage() {
 
       <form
         onSubmit={handleSubmit}
-        className="fixed bottom-0 inset-x-0 bg-paper border-t border-ink/15"
+        className="fixed bottom-0 inset-x-0 bg-green border-t border-ink/15"
       >
         <div className="max-w-175 mx-auto flex items-end gap-3 px-4 py-4">
           <label htmlFor="chat-input" className="sr-only">
