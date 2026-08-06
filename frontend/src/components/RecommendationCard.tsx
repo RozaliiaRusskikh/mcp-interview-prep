@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useLayoutEffect, useRef, useState } from "react";
 import type { Recommendation } from "../constants/recommendations";
 
 export default function RecommendationCard({
@@ -11,7 +11,7 @@ export default function RecommendationCard({
   const quoteRef = useRef<HTMLParagraphElement>(null);
   const [truncated, setTruncated] = useState(false);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const el = quoteRef.current;
     if (el) setTruncated(el.scrollHeight > el.clientHeight + 1);
   }, []);
