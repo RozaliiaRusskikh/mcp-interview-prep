@@ -85,13 +85,6 @@ class MCPClient:
         await self.cleanup()
 
 
-# For testing
-async def main():
-    async with MCPClient() as client:
-        tools = await client.list_tools()
-        print([t.name for t in tools])
-
-
 if __name__ == "__main__":
     if sys.platform == "win32":
         asyncio.set_event_loop_policy(asyncio.WindowsProactorEventLoopPolicy())
