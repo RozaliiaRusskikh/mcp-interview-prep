@@ -46,6 +46,11 @@ def route(question: str) -> Optional[RouteMatch]:
         if _contains_word(q, skill):
             return RouteMatch("get_skill", {"skill": skill})
 
+    recommendations = _load_json("recommendations.json")
+    for name in sorted({r["name"] for r in recommendations}):
+        if _contains_word(q, name):
+            return RouteMatch("get_recommendations", {"name": name})
+
     if any(_contains_word(q, kw) for kw in CONTACT_KEYWORDS):
         return RouteMatch("get_contact", {})
 
