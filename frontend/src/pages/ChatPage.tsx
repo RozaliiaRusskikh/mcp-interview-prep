@@ -114,7 +114,7 @@ export default function ChatPage() {
           {!ex.answer && !ex.error && (
             <div className="flex items-center gap-3 bg-card border rounded-md border-ink/15 px-5 py-4 text-sm text-ink/50 font-mono max-w-full sm:max-w-[80%] mr-auto">
               <AssistantIcon />
-              Filing…
+              Thinking…
             </div>
           )}
         </article>
@@ -145,7 +145,7 @@ export default function ChatPage() {
                        transition-colors cursor-pointer disabled:cursor-not-allowed disabled:opacity-40
                        hover:bg-ledger/85 focus-visible:outline-2 focus-visible:outline-ledger rounded-sm"
           >
-            {loading ? "Filing…" : "Ask →"}
+            {loading ? "Thinking…" : "Ask →"}
           </button>
         </div>
       </form>

@@ -2,6 +2,7 @@ import os
 
 from google import genai
 from google.genai import types
+from loguru import logger
 
 from mcp_client.client import MCPClient
 
@@ -37,9 +38,14 @@ async def answer_with_llm(question: str, mcp: MCPClient) -> str:
         for message in messages
     ]
 
+    logger.info(f"Calling Gemini ({MODEL_NAME}) for question: {question!r}")
     response = await _get_client().aio.models.generate_content(
         model=MODEL_NAME,
         contents=contents,
-        config=types.GenerateContentConfig(tools=[mcp.session()]),
+        # Must be a plain dict, not a GenerateContentConfig object: the SDK
+        # deep-copies object configs before extracting MCP sessions, and a live
+        # ClientSession can't be deepcopy'd (unpicklable asyncio internals).
+        # Dict configs skip that deep copy. https://github.com/googleapis/python-genai/issues/2669
+        config={"tools": [mcp.session()]},
     )
     return response.text

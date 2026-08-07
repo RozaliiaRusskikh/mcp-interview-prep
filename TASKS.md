@@ -39,8 +39,8 @@ Conventions:
 - [x] T011 `backend/formatter.py` — deterministic tool-JSON → readable-text templates, one per tool
 - [x] T012 `backend/llm.py` — add env API key, Gemini fallback via `answer_as_roza` MCP prompt + `personal://info`, using server-side `GOOGLE_API_KEY`; prompt must constrain model behavior (explicit role/limits, decline+redirect on jailbreak/roleplay attempts) and segregate the untrusted user question from trusted grounding data — see `CLAUDE.md`'s "Prompt injection defense"
 - [x] T013 `backend/rate_limit.py` — in-memory daily counter capping Gemini calls; graceful deterministic message when capped
-- [ ] T014 `backend/main.py` — `POST /chat` wiring T010–T013 together, validated against T008/T009 schemas; CORS for the frontend origin, add python-dotenv
-- [ ] T014b Logging: `loguru`, configured once in `backend/main.py` (remove default handler, add one sink with the universal format string from `CLAUDE.md`); `router.py`/`llm.py`/`rate_limit.py` just `from loguru import logger` — log routing decisions, Gemini calls, and rate-cap hits
+- [x] T014 `backend/main.py` — `POST /chat` wiring T010–T013 together, validated against T008/T009 schemas; CORS for the frontend origin, add python-dotenv
+- [x] T014b Logging: `loguru`, configured once in `backend/main.py` (remove default handler, add one sink with the universal format string from `CLAUDE.md`); `router.py`/`llm.py`/`rate_limit.py` just `from loguru import logger` — log routing decisions, Gemini calls, and rate-cap hits
 - [ ] T015 Verify: run backend locally, exercise `/chat` via `curl`/Swagger (`/docs`) for both a deterministic and an LLM-fallback question
 
 ## Phase 4: Local end-to-end verification

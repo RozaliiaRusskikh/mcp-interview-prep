@@ -1,0 +1,12 @@
+2026-08-06 20:46:09 | INFO     | router:route:33 | Routed question to get_contact({})
+2026-08-06 20:47:16 | INFO     | router:route:35 | No keyword match for question — falling through to LLM
+2026-08-06 20:47:16 | INFO     | llm:answer_with_llm:41 | Calling Gemini (gemini-2.5-flash) for question: "What's your mission?"
+2026-08-06 20:47:55 | INFO     | router:route:35 | No keyword match for question — falling through to LLM
+2026-08-06 20:47:55 | INFO     | llm:answer_with_llm:41 | Calling Gemini (gemini-2.5-flash) for question: 'How ald are you?'
+2026-08-06 20:48:10 | INFO     | router:route:35 | No keyword match for question — falling through to LLM
+2026-08-06 20:48:10 | INFO     | llm:answer_with_llm:41 | Calling Gemini (gemini-2.5-flash) for question: 'What is your top skills?'
+2026-08-06 20:48:29 | INFO     | router:route:35 | No keyword match for question — falling through to LLM
+2026-08-06 20:48:29 | INFO     | llm:answer_with_llm:41 | Calling Gemini (gemini-2.5-flash) for question: 'How mane ex[erence in beacend so you have?'
+2026-08-06 20:49:20 | INFO     | router:route:35 | No keyword match for question — falling through to LLM
+2026-08-06 20:49:20 | INFO     | llm:answer_with_llm:41 | Calling Gemini (gemini-2.5-flash) for question: 'do you have kids?'
+2026-08-06 20:49:41 | INFO     | router:route:33 | Routed question to get_skill({'skill': 'Python'})

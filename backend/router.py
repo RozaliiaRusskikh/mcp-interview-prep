@@ -4,6 +4,8 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Optional
 
+from loguru import logger
+
 DATA_DIR = Path(__file__).parent / "mcp_server" / "data"
 
 CONTACT_KEYWORDS = ("contact", "email", "phone", "linkedin", "github", "reach")
@@ -26,8 +28,15 @@ class RouteMatch:
 
 def route(question: str) -> Optional[RouteMatch]:
     """Match a question to an MCP tool by keyword, or return None to fall through to the LLM."""
-    q = question.lower()
+    match = _match(question.lower())
+    if match is not None:
+        logger.info(f"Routed question to {match.tool_name}({match.tool_input})")
+    else:
+        logger.info("No keyword match for question — falling through to LLM")
+    return match
 
+
+def _match(q: str) -> Optional[RouteMatch]:
     situations = _load_json("situations.json")
     for category in sorted({s["category"] for s in situations}):
         if _contains_word(q, category):

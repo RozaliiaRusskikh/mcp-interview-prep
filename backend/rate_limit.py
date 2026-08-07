@@ -1,5 +1,7 @@
 from datetime import datetime, timezone
 
+from loguru import logger
+
 DAILY_CAP = 100
 
 RATE_CAPPED_MESSAGE = (
@@ -23,6 +25,7 @@ def try_consume() -> bool:
     """
     today = _today()
     if _call_counts.get(today, 0) >= DAILY_CAP:
+        logger.warning(f"Daily Gemini rate cap ({DAILY_CAP}) hit for {today}")
         return False
     _call_counts[today] = _call_counts.get(today, 0) + 1
     return True
