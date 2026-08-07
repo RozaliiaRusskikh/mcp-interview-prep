@@ -51,7 +51,8 @@ YEARS_OF_EXPERIENCE_LABELS = {
 
 def format_years_of_experience(data: dict) -> str:
     label = YEARS_OF_EXPERIENCE_LABELS[data["domain"]]
-    return f"I have about {data['years']} years of {label}, since {data['since']}."
+    year_word = "year" if data["years"] == 1 else "years"
+    return f"I have about {data['years']} {year_word} of {label}, since {data['since']}."
 
 
 FORMATTERS: dict[str, Callable[[Any], str]] = {

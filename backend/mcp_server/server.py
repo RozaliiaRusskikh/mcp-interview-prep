@@ -156,8 +156,11 @@ def get_years_of_experience(domain: str = "total") -> dict | str:
         for p in periods
     ]
     start, end = min(starts), max(ends)
-    years = (end - start).days / 365.25
-    return {"domain": domain, "years": round(years, 1), "since": start.strftime("%b %Y")}
+    raw_years = (end - start).days / 365.25
+    # Round to whole years; anything under a year still reads as "about 1
+    # year" rather than an oddly precise fraction or a misleading "0".
+    years = max(1, round(raw_years))
+    return {"domain": domain, "years": years, "since": start.strftime("%b %Y")}
 
 
 @mcp.tool()
