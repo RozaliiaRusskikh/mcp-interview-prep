@@ -10,6 +10,15 @@ DATA_DIR = Path(__file__).parent / "mcp_server" / "data"
 
 CONTACT_KEYWORDS = ("contact", "email", "phone", "linkedin", "github", "reach")
 
+# Situation categories are framed as positive stories (e.g. "deadline" holds a
+# story about *meeting* a tight deadline). A negated question ("missed a
+# deadline", "failed at ownership") asks for the opposite of what that story
+# shows, so a keyword match would return a misleading answer — skip the
+# category match on negation and let it fall through to the LLM instead,
+# which won't misrepresent the story (see the answer_as_roza prompt's
+# "do not invent experience" instruction).
+NEGATION_WORDS = ("missed", "failed", "fail", "didn't", "never", "haven't", "couldn't", "wouldn't")
+
 
 def _load_json(filename: str):
     with open(DATA_DIR / filename, encoding="utf-8") as f:
@@ -37,10 +46,13 @@ def route(question: str) -> Optional[RouteMatch]:
 
 
 def _match(q: str) -> Optional[RouteMatch]:
+    is_negated = any(_contains_word(q, w) for w in NEGATION_WORDS)
+
     situations = _load_json("situations.json")
-    for category in sorted({s["category"] for s in situations}):
-        if _contains_word(q, category):
-            return RouteMatch("get_situation", {"category": category})
+    if not is_negated:
+        for category in sorted({s["category"] for s in situations}):
+            if _contains_word(q, category):
+                return RouteMatch("get_situation", {"category": category})
 
     resume = _load_json("resume.json")
     companies_and_titles = {e["company"] for e in resume["experience"]} | {
