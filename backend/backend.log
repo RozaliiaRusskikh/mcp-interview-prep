@@ -10,3 +10,7 @@
 2026-08-06 20:49:20 | INFO     | router:route:35 | No keyword match for question — falling through to LLM
 2026-08-06 20:49:20 | INFO     | llm:answer_with_llm:41 | Calling Gemini (gemini-2.5-flash) for question: 'do you have kids?'
 2026-08-06 20:49:41 | INFO     | router:route:33 | Routed question to get_skill({'skill': 'Python'})
+2026-08-06 20:55:44 | INFO     | router:route:33 | Routed question to get_situation({'category': 'conflict'})
+2026-08-06 20:56:19 | INFO     | router:route:35 | No keyword match for question — falling through to LLM
+2026-08-06 20:56:19 | INFO     | llm:answer_with_llm:41 | Calling Gemini (gemini-2.5-flash) for question: 'tell me a situation you argued with your manager'
+2026-08-06 20:56:41 | INFO     | router:route:33 | Routed question to get_situation({'category': 'deadline'})
