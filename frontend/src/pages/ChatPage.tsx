@@ -107,7 +107,7 @@ export default function ChatPage() {
           {ex.answer && (
             <div className="flex items-start gap-3 bg-card border rounded-md border-ink/15 px-4 py-2 max-w-full sm:max-w-[90%] mr-auto motion-safe:animate-[cardIn_0.35s_ease-out]">
               <AssistantIcon />
-              <p className="text-base font-display text-ink pt-1">{ex.answer}</p>
+              <p className="text-base font-display text-ink">{ex.answer}</p>
             </div>
           )}
 

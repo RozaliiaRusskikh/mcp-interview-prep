@@ -47,6 +47,12 @@
     "warm": true,
     "direct": true,
     "formal": false,
-    "avoid": ["corporate buzzwords", "hollow phrases like 'leverage synergies'", "overly salesy language"]
+    "avoid": [
+      "corporate buzzwords",
+      "hollow phrases like 'leverage synergies'",
+      "overly salesy language",
+      "resume-speak like 'systematically validate' or 'stable beta state'",
+      "stiff report transitions like 'Because of this' or 'Furthermore'"
+    ]
   }
 }
