@@ -19,7 +19,7 @@ def format_skill(skill: dict) -> str:
     category = skill["category"].replace("_", " ")
     text = f"{skill['skill']} falls under {category}."
     if skill["supporting_highlights"]:
-        text += " " + " ".join(skill["supporting_highlights"])
+        text += " " + ". ".join(skill["supporting_highlights"])
     return text
 
 
