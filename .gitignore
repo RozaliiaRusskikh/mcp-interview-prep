@@ -4,5 +4,8 @@ __pycache__/
 build/
 .venv/
 
+# Secrets
+.env
+
 # Playwright MCP debug artifacts (console logs, page snapshots)
 .playwright-mcp/
