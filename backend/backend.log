@@ -16,3 +16,17 @@
 2026-08-06 20:56:41 | INFO     | router:route:33 | Routed question to get_situation({'category': 'deadline'})
 2026-08-06 21:05:57 | INFO     | router:route:44 | No keyword match for question — falling through to LLM
 2026-08-06 21:05:57 | INFO     | llm:answer_with_llm:41 | Calling Gemini (gemini-2.5-flash) for question: 'tell me a situation when you missed a deadline'
+2026-08-06 21:12:31 | INFO     | router:route:44 | No keyword match for question — falling through to LLM
+2026-08-06 21:12:31 | INFO     | llm:answer_with_llm:41 | Calling Gemini (gemini-2.5-flash) for question: 'how many experien you have?'
+2026-08-06 21:12:54 | INFO     | router:route:44 | No keyword match for question — falling through to LLM
+2026-08-06 21:12:54 | INFO     | llm:answer_with_llm:41 | Calling Gemini (gemini-2.5-flash) for question: 'how many of experience you have?'
+2026-08-06 21:13:05 | INFO     | router:route:44 | No keyword match for question — falling through to LLM
+2026-08-06 21:13:05 | INFO     | llm:answer_with_llm:41 | Calling Gemini (gemini-2.5-flash) for question: 'how many of experience you have?'
+2026-08-06 21:32:25 | INFO     | router:route:49 | Routed question to get_years_of_experience({})
+2026-08-06 21:36:54 | INFO     | router:route:55 | Routed question to get_years_of_experience({'domain': 'total'})
+2026-08-06 21:36:54 | INFO     | router:route:55 | Routed question to get_years_of_experience({'domain': 'backend'})
+2026-08-06 21:36:54 | INFO     | router:route:55 | Routed question to get_years_of_experience({'domain': 'frontend'})
+2026-08-06 21:36:54 | INFO     | router:route:55 | Routed question to get_years_of_experience({'domain': 'qa'})
+2026-08-06 21:57:59 | INFO     | router:route:57 | Routed question to get_years_of_experience({'domain': 'react'})
+2026-08-06 21:57:59 | INFO     | router:route:57 | Routed question to get_years_of_experience({'domain': 'angular'})
+2026-08-06 21:57:59 | INFO     | router:route:57 | Routed question to get_years_of_experience({'domain': 'frontend'})

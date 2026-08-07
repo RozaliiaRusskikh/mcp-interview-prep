@@ -39,12 +39,28 @@ def format_recommendations(recommendations: list[dict]) -> str:
     )
 
 
+YEARS_OF_EXPERIENCE_LABELS = {
+    "total": "professional software engineering experience (not counting QA)",
+    "qa": "QA experience",
+    "react": "React experience",
+    "angular": "Angular experience",
+    "frontend": "frontend experience",
+    "backend": "backend experience",
+}
+
+
+def format_years_of_experience(data: dict) -> str:
+    label = YEARS_OF_EXPERIENCE_LABELS[data["domain"]]
+    return f"I have about {data['years']} years of {label}, since {data['since']}."
+
+
 FORMATTERS: dict[str, Callable[[Any], str]] = {
     "get_situation": format_situation,
     "get_experience": format_experience,
     "get_skill": format_skill,
     "get_contact": format_contact,
     "get_recommendations": format_recommendations,
+    "get_years_of_experience": format_years_of_experience,
 }
 
 

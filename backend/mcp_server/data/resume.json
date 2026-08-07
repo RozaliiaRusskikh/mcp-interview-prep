@@ -45,6 +45,13 @@
     }
   ],
 
+  "skill_timeline": {
+    "qa": {"start": "Apr 2021", "end": "Aug 2023"},
+    "frontend_react_nextjs": {"start": "May 2023", "end": "Mar 2024"},
+    "frontend_angular": {"start": "Apr 2024", "end": "Jan 2026"},
+    "backend_python_ai": {"start": "Feb 2026", "end": null}
+  },
+
   "skills": {
     "ai_and_backend": ["Python", "Pydantic", "FastAPI", "FastMCP", "LLM Integration", "LLM Evals", "Agentic Workflows", "RAG", "Embeddings", "Workflow Orchestration", "Azure AI Search", "LangGraph", "Langfuse", "REST APIs", "SQL"],
     "frontend": ["React", "Angular", "Next.js", "TypeScript", "JavaScript", "Tailwind CSS", "HTML5", "CSS", "Sass", "Figma"],

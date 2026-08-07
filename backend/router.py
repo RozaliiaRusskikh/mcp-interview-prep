@@ -10,6 +10,21 @@ DATA_DIR = Path(__file__).parent / "mcp_server" / "data"
 
 CONTACT_KEYWORDS = ("contact", "email", "phone", "linkedin", "github", "reach")
 
+YEARS_OF_EXPERIENCE_PHRASES = (
+    "years of experience",
+    "how many years",
+    "how long have you been",
+    "how long have you worked",
+)
+
+YEARS_OF_EXPERIENCE_DOMAIN_KEYWORDS: dict[str, tuple[str, ...]] = {
+    "qa": ("qa", "quality assurance", "testing"),
+    "react": ("react",),
+    "angular": ("angular",),
+    "frontend": ("frontend", "front-end", "front end"),
+    "backend": ("backend", "back-end", "back end"),
+}
+
 # Situation categories are framed as positive stories (e.g. "deadline" holds a
 # story about *meeting* a tight deadline). A negated question ("missed a
 # deadline", "failed at ownership") asks for the opposite of what that story
@@ -53,6 +68,14 @@ def _match(q: str) -> Optional[RouteMatch]:
         for category in sorted({s["category"] for s in situations}):
             if _contains_word(q, category):
                 return RouteMatch("get_situation", {"category": category})
+
+    if any(phrase in q for phrase in YEARS_OF_EXPERIENCE_PHRASES):
+        domain = "total"
+        for candidate, keywords in YEARS_OF_EXPERIENCE_DOMAIN_KEYWORDS.items():
+            if any(kw in q for kw in keywords):
+                domain = candidate
+                break
+        return RouteMatch("get_years_of_experience", {"domain": domain})
 
     resume = _load_json("resume.json")
     companies_and_titles = {e["company"] for e in resume["experience"]} | {
