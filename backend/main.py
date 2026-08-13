@@ -9,6 +9,7 @@ load_dotenv()
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from google.genai.errors import APIError
 from loguru import logger
 from mcp import types
 
@@ -73,5 +74,13 @@ async def chat(payload: ChatRequest) -> ChatResponse:
     if not rate_limit.try_consume():
         return ChatResponse(answer=rate_limit.RATE_CAPPED_MESSAGE, source="rate_capped")
 
-    answer = await llm.answer_with_llm(payload.question, mcp_client)
+    try:
+        answer = await llm.answer_with_llm(payload.question, payload.history, mcp_client)
+    except APIError as e:
+        # Covers Gemini's own quota/availability errors (e.g. the free tier's
+        # real daily cap, which can be hit before our own rate_limit counter
+        # trips — that counter resets on every server restart, Gemini's doesn't).
+        logger.warning(f"Gemini API error, falling back to capped message: {e}")
+        return ChatResponse(answer=rate_limit.RATE_CAPPED_MESSAGE, source="rate_capped")
+
     return ChatResponse(answer=answer, source="llm")

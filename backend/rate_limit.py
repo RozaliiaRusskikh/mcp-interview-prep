@@ -2,7 +2,11 @@ from datetime import datetime, timezone
 
 from loguru import logger
 
-DAILY_CAP = 100
+# Gemini's actual free-tier daily limit for gemini-2.5-flash is 20 requests/day
+# (not the ~1500/day higher tiers get) — keep this under that with headroom for
+# non-chat testing, since it's what's supposed to prevent hitting Gemini's own
+# 429 in the first place.
+DAILY_CAP = 15
 
 RATE_CAPPED_MESSAGE = (
     "I'm not sure how to match that one — try asking about my experience, "

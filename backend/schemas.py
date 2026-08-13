@@ -8,8 +8,17 @@ class CamelModel(BaseModel):
     model_config = ConfigDict(alias_generator=to_camel, populate_by_name=True)
 
 
+class ChatMessage(CamelModel):
+    role: Literal["user", "assistant"]
+    content: str = Field(min_length=1, max_length=4000)
+
+
 class ChatRequest(CamelModel):
     question: str = Field(min_length=1, max_length=500)
+    # Prior turns, oldest first — lets the LLM answer context-dependent
+    # follow-ups (e.g. "yes" after it offers to elaborate). Capped well
+    # under the Gemini free-tier daily budget this app already runs on.
+    history: list[ChatMessage] = Field(default_factory=list, max_length=20)
 
 
 class ChatResponse(CamelModel):

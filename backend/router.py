@@ -17,6 +17,11 @@ YEARS_OF_EXPERIENCE_PHRASES = (
     "how long have you worked",
 )
 
+# Catches phrasings/typos that miss the exact phrases above but still clearly
+# ask about duration, e.g. "How many of Angular experience do you have?"
+# (dropped "years") or "How much backend experience do you have?".
+YEARS_OF_EXPERIENCE_LEAD_INS = ("how many", "how much", "how long")
+
 YEARS_OF_EXPERIENCE_DOMAIN_KEYWORDS: dict[str, tuple[str, ...]] = {
     "qa": ("qa", "quality assurance", "testing"),
     "react": ("react",),
@@ -69,15 +74,32 @@ def _match(q: str) -> Optional[RouteMatch]:
             if _contains_word(q, category):
                 return RouteMatch("get_situation", {"category": category})
 
-    if any(phrase in q for phrase in YEARS_OF_EXPERIENCE_PHRASES):
-        domain = "total"
+    resume = _load_json("resume.json")
+
+    is_years_question = any(phrase in q for phrase in YEARS_OF_EXPERIENCE_PHRASES) or (
+        "experience" in q and any(lead in q for lead in YEARS_OF_EXPERIENCE_LEAD_INS)
+    )
+    if is_years_question:
+        domain = None
         for candidate, keywords in YEARS_OF_EXPERIENCE_DOMAIN_KEYWORDS.items():
             if any(kw in q for kw in keywords):
                 domain = candidate
                 break
-        return RouteMatch("get_years_of_experience", {"domain": domain})
 
-    resume = _load_json("resume.json")
+        if domain is None:
+            # No tracked domain matched. If the question names a specific
+            # skill we just don't track years for (e.g. "years of AWS"),
+            # defaulting to "total" would confidently answer the wrong
+            # question — fall through to the LLM instead, same reasoning as
+            # the negation handling above.
+            all_skills = (s for group in resume["skills"].values() for s in group)
+            if not any(_contains_word(q, skill) for skill in all_skills):
+                domain = "total"
+
+        if domain is not None:
+            return RouteMatch("get_years_of_experience", {"domain": domain})
+        return None
+
     companies_and_titles = {e["company"] for e in resume["experience"]} | {
         e["title"] for e in resume["experience"]
     }
@@ -92,7 +114,9 @@ def _match(q: str) -> Optional[RouteMatch]:
 
     recommendations = _load_json("recommendations.json")
     for name in sorted({r["name"] for r in recommendations}):
-        if _contains_word(q, name):
+        # Match on first or last name alone too — visitors rarely type a
+        # recommender's full name ("What does Ivan say?", "Ivan V's take?").
+        if any(_contains_word(q, part) for part in name.split()):
             return RouteMatch("get_recommendations", {"name": name})
 
     if any(_contains_word(q, kw) for kw in CONTACT_KEYWORDS):

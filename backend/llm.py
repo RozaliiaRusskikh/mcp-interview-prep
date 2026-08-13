@@ -1,10 +1,10 @@
 import os
 
 from google import genai
-from google.genai import types
 from loguru import logger
 
 from mcp_client.client import MCPClient
+from schemas import ChatMessage
 
 MODEL_NAME = "gemini-2.5-flash"
 
@@ -19,26 +19,30 @@ def _get_client() -> genai.Client:
     return _client
 
 
-async def answer_with_llm(question: str, mcp: MCPClient) -> str:
+async def answer_with_llm(question: str, history: list[ChatMessage], mcp: MCPClient) -> str:
     """Answer an open-ended question via Gemini, grounded in Roza's data.
 
-    Renders the `answer_as_roza` MCP prompt as-is for the model turn — it already
-    constrains the model's role/limits and segregates the untrusted `question` from
-    the trusted grounding data (personal.json values/background/tone) baked into the
-    prompt text, per CLAUDE.md's "Prompt injection defense". The live MCP session is
-    passed as a tool so Gemini can call get_situation, get_experience, get_skill,
-    get_contact, get_recommendations, and get_screening_info itself while answering.
+    Renders the `answer_as_roza` MCP prompt (persona/tone/boundaries, no question
+    baked in) as a real Gemini system_instruction, and sends prior turns plus the
+    visitor's `question` as separate user/model content. This is a stronger
+    untrusted/trusted split than a "Question:" text label inside one combined
+    message — the model sees system instructions and conversational content as
+    structurally distinct channels, per CLAUDE.md's "Prompt injection defense"
+    (segregate untrusted content). The live MCP session is passed as a tool so
+    Gemini can call get_situation, get_experience, get_skill, get_contact,
+    get_recommendations, get_screening_info, and get_years_of_experience itself
+    while answering.
     """
-    messages = await mcp.get_prompt("answer_as_roza", {"question": question})
-    contents = [
-        types.Content(
-            role=message.role,
-            parts=[types.Part.from_text(text=message.content.text)],
-        )
-        for message in messages
-    ]
+    system_messages = await mcp.get_prompt("answer_as_roza", {})
+    system_instruction = system_messages[0].content.text
 
-    logger.info(f"Calling Gemini ({MODEL_NAME}) for question: {question!r}")
+    contents = [
+        {"role": "user" if msg.role == "user" else "model", "parts": [{"text": msg.content}]}
+        for msg in history
+    ]
+    contents.append({"role": "user", "parts": [{"text": question}]})
+
+    logger.info(f"Calling Gemini ({MODEL_NAME}) for question: {question!r} ({len(history)} prior turns)")
     response = await _get_client().aio.models.generate_content(
         model=MODEL_NAME,
         contents=contents,
@@ -46,6 +50,6 @@ async def answer_with_llm(question: str, mcp: MCPClient) -> str:
         # deep-copies object configs before extracting MCP sessions, and a live
         # ClientSession can't be deepcopy'd (unpicklable asyncio internals).
         # Dict configs skip that deep copy. https://github.com/googleapis/python-genai/issues/2669
-        config={"tools": [mcp.session()]},
+        config={"system_instruction": system_instruction, "tools": [mcp.session()]},
     )
     return response.text

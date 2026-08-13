@@ -46,6 +46,8 @@ def test_get_contact():
 def test_get_screening_info():
     result = server.get_screening_info()
     assert "green card" in result["work_authorization"].lower()
+    assert "120K" in result["salary_expectation"]
+    assert result["strongest_languages"] == ["JavaScript", "Python", "TypeScript"]
     assert result["eeo_self_identification"]["gender"] == "Woman"
 
 
@@ -73,10 +75,10 @@ def test_find_gaps_lists_missing_competencies():
     assert "Categories with no situation yet" in result
 
 
-def test_answer_as_roza_includes_question_and_tone():
-    result = server.answer_as_roza("Tell me about a time you led a project.")
-    assert "Tell me about a time you led a project." in result
+def test_answer_as_roza_has_persona_and_no_question():
+    result = server.answer_as_roza()
     assert "Roza Russkikh" in result
+    assert "Question:" not in result
 
 
 def test_resources_load():

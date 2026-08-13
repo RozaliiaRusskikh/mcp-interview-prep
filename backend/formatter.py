@@ -16,11 +16,9 @@ def format_experience(experiences: list[dict]) -> str:
 
 
 def format_skill(skill: dict) -> str:
-    category = skill["category"].replace("_", " ")
-    text = f"{skill['skill']} falls under {category}."
     if skill["supporting_highlights"]:
-        text += " " + ". ".join(skill["supporting_highlights"])
-    return text
+        return ". ".join(skill["supporting_highlights"])
+    return f"Yes, I have experience with {skill['skill']}."
 
 
 def format_contact(contact: dict) -> str:
@@ -40,7 +38,7 @@ def format_recommendations(recommendations: list[dict]) -> str:
 
 
 YEARS_OF_EXPERIENCE_LABELS = {
-    "total": "professional software engineering experience (not counting QA)",
+    "total": "professional software engineering experience",
     "qa": "QA experience",
     "react": "React experience",
     "angular": "Angular experience",
