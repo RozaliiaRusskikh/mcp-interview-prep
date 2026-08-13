@@ -50,16 +50,22 @@ export default function Layout() {
               </a>
             </div>
             <p className="font-script text-xl sm:text-4xl text-ink/80 leading-none mt-4">
-              Full-stack and AI engineer: I build products that actually{" "}
-              <span className="font-bold text-ink">help people</span>, and I
-              take ownership — quality first.
+              Software Engineer with 4+ years of experience: I build products that actually{" "}
+              <span className="font-bold text-ink">help people</span>. I take ownership, prioritize quality, and deliver with care.
             </p>
           </div>
-          <img
-            src="/roza_avatar.jpg"
-            alt="Roza Russkikh"
-            className="hidden sm:block h-55 object-contain rounded-md rotate-3 shrink-0 shadow-lg"
-          />
+          <div className="group relative hidden sm:block h-53 w-40 shrink-0 rounded-md rotate-3 shadow-lg overflow-hidden cursor-pointer border border-ledger transition-colors duration-300 hover:border-ink">
+            <img
+              src="/roza-bot-avatar.png"
+              alt="Roza's robot avatar"
+              className="absolute inset-0 h-full w-full object-cover"
+            />
+            <img
+              src="/roza_avatar.jpg"
+              alt="Roza Russkikh"
+              className="absolute inset-0 h-full w-full object-contain transition-opacity duration-300 group-hover:opacity-0"
+            />
+          </div>
         </header>
 
         <nav className="flex gap-6 border-b border-ink/15 pb-3 mb-8">

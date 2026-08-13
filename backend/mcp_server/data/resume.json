@@ -8,20 +8,20 @@
     "github": "github.com/RozaliiaRusskikh",
     "location": "San Jose, CA"
   },
-  "summary": "Software engineer with 5+ years of client-facing engineering experience, including building full-stack features end to end — React/Next.js/Angular UI through Python, FastAPI, FastMCP services, SQL databases, AI multi-agent workflows, and LLM eval pipelines. Recently focused on production AI: LLM integration, RAG, MCP, multi-agent workflows, and human-in-the-loop automation.",
+  "summary": "Software Engineer with 4+ years of experience in frontend development (React, Angular, Next.js) and full-stack engineering with Python, FastAPI, FastMCP, and SQL. Recently focused on building production AI systems, including production LLM integrations, RAG, MCP, multi-agent workflows, and human-in-the-loop automation.",
 
   "experience": [
     {
       "title": "Software Engineer",
-      "company": "El Paso Labs",
-      "dates": "Apr 2024 – Present",
+      "company": "PXP | El Paso Labs",
+      "dates": "Apr 2024 – Jul 2026",
       "highlights": [
-        "Revived a stalled Python-based multi-agent AI workflow that reads each Front email and decides whether a task needs to be created in Airtable. Added a human-in-the-loop Slack approval step — including approval/rejection, free-text edits, intent classification, and inline clarification with Pydantic-enforced structured LLM output — and shipped to beta with positive client feedback",
-        "Built an offline evaluation pipeline with deterministic scorers using Langfuse, tuning scoring to a 0.8 quality threshold to block LLM regressions before deployment",
-        "Developed an Angular + Python/FastAPI + PostgreSQL RAG dashboard integrating Azure AI Search and Azure Blob Storage for document ingestion, vector search, and embeddings — unifying web-crawled content and Zendesk data into a single searchable knowledge base",
-        "Delivered a configurable merchant onboarding flow builder for PXP (fintech partner) — a questionnaire-driven tool that let admins set up onboarding flows, with requirements branching by merchant risk level",
-        "Created a reusable Angular component library for PXP partner portal with design tokens and form components to power the onboarding UI, and built REST API integrations to connect to .NET backend services",
-        "Collaborated directly with stakeholders to translate business requirements into technical solutions, ensuring high-quality delivery and alignment with project goals"
+        "Revived a stalled multi-agent AI workflow that integrates Front emails, Pydantic-enforced 4-way intent classification (approve/reject/edit/unclear), and a human-in-the-loop Slack approval step to automate Airtable task creation, reducing manual task-creation effort by ~85% and successfully deploying it from beta to production after gathering positive client feedback",
+        "Built an offline evaluation pipeline in Langfuse with 28 deterministic scorers plus an optional LLM-as-judge layer (relevance/correctness scoring) across 6 LLM agents, backed by 90 golden eval datasets, tuned to a 0.8 pass-rate gate designed to block LLM regressions pre-deployment",
+        "Delivered a customizable merchant onboarding flow builder with Angular for the PXP Partner Portal, a questionnaire-driven tool letting admins configure onboarding requirements across 2 merchant risk tiers, replacing a fixed, one-size-fits-all flow and reducing low-risk merchant onboarding time, making the process nearly 2x faster",
+        "Developed a RAG Dashboard powering PXP's Partner Portal chatbot: a Python + FastAPI + PostgreSQL backend, component-based Angular frontend, and dual-engine web crawler unifying web and Zendesk data into an Azure AI Search knowledge base",
+        "Built a reusable Angular component library (25+ components) with design tokens powering the onboarding UI, and implemented REST API integrations with .NET backend services, becoming the top contributor by code volume among 12 engineers on the codebase (~36%)",
+        "Collaborated directly with client stakeholders to translate business requirements into technical solutions, ensuring alignment with project goals and high-quality delivery"
       ]
     },
     {
@@ -29,7 +29,7 @@
       "company": "Independent Consultant",
       "dates": "May 2023 – Mar 2024",
       "highlights": [
-        "Developed front-end features and Sanity CMS integrations for two corporate client websites built with Next.js and Tailwind CSS, working within a small team"
+        "Developed frontend features and Sanity CMS integrations for 2 corporate client websites built with Next.js and Tailwind CSS, working within a small team"
       ]
     },
     {
@@ -37,23 +37,22 @@
       "company": "Intergalactic Agency Inc.",
       "dates": "Apr 2021 – Aug 2023",
       "highlights": [
-        "Owned QA across 6+ client React/Next.js/TypeScript projects — built automated Cypress test suites and investigated defects using browser dev tools, helping improve release quality and catch defects before they reached production",
-        "Led User Acceptance Testing (UAT) to ensure solutions met both functional and technical standards",
+        "Owned QA across 6+ client React/Next.js/TypeScript projects, built automated Cypress test suites and investigated defects using browser dev tools, helping improve release quality and catch defects before they reached production",
         "Transitioned into development by reading through source code to trace root causes, reproducing issues, and partnering with developers on fixes",
-        "Built a Puppeteer automation on AWS Lambda, EventBridge-scheduled every 3 days, that logs into a client's Mosyle MDM dashboard, exports iPad app-usage logs through the admin UI, reshapes the data into a custom 'which iPads used which apps' report, uploads it to S3, and emails the client a link — eliminating a 100% manual reporting process"
+        "Built a Puppeteer automation on AWS Lambda, EventBridge-scheduled every 3 days, that logs into a client's Mosyle MDM dashboard, exports iPad app-usage logs through the admin UI, reshapes the data into a custom report, uploads it to S3, and emails the client a link, eliminating 100% of the manual reporting process"
       ]
     }
   ],
 
   "skill_timeline": {
-    "qa": {"start": "Apr 2021", "end": "Aug 2023"},
-    "frontend_react_nextjs": {"start": "May 2023", "end": "Mar 2024"},
+    "qa": {"start": "Apr 2021", "end": "Aug 2022"},
+    "frontend_react_nextjs": {"start": "Aug 2022", "end": "Mar 2024"},
     "frontend_angular": {"start": "Apr 2024", "end": "Jan 2026"},
-    "backend_python_ai": {"start": "Feb 2026", "end": null}
+    "backend_python_ai": {"start": "Feb 2026", "end": "Jul 2026"}
   },
 
   "skills": {
-    "ai_and_backend": ["Python", "Pydantic", "FastAPI", "FastMCP", "LLM Integration", "LLM Evals", "Agentic Workflows", "RAG", "Embeddings", "Workflow Orchestration", "Azure AI Search", "LangGraph", "Langfuse", "REST APIs", "SQL"],
+    "ai_and_backend": ["Python", "Pydantic", "FastAPI", "FastMCP", "LLM Evals", "Agentic Workflows", "RAG", "Azure AI Search", "LangGraph", "Langfuse", "REST APIs", "SQL"],
     "frontend": ["React", "Angular", "Next.js", "TypeScript", "JavaScript", "Tailwind CSS", "HTML5", "CSS", "Sass", "Figma"],
     "tools": ["Claude Code", "Git", "GitHub Actions", "CI/CD", "AWS", "Azure", "Docker", "Puppeteer", "Playwright"]
   },

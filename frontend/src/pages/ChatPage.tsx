@@ -11,6 +11,11 @@ type Exchange = {
   error?: string;
 };
 
+type HistoryMessage = { role: "user" | "assistant"; content: string };
+
+// Keep this in sync with the backend's ChatRequest.history max_length (20).
+const MAX_HISTORY_MESSAGES = 20;
+
 export default function ChatPage() {
   const [exchanges, setExchanges] = useState<Exchange[]>([]);
   const [input, setInput] = useState("");
@@ -19,6 +24,13 @@ export default function ChatPage() {
   async function ask(question: string) {
     if (!question.trim() || loading) return;
     const id = exchanges.length + 1;
+    const history: HistoryMessage[] = exchanges
+      .filter((e): e is Exchange & { answer: string } => Boolean(e.answer))
+      .flatMap((e) => [
+        { role: "user" as const, content: e.question },
+        { role: "assistant" as const, content: e.answer },
+      ])
+      .slice(-MAX_HISTORY_MESSAGES);
     setExchanges((prev) => [...prev, { id, question }]);
     setInput("");
     setLoading(true);
@@ -27,7 +39,7 @@ export default function ChatPage() {
       const res = await fetch(`${BACKEND_URL}/chat`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ question }),
+        body: JSON.stringify({ question, history }),
       });
       if (!res.ok) throw new Error(`Backend returned ${res.status}`);
       const data: { answer: string } = await res.json();

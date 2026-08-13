@@ -39,10 +39,12 @@ See [PLAN.md](PLAN.md) for full design details.
 - `get_skill(skill: str)` — skill category + supporting experience highlights
 - `get_contact()` — email, LinkedIn, GitHub
 - `get_recommendations(name: str = "")` — one person's recommendation, or all of them if no name given
+- `get_screening_info()` — work authorization/visa status and EEO self-identification
+- `get_years_of_experience(domain: str = "total")` — years of experience (total, or qa/react/angular/frontend/backend), computed live from real dates, never hardcoded
 
 **Prompts**
 - `find_gaps()` — reports which standard interview competencies have no situation yet
-- `answer_as_roza(question: str)` — answers in Roza's voice/tone
+- `answer_as_roza()` — persona/tone/boundary instructions for answering as Roza; meant to be used as the model's system instruction, with the visitor's question passed separately as user content
 
 ## Run locally
 
