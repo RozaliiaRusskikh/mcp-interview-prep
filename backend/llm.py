@@ -6,7 +6,7 @@ from loguru import logger
 from mcp_client.client import MCPClient
 from schemas import ChatMessage
 
-MODEL_NAME = "gemini-2.5-flash"
+MODEL_NAME = "gemini-2.5-flash-lite"
 
 _client: genai.Client | None = None
 
@@ -50,6 +50,13 @@ async def answer_with_llm(question: str, history: list[ChatMessage], mcp: MCPCli
         # deep-copies object configs before extracting MCP sessions, and a live
         # ClientSession can't be deepcopy'd (unpicklable asyncio internals).
         # Dict configs skip that deep copy. https://github.com/googleapis/python-genai/issues/2669
-        config={"system_instruction": system_instruction, "tools": [mcp.session()]},
+        #
+        # thinking_budget=0 disables thinking: thinking tokens bill as output
+        # tokens at the output rate, so leaving it on can multiply cost per call.
+        config={
+            "system_instruction": system_instruction,
+            "tools": [mcp.session()],
+            "thinking_config": {"thinking_budget": 0},
+        },
     )
     return response.text

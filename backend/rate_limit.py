@@ -2,11 +2,13 @@ from datetime import datetime, timezone
 
 from loguru import logger
 
-# Gemini's actual free-tier daily limit for gemini-2.5-flash is 20 requests/day
-# (not the ~1500/day higher tiers get) — keep this under that with headroom for
-# non-chat testing, since it's what's supposed to prevent hitting Gemini's own
-# 429 in the first place.
-DAILY_CAP = 15
+# Sized to bound worst-case spend on gemini-2.5-flash-lite (thinking off) to
+# under $5/month, not to Gemini's free-tier request limit — this project pays.
+# At ~2,000 input + ~300 output tokens per exchange ($0.10 / $0.40 per 1M
+# tokens), one call costs ~$0.00032; 500/day * 30 days ≈ $4.80/month if the
+# cap is hit every single day. Real usage well below the cap costs far less.
+# Pair this with a monthly spend cap in AI Studio as a backstop.
+DAILY_CAP = 500
 
 RATE_CAPPED_MESSAGE = (
     "I'm not sure how to match that one — try asking about my experience, "
