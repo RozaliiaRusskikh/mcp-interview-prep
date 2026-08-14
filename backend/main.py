@@ -83,4 +83,7 @@ async def chat(payload: ChatRequest) -> ChatResponse:
         logger.warning(f"Gemini API error, falling back to capped message: {e}")
         return ChatResponse(answer=rate_limit.RATE_CAPPED_MESSAGE, source="rate_capped")
 
+    if answer is None:
+        return ChatResponse(answer=rate_limit.RATE_CAPPED_MESSAGE, source="rate_capped")
+
     return ChatResponse(answer=answer, source="llm")

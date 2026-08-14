@@ -19,7 +19,7 @@ def _get_client() -> genai.Client:
     return _client
 
 
-async def answer_with_llm(question: str, history: list[ChatMessage], mcp: MCPClient) -> str:
+async def answer_with_llm(question: str, history: list[ChatMessage], mcp: MCPClient) -> str | None:
     """Answer an open-ended question via Gemini, grounded in Roza's data.
 
     Renders the `answer_as_roza` MCP prompt (persona/tone/boundaries, no question
@@ -51,12 +51,22 @@ async def answer_with_llm(question: str, history: list[ChatMessage], mcp: MCPCli
         # ClientSession can't be deepcopy'd (unpicklable asyncio internals).
         # Dict configs skip that deep copy. https://github.com/googleapis/python-genai/issues/2669
         #
-        # thinking_budget=0 disables thinking: thinking tokens bill as output
-        # tokens at the output rate, so leaving it on can multiply cost per call.
+        # A small (not zero) thinking budget: flash-lite is weak enough at
+        # multi-turn tool orchestration that thinking_budget=0 made it stop
+        # right after a function call with no follow-up text (response.text
+        # came back None). Some budget gives it room to turn the tool result
+        # into an actual answer; thinking tokens bill as output tokens, so
+        # this is capped rather than left at the model's dynamic default.
         config={
             "system_instruction": system_instruction,
             "tools": [mcp.session()],
-            "thinking_config": {"thinking_budget": 0},
+            "thinking_config": {"thinking_budget": 512},
         },
     )
+    if response.text is None:
+        # Gemini 2.5 models can end a turn right after a function call with no
+        # trailing text part — .text has nothing to join, so it's None rather
+        # than "". Log finish_reason so a recurrence is diagnosable.
+        finish_reason = response.candidates[0].finish_reason if response.candidates else None
+        logger.warning(f"Gemini ({MODEL_NAME}) returned no text (finish_reason={finish_reason})")
     return response.text
