@@ -54,17 +54,14 @@ export default function Layout() {
               <span className="font-bold text-ink">help people</span>. I take ownership, prioritize quality, and deliver with care.
             </p>
           </div>
-          <div className="group relative hidden sm:block h-53 w-40 shrink-0 rounded-md rotate-3 shadow-lg overflow-hidden cursor-pointer border border-ledger transition-colors duration-300 hover:border-ink">
-            <img
-              src="/roza-bot-avatar.png"
-              alt="Roza's robot avatar"
-              className="absolute inset-0 h-full w-full object-cover"
-            />
-            <img
-              src="/roza_avatar.jpg"
-              alt="Roza Russkikh"
-              className="absolute inset-0 h-full w-full object-contain transition-opacity duration-300 group-hover:opacity-0"
-            />
+          <div className="hidden sm:block h-60 w-40 shrink-0 rotate-3 rounded-sm bg-card p-2 pb-9 ring-1 ring-ink/10 shadow-[0_10px_20px_-8px_rgba(30,42,58,0.45)] transition-all duration-300 hover:rotate-1 hover:-translate-y-1 hover:shadow-[0_14px_26px_-8px_rgba(30,42,58,0.5)]">
+            <div className="relative h-full w-full overflow-hidden rounded-[1px] bg-ink/5">
+              <img
+                src="/roza_avatar.jpg"
+                alt="Roza Russkikh"
+                className="absolute inset-0 h-full w-full object-contain"
+              />
+            </div>
           </div>
         </header>
 
