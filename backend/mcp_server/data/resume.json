@@ -20,8 +20,8 @@
         "Built an offline evaluation pipeline in Langfuse with 28 deterministic scorers plus an optional LLM-as-judge layer (relevance/correctness scoring) across 6 LLM agents, backed by 90 golden eval datasets, tuned to a 0.8 pass-rate gate designed to block LLM regressions pre-deployment",
         "Delivered a customizable merchant onboarding flow builder with Angular for the PXP Partner Portal, a questionnaire-driven tool letting admins configure onboarding requirements across 2 merchant risk tiers, replacing a fixed, one-size-fits-all flow and reducing low-risk merchant onboarding time, making the process nearly 2x faster",
         "Developed a RAG Dashboard powering PXP's Partner Portal chatbot: a Python + FastAPI + PostgreSQL backend, component-based Angular frontend, and dual-engine web crawler unifying web and Zendesk data into an Azure AI Search knowledge base",
-        "Built a reusable Angular component library (25+ components) with design tokens powering the onboarding UI, and implemented REST API integrations with .NET backend services, becoming the top contributor by code volume among 12 engineers on the codebase (~36%)",
-        "Collaborated directly with client stakeholders to translate business requirements into technical solutions, ensuring alignment with project goals and high-quality delivery"
+        "Built a reusable Angular component library (25+ components) with design tokens powering the PXP Partner Portal onboarding UI, and implemented REST API integrations with .NET backend services, becoming the top contributor by code volume among 12 engineers on the codebase (~36%)",
+        "Collaborated directly with PXP stakeholders to translate business requirements into technical solutions, ensuring alignment with project goals and high-quality delivery"
       ]
     },
     {
@@ -29,7 +29,7 @@
       "company": "Independent Consultant",
       "dates": "May 2023 – Mar 2024",
       "highlights": [
-        "Developed frontend features and Sanity CMS integrations for 2 corporate client websites built with Next.js and Tailwind CSS, working within a small team"
+        "Developed frontend features and Sanity CMS integrations for 2 corporate client websites built with Next.js/React and Tailwind CSS, working within a small team"
       ]
     },
     {

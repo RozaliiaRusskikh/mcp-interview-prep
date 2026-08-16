@@ -76,10 +76,24 @@ def get_experience(company_or_title: str) -> list[dict] | str:
     """Get a resume experience entry matching a company name or job title."""
     resume = _load_json("resume.json")
     query = company_or_title.lower()
-    matches = [
-        e for e in resume["experience"]
-        if query in e["company"].lower() or query in e["title"].lower()
-    ]
+    matches = []
+    for e in resume["experience"]:
+        company_lower = e["company"].lower()
+        if query not in company_lower and query not in e["title"].lower():
+            continue
+        # "PXP | El Paso Labs" names two parties in one field (an outsourcing
+        # engagement: employer | end client). A query for the narrower party
+        # (e.g. "PXP") should only surface highlights that actually name it,
+        # not every highlight in the entry — otherwise El Paso Labs' full
+        # scope gets misattributed to the client. Querying the full combined
+        # string, or a party never named in any highlight (e.g. the employer
+        # itself), falls back to returning everything.
+        if "|" in e["company"] and query != company_lower:
+            named_highlights = [h for h in e["highlights"] if query in h.lower()]
+            if named_highlights:
+                matches.append({**e, "highlights": named_highlights})
+                continue
+        matches.append(e)
     if not matches:
         available = ", ".join(f"{e['title']} at {e['company']}" for e in resume["experience"])
         return f"No experience found matching '{company_or_title}'. Available: {available}"
@@ -123,7 +137,8 @@ def get_skill(skill: str) -> dict | str:
 def get_contact() -> dict:
     """Get contact info: email, phone, LinkedIn, GitHub, and current location
     (city/state) — use this for any question about where Roza lives or is
-    based, not just requests for an email or phone number."""
+    based, not just requests for an email or phone number. For willingness to
+    relocate or work hybrid/remote, use get_screening_info instead."""
     resume = _load_json("resume.json")
     return resume["contact"]
 
@@ -182,9 +197,10 @@ def get_years_of_experience(
 
 @mcp.tool()
 def get_screening_info() -> dict:
-    """Get work authorization/visa status, salary expectation, strongest programming
-    languages (ranked), and EEO voluntary self-identification (gender, race/ethnicity,
-    veteran status, disability status) for job application screening questions."""
+    """Get work authorization/visa status, salary expectation, relocation/hybrid/remote
+    preference, strongest programming languages (ranked), and EEO voluntary
+    self-identification (gender, race/ethnicity, veteran status, disability status)
+    for job application screening questions."""
     personal = _load_json("personal.json")
     return personal["screening"]
 

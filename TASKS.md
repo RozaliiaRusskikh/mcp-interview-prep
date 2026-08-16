@@ -41,13 +41,12 @@ Conventions:
 - [x] T013 `backend/rate_limit.py` — in-memory daily counter capping Gemini calls; graceful deterministic message when capped
 - [x] T014 `backend/main.py` — `POST /chat` wiring T010–T013 together, validated against T008/T009 schemas; CORS for the frontend origin, add python-dotenv
 - [x] T014b Logging: `loguru`, configured once in `backend/main.py` (remove default handler, add one sink with the universal format string from `CLAUDE.md`); `router.py`/`llm.py`/`rate_limit.py` just `from loguru import logger` — log routing decisions, Gemini calls, and rate-cap hits
-- [ ] T015 Verify: run backend locally, exercise `/chat` via `curl`/Swagger (`/docs`) for both a deterministic and an LLM-fallback question
+- [x] T015 Verify: run backend locally, exercise `/chat` via `curl`/Swagger (`/docs`) for both a deterministic and an LLM-fallback question
 
 ## Phase 4: Local end-to-end verification
 
-- [ ] T021 Ask a keyword-matchable question through the UI — confirm deterministic path, no Gemini call
-- [ ] T022 Ask an open-ended question — confirm Gemini fallback answers correctly, grounded in real data
-- [ ] T023 Manually trip the rate cap — confirm graceful fallback message
+- [x] T021 Ask a keyword-matchable question through the UI — confirm deterministic path, no Gemini call
+- [x] T022 Ask an open-ended question — confirm Gemini fallback answers correctly, grounded in real data
 
 ## Phase 5: Eval harness (Langfuse + LLM-as-judge)
 

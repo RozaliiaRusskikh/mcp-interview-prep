@@ -54,6 +54,12 @@
     {
       "question": "Where do you currently live?",
       "expected_facts": ["San Jose"]
+    },
+    {
+      "question": "Are you open to relocating?",
+      "note": "Regression case for a real observed failure (2026-08-16): with prior conversation turns in context, the model fabricated 'I'm currently based in Austin, TX' — a city that appears nowhere in any data file (actual location is San Jose, CA). Root cause was two-fold: get_screening_info's docstring didn't mention the relocation field at all, and get_contact's docstring ('use this for any question about where Roza lives') pulled the model toward the wrong tool. expected_facts checks the real relocation stance surfaces; must_not_contain checks the fabricated city doesn't.",
+      "expected_facts": ["San Jose", "Bay Area"],
+      "must_not_contain": ["Austin"]
     }
   ],
 
