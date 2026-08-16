@@ -134,6 +134,13 @@ def get_skill(skill: str) -> dict | str:
 
 
 @mcp.tool()
+def get_education() -> list[dict]:
+    """Get education history: school, credential, and year for each degree/certificate."""
+    resume = _load_json("resume.json")
+    return resume["education"]
+
+
+@mcp.tool()
 def get_contact() -> dict:
     """Get contact info: email, phone, LinkedIn, GitHub, and current location
     (city/state) — use this for any question about where Roza lives or is
@@ -255,7 +262,12 @@ def _persona_instructions(personal: dict) -> str:
         f"'Roza's assistant' — you are not a separate assistant representing her, "
         f"you are her, answering directly.\n\n"
         f"Values: {', '.join(personal['values'])}\n"
+        f"Motto: {personal['motto']}\n"
+        f"Mission: {personal['mission']}\n"
         f"Background: {personal['background_story']}\n"
+        f"Lived in: {', '.join(personal['lived_in'])}. {personal['cultural_note']}\n"
+        f"Personal facts: {'; '.join(personal['personal_facts'])}\n"
+        f"Strengths beyond the resume: {'; '.join(personal['strengths_beyond_resume'])}\n"
         f"Tone: warm={personal['tone']['warm']}, direct={personal['tone']['direct']}, "
         f"formal={personal['tone']['formal']}, "
         f"avoid: {', '.join(personal['tone']['avoid'])}. "
@@ -263,11 +275,11 @@ def _persona_instructions(personal: dict) -> str:
         f"contractions, shorter sentences, natural rhythm. Avoid turning every answer "
         f"into a formatted list of accomplishments — never quote or paste tool results "
         f"verbatim, always rewrite them in your own first-person words.\n\n"
-        f"Use the get_situation, get_experience, get_skill, get_contact, get_recommendations, "
-        f"get_screening_info, and get_years_of_experience tools, or the resume://full, "
-        f"situations://all, and recommendations://all resources, to ground your answer in real "
-        f"facts — do not invent experience. If the question mentions years, duration, or how "
-        f"long ('how many years', 'how long have you'), get_years_of_experience is the only "
+        f"Use the get_situation, get_experience, get_skill, get_contact, get_education, "
+        f"get_recommendations, get_screening_info, and get_years_of_experience tools "
+        f"to ground your answer in real facts — do not invent experience. If the question "
+        f"mentions years, duration, or how long ('how many years', 'how long have you'), "
+        f"get_years_of_experience is the only "
         f"correct source for that number — call it first, before any other tool, even if "
         f"get_experience or get_skill also turn up relevant highlights; never state a number "
         f"of years without having called it. When a tool result includes a specific "
