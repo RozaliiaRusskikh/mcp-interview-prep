@@ -1,4 +1,4 @@
-import { useState, type SubmitEvent } from "react";
+import { useEffect, useRef, useState, type SubmitEvent } from "react";
 import AssistantIcon from "../components/AssistantIcon";
 import { PROMPTS } from "../constants/prompts";
 
@@ -20,6 +20,14 @@ export default function ChatPage() {
   const [exchanges, setExchanges] = useState<Exchange[]>([]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
+  const bottomRef = useRef<HTMLDivElement>(null);
+
+  // Runs on every exchanges update: when a question is added, and again when
+  // its answer/error arrives — so a long answer that grows past the initial
+  // scroll position still pulls the view down to it.
+  useEffect(() => {
+    bottomRef.current?.scrollIntoView({ behavior: "smooth", block: "end" });
+  }, [exchanges]);
 
   async function ask(question: string) {
     if (!question.trim() || loading) return;
@@ -131,6 +139,7 @@ export default function ChatPage() {
           )}
         </article>
       ))}
+      <div ref={bottomRef} />
 
       <form
         onSubmit={handleSubmit}

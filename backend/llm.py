@@ -46,17 +46,6 @@ async def answer_with_llm(question: str, history: list[ChatMessage], mcp: MCPCli
     response = await _get_client().aio.models.generate_content(
         model=MODEL_NAME,
         contents=contents,
-        # Must be a plain dict, not a GenerateContentConfig object: the SDK
-        # deep-copies object configs before extracting MCP sessions, and a live
-        # ClientSession can't be deepcopy'd (unpicklable asyncio internals).
-        # Dict configs skip that deep copy. https://github.com/googleapis/python-genai/issues/2669
-        #
-        # A small (not zero) thinking budget: flash-lite is weak enough at
-        # multi-turn tool orchestration that thinking_budget=0 made it stop
-        # right after a function call with no follow-up text (response.text
-        # came back None). Some budget gives it room to turn the tool result
-        # into an actual answer; thinking tokens bill as output tokens, so
-        # this is capped rather than left at the model's dynamic default.
         config={
             "system_instruction": system_instruction,
             "tools": [mcp.session()],
@@ -69,4 +58,20 @@ async def answer_with_llm(question: str, history: list[ChatMessage], mcp: MCPCli
         # than "". Log finish_reason so a recurrence is diagnosable.
         finish_reason = response.candidates[0].finish_reason if response.candidates else None
         logger.warning(f"Gemini ({MODEL_NAME}) returned no text (finish_reason={finish_reason})")
+    elif not _called_a_tool(response):
+        # Nothing forces Gemini to call a tool before answering — it can
+        # pattern-complete a plausible-sounding answer from training data
+        # instead (the 2026-08-16 "Austin, TX" hallucination). This doesn't
+        # block the answer, just makes an ungrounded one visible in the logs
+        # instead of silently indistinguishable from a real one.
+        logger.warning(f"Gemini ({MODEL_NAME}) answered {question!r} without calling any tool — possibly ungrounded")
     return response.text
+
+
+def _called_a_tool(response) -> bool:
+    history = response.automatic_function_calling_history or []
+    return any(
+        part.function_call is not None
+        for content in history
+        for part in (content.parts or [])
+    )

@@ -48,16 +48,16 @@ Conventions:
 - [x] T021 Ask a keyword-matchable question through the UI — confirm deterministic path, no Gemini call
 - [x] T022 Ask an open-ended question — confirm Gemini fallback answers correctly, grounded in real data
 
-## Phase 5: Eval harness (Langfuse + LLM-as-judge)
+## Phase 5: Offline eval pipeline (Langfuse)
 
 **Prerequisites**: Phase 3 (backend) and Phase 4 (local e2e verification) complete — nothing to trace/score before `/chat` exists and works. Runs *before* deployment (Phase 6) so a regression is caught pre-deploy, not on live traffic. See `PLAN.md`'s "Phase 3 — eval harness" for full design.
 
 - [ ] T036 [P] `backend/pyproject.toml` — add `langfuse` dependency
-- [ ] T037 Instrument `POST /chat` in `backend/main.py` with a Langfuse trace: question in → router decision → tool call + arguments → tool result → final answer out
-- [ ] T038 [P] `eval/dataset.json` — versioned eval dataset, synced to Langfuse: router cases (question → expected tool name **and** arguments) and LLM-fallback cases (open-ended question → required-facts rubric); must include adversarial/jailbreak-style prompts (e.g. "ignore previous instructions", roleplay attempts) per `CLAUDE.md`'s "Prompt injection defense"
-- [ ] T039 `eval/run_eval.py` — tiered scoring: router cases via plain string/field assertions on tool name + arguments (no LLM call); LLM-fallback cases tier 1 via keyword/fact-presence check; tier 2 (only when tier 1 is ambiguous, e.g. tone/paraphrase) escalates to an LLM-as-judge call, `temperature=0`, 3x majority-vote for stability
-- [ ] T040 Wire `eval/run_eval.py` into the Langfuse dataset run; aggregate score checked against the 0.8 pass threshold — fail the run if not met
-- [ ] T041 Verify: run the eval suite locally against the current backend — router cases pass deterministically, jailbreak cases correctly decline/redirect (not just once — every run), aggregate score ≥ 0.8
+- [ ] T037 Instrument `POST /chat` in `backend/main.py` with a Langfuse trace: question in → router decision → tool call + arguments → tool result → final answer out. For adversarial-style questions specifically, attach a named score to the trace (e.g. `"prompt-injection-detected": true/false`, from the same decline-signal check T039 uses) so a jailbreak attempt is visible on its individual trace in the Langfuse dashboard, not just folded into the aggregate eval score
+- [ ] T038 [P] `eval/dataset.json` — versioned eval dataset, synced to Langfuse: router cases (question → expected tool name **and** arguments) and LLM-fallback cases (open-ended question → `expected_tool_calls` trajectory check + `expected_facts`/`must_not_contain` rubric); must include adversarial/jailbreak-style prompts (e.g. "ignore previous instructions", roleplay attempts) per `CLAUDE.md`'s "Prompt injection defense" — done, see `eval/dataset.json`
+- [ ] T039 `eval/run_eval.py` — deterministic scoring only, no LLM-as-judge: router cases via plain string/field assertions on tool name + arguments; LLM-fallback cases via trajectory check (`expected_tool_calls` — was a tool actually called, catches ungrounded/hallucinated answers directly) plus keyword/fact-presence (`expected_facts`)/absence (`must_not_contain`) checks; ordered-fact cases (e.g. ranked skill lists) via substring-index comparison, not a judge call
+- [ ] T040 Wire `eval/run_eval.py` into the Langfuse dataset run; aggregate score checked against the 0.9 pass threshold — fail the run if not met
+- [ ] T041 Verify: run the eval suite locally against the current backend — router cases pass deterministically, jailbreak cases correctly decline/redirect (not just once — every run), aggregate score ≥ 0.9
 - [ ] T042 Gate deployment on T041 passing — re-run after any change (new situations, prompt tweak, model swap) and diff against the previous Langfuse run before proceeding to Phase 6
 
 ## Phase 6: Deployment (Render backend + Vercel frontend)
