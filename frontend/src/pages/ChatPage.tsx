@@ -24,8 +24,11 @@ export default function ChatPage() {
 
   // Runs on every exchanges update: when a question is added, and again when
   // its answer/error arrives — so a long answer that grows past the initial
-  // scroll position still pulls the view down to it.
+  // scroll position still pulls the view down to it. Skips the empty-state
+  // mount (nothing to scroll to yet, and it was auto-scrolling the page down
+  // on every load once page content grew past one viewport height).
   useEffect(() => {
+    if (exchanges.length === 0) return;
     bottomRef.current?.scrollIntoView({ behavior: "smooth", block: "end" });
   }, [exchanges]);
 
