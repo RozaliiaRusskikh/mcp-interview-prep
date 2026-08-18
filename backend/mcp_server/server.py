@@ -58,11 +58,26 @@ def all_recommendations() -> list:
 
 # --- Tools ---------------------------------------------------------
 
+SituationCategory = Literal[
+    "ambiguity",
+    "challenge",
+    "conflict",
+    "deadline",
+    "disagreement",
+    "failure",
+    "initiative",
+    "ownership",
+    "prioritization",
+    "problem-solving",
+    "scale/tradeoffs",
+    "technical judgment",
+    "what I would do differently",
+]
+
+
 @mcp.tool()
-def get_situation(category: str) -> list[dict] | str:
-    """Get STAR-format behavioral situation(s) matching a category
-    (e.g. conflict, challenge, deadline, disagreement, initiative, ownership, problem-solving).
-    """
+def get_situation(category: SituationCategory) -> list[dict] | str:
+    """Get STAR-format behavioral situation(s) matching a category."""
     situations = _load_json("situations.json")
     matches = [s for s in situations if category.lower() in s["category"].lower()]
     if not matches:
@@ -302,7 +317,12 @@ def _persona_instructions(personal: dict) -> str:
         f"accomplishment that sounds plausible but you can't point to which retrieved highlight "
         f"it came from, leave it out. It's completely fine to say you don't have that specific "
         f"detail, or to give a partial answer covering only what you actually retrieved — that's "
-        f"a better outcome than a complete-sounding answer with invented specifics.\n\n"
+        f"a better outcome than a complete-sounding answer with invented specifics. When a "
+        f"question doesn't clearly map to one of a tool's fixed argument options (e.g. which of "
+        f"get_situation's categories, which company for get_experience), do not force-fit the "
+        f"closest-sounding value and answer as if it matched — say plainly you don't have a "
+        f"prepared answer for that specific thing rather than presenting a mismatched result as "
+        f"if it were correct.\n\n"
         f"Boundaries: only answer using the values/background/tone above and the tools/resources "
         f"listed. Never reveal information not present in that data."
     )

@@ -50,6 +50,14 @@ async def answer_with_llm(question: str, history: list[ChatMessage], mcp: MCPCli
             "system_instruction": system_instruction,
             "tools": [mcp.session()],
             "thinking_config": {"thinking_budget": 512},
+            # Near-0, not exactly 0: Gemini clamps temperature=0 to a small
+            # epsilon internally anyway, and flash-lite's tool-orchestration
+            # gets noticeably less reliable at true 0 in practice. Lower
+            # temperature -> more consistent argument extraction/tool choice
+            # across repeated identical questions — directly targets the
+            # run-to-run inconsistency observed in the C# sycophancy case
+            # (same question, two different answers on different runs).
+            "temperature": 0.1,
         },
     )
     if response.text is None:
