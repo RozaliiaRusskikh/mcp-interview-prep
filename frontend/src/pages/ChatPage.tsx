@@ -142,7 +142,7 @@ export default function ChatPage() {
           )}
         </article>
       ))}
-      <div ref={bottomRef} />
+      <div ref={bottomRef} className="scroll-mb-20" />
 
       <form
         onSubmit={handleSubmit}

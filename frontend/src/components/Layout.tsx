@@ -51,8 +51,9 @@ export default function Layout() {
             </div>
             <p className="font-script text-xl sm:text-4xl text-ink/80 leading-none mt-4">
               <strong className="text-ink">Software Engineer, </strong>
-              always curious, loves solving problems that actually matter, and
-              happiest working with a team while staying independent.
+              always curious, loves solving problems, thrives around people, and
+              is happiest working with a team while having the freedom to take
+              ownership.
             </p>
           </div>
           <div className="hidden sm:block h-60 w-40 shrink-0 rotate-3 rounded-sm bg-card p-2 pb-9 ring-1 ring-ink/10 shadow-[0_10px_20px_-8px_rgba(30,42,58,0.45)] transition-all duration-300 hover:rotate-1 hover:-translate-y-1 hover:shadow-[0_14px_26px_-8px_rgba(30,42,58,0.5)]">
