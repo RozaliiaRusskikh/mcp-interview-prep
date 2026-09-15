@@ -13,8 +13,18 @@
 
   "experience": [
     {
+      "title": "Full Stack Software Engineer",
+      "company": "Jobflow",
+      "company_description": "Jobflow is a job-search and hiring platform built for two audiences: individual job seekers and the organizations that hire them. On the individual side, its Jobseeker Portal helps people — including students and military members — tailor resumes and track applications. On the organization side, its Admin Dashboard gives hiring teams tools to manage their org, tag candidates, and send bulk invites.",
+      "dates": "Aug 2026 – Present",
+      "highlights": [
+        "Developed full-stack features for Jobflow (Next.js 14 App Router, TypeScript, Supabase Postgres/Auth) across both the Jobseeker Portal (resume tailoring, job tracker) and Admin Dashboard (org team management, tagging, bulk invites), integrating with a FastAPI/Python microservice performing AI-driven resume parsing and job matching (Claude + Groq)"
+      ]
+    },
+    {
       "title": "Software Engineer",
       "company": "PXP | El Paso Labs",
+      "company_description": "El Paso Labs is a small outsourcing/software consultancy that builds custom software for a range of clients across different tech stacks and project types. PXP — the end client on this engagement — is a global unified-commerce payment platform serving enterprise retail, gaming, hospitality, and travel brands, letting merchants accept, orchestrate, and optimize payments across online checkout, in-store POS, and alternative payment methods. PXP processes around €30 billion in transaction volume for clients like Abercrombie & Fitch and Chipotle.",
       "dates": "Apr 2024 – Jul 2026",
       "highlights": [
         "Revived a stalled multi-agent AI workflow that integrates Front emails, Pydantic-enforced 4-way intent classification (approve/reject/edit/unclear), and a human-in-the-loop Slack approval step to automate Airtable task creation, reducing manual task-creation effort by ~85% and successfully deploying it from beta to production after gathering positive client feedback",
@@ -28,6 +38,7 @@
     {
       "title": "Full Stack Software Engineer",
       "company": "Independent Consultant",
+      "company_description": "I was working for a small outsourcing agency run by a former BrainStation instructor, who brought me on to work directly for his business after I graduated.",
       "dates": "May 2023 – Mar 2024",
       "highlights": [
         "Developed frontend features and Sanity CMS integrations for 2 corporate client websites built with Next.js/React and Tailwind CSS, working within a small team"
@@ -36,6 +47,7 @@
     {
       "title": "Software Engineer",
       "company": "Intergalactic Agency Inc.",
+      "company_description": "Intergalactic Agency Inc. is a small outsourcing agency that built software for a variety of clients across different projects and tech stacks.",
       "dates": "Apr 2021 – Aug 2023",
       "highlights": [
         "Owned QA across 6+ client React/Next.js/TypeScript projects, built automated Cypress test suites and investigated defects using browser dev tools, helping improve release quality and catch defects before they reached production",
@@ -46,10 +58,13 @@
   ],
 
   "skill_timeline": {
-    "qa": {"start": "Apr 2021", "end": "Aug 2022"},
-    "frontend_react_nextjs": {"start": "Aug 2022", "end": "Mar 2024"},
-    "frontend_angular": {"start": "Apr 2024", "end": "Jan 2026"},
-    "backend_python_ai": {"start": "Feb 2026", "end": "Jul 2026"}
+    "qa": [{"start": "Apr 2021", "end": "Aug 2022"}],
+    "frontend_react_nextjs": [
+      {"start": "Aug 2022", "end": "Mar 2024"},
+      {"start": "Aug 2026", "end": null}
+    ],
+    "frontend_angular": [{"start": "Apr 2024", "end": "Jan 2026"}],
+    "backend_python_ai": [{"start": "Feb 2026", "end": "null"}]
   },
 
   "skills": {

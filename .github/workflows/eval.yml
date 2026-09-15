@@ -1,0 +1,21 @@
+name: Eval
+
+on:
+  pull_request:
+    branches: [main]
+
+jobs:
+  run-eval:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v3
+        with:
+          python-version: "3.11"
+
+      - name: Run eval suite
+        env:
+          GOOGLE_API_KEY: ${{ secrets.GOOGLE_API_KEY }}
+        run: uv run --project backend eval/run_eval.py
