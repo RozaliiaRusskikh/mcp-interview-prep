@@ -64,7 +64,7 @@
       {"start": "Aug 2026", "end": null}
     ],
     "frontend_angular": [{"start": "Apr 2024", "end": "Jan 2026"}],
-    "backend_python_ai": [{"start": "Feb 2026", "end": "null"}]
+    "backend_python_ai": [{"start": "Feb 2026", "end": null}]
   },
 
   "skills": {
