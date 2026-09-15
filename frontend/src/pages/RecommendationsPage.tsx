@@ -6,17 +6,25 @@ import { BACKEND_URL } from "../config";
 
 export default function RecommendationsPage() {
   const [recommendations, setRecommendations] = useState<Recommendation[]>([]);
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
   const [selected, setSelected] = useState<Recommendation | null>(null);
 
   useEffect(() => {
-    fetch(`${BACKEND_URL}/recommendations`)
-      .then((res) => {
+    async function loadRecommendations() {
+      setLoading(true);
+      try {
+        const res = await fetch(`${BACKEND_URL}/recommendations`);
         if (!res.ok) throw new Error(`Backend returned ${res.status}`);
-        return res.json();
-      })
-      .then(setRecommendations)
-      .catch(() => setError(true));
+        const data = await res.json();
+        setRecommendations(data);
+      } catch {
+        setError(true);
+      } finally {
+        setLoading(false);
+      }
+    }
+    loadRecommendations();
   }, []);
 
   return (
@@ -29,6 +37,9 @@ export default function RecommendationsPage() {
           Couldn't load recommendations. Confirm the backend is running, then
           reload.
         </p>
+      )}
+      {!loading && !error && recommendations.length === 0 && (
+        <p className="text-ink/70">No recommendations to show yet.</p>
       )}
       <div className="grid sm:grid-cols-2 gap-4">
         {recommendations.map((r) => (
