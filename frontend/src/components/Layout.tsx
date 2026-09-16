@@ -51,7 +51,7 @@ export default function Layout() {
             </div>
             <p className="font-script text-xl sm:text-4xl text-ink/80 leading-none mt-4">
               <strong className="text-ink">Software Engineer, </strong>
-              always curious, loves solving problems, thrives around people, and
+              always curious, thrives around people, and
               is happiest working with a team while having the freedom to take
               ownership.
             </p>
