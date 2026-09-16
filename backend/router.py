@@ -10,6 +10,27 @@ DATA_DIR = Path(__file__).parent / "mcp_server" / "data"
 
 CONTACT_KEYWORDS = ("contact", "email", "phone", "linkedin", "github", "reach")
 
+SCREENING_FIELD_KEYWORDS: dict[str, tuple[str, ...]] = {
+    "work_authorization": (
+        "visa", "sponsorship", "work authorization", "authorized to work",
+        "citizen", "green card", "permanent resident",
+    ),
+    "salary_expectation": ("salary", "compensation", "pay rate", "pay range"),
+    "relocation": ("relocate", "relocating", "relocation"),
+    "target_role": ("target role", "targeting", "what role are you", "what position are you"),
+}
+
+PERSONAL_INFO_FIELD_KEYWORDS: dict[str, tuple[str, ...]] = {
+    "name": ("last name", "full name", "first name", "your name"),
+    "motto": ("motto",),
+    "mission": ("your mission", "career mission"),
+    "values": ("your values", "what do you value"),
+    "background_story": ("your journey", "your story", "career path", "non-linear path", "how did you get into"),
+    "strengths_beyond_resume": ("your strengths", "what are your strengths"),
+    "lived_in": ("lived in", "where have you lived", "countries have you lived"),
+    "future_vision": ("where do you see yourself", "future plans", "long term goals", "long-term goals", "career goals"),
+}
+
 YEARS_OF_EXPERIENCE_PHRASES = (
     "years of experience",
     "how many years",
@@ -17,26 +38,23 @@ YEARS_OF_EXPERIENCE_PHRASES = (
     "how long have you worked",
 )
 
-# Catches phrasings/typos that miss the exact phrases above but still clearly
-# ask about duration, e.g. "How many of Angular experience do you have?"
-# (dropped "years") or "How much backend experience do you have?".
-YEARS_OF_EXPERIENCE_LEAD_INS = ("how many", "how much", "how long")
-
 YEARS_OF_EXPERIENCE_DOMAIN_KEYWORDS: dict[str, tuple[str, ...]] = {
     "qa": ("qa", "quality assurance", "testing"),
     "react": ("react",),
     "angular": ("angular",),
     "frontend": ("frontend", "front-end", "front end"),
     "backend": ("backend", "back-end", "back end"),
+    "full_stack": ("full stack", "full-stack", "fullstack"),
 }
 
-# Situation categories are framed as positive stories (e.g. "deadline" holds a
-# story about *meeting* a tight deadline). A negated question ("missed a
-# deadline", "failed at ownership") asks for the opposite of what that story
-# shows, so a keyword match would return a misleading answer — skip the
-# category match on negation and let it fall through to the LLM instead,
-# which won't misrepresent the story (see the answer_as_roza prompt's
-# "do not invent experience" instruction).
+UNTRACKED_YEARS_QUALIFIERS = (
+    "startup", "start-up",
+    "language", "languages",
+    "skill", "skills",
+)
+
+ELABORATION_PHRASES = ("day-to-day", "day to day")
+
 NEGATION_WORDS = ("missed", "failed", "fail", "didn't", "never", "haven't", "couldn't", "wouldn't")
 
 
@@ -76,9 +94,7 @@ def _match(q: str) -> Optional[RouteMatch]:
 
     resume = _load_json("resume.json")
 
-    is_years_question = any(phrase in q for phrase in YEARS_OF_EXPERIENCE_PHRASES) or (
-        "experience" in q and any(lead in q for lead in YEARS_OF_EXPERIENCE_LEAD_INS)
-    )
+    is_years_question = any(phrase in q for phrase in YEARS_OF_EXPERIENCE_PHRASES)
     if is_years_question:
         domain = None
         for candidate, keywords in YEARS_OF_EXPERIENCE_DOMAIN_KEYWORDS.items():
@@ -88,12 +104,13 @@ def _match(q: str) -> Optional[RouteMatch]:
 
         if domain is None:
             # No tracked domain matched. If the question names a specific
-            # skill we just don't track years for (e.g. "years of AWS"),
-            # defaulting to "total" would confidently answer the wrong
-            # question — fall through to the LLM instead, same reasoning as
-            # the negation handling above.
+            # skill we just don't track years for (e.g. "years of AWS"), or
+            # an untracked qualifier like "startup", defaulting to "total"
+            # would confidently answer the wrong question — fall through to
+            # the LLM instead, same reasoning as the negation handling above.
             all_skills = (s for group in resume["skills"].values() for s in group)
-            if not any(_contains_word(q, skill) for skill in all_skills):
+            mentions_untracked_qualifier = any(_contains_word(q, kw) for kw in UNTRACKED_YEARS_QUALIFIERS)
+            if not mentions_untracked_qualifier and not any(_contains_word(q, skill) for skill in all_skills):
                 domain = "total"
 
         if domain is not None:
@@ -107,10 +124,11 @@ def _match(q: str) -> Optional[RouteMatch]:
         if _contains_word(q, token):
             return RouteMatch("get_experience", {"company_or_title": token})
 
-    skills = sorted(skill for group in resume["skills"].values() for skill in group)
-    for skill in skills:
-        if _contains_word(q, skill):
-            return RouteMatch("get_skill", {"skill": skill})
+    if not any(phrase in q for phrase in ELABORATION_PHRASES):
+        skills = sorted(skill for group in resume["skills"].values() for skill in group)
+        for skill in skills:
+            if _contains_word(q, skill):
+                return RouteMatch("get_skill", {"skill": skill})
 
     recommendations = _load_json("recommendations.json")
     for name in sorted({r["name"] for r in recommendations}):
@@ -118,6 +136,14 @@ def _match(q: str) -> Optional[RouteMatch]:
         # recommender's full name ("What does Ivan say?", "Ivan V's take?").
         if any(_contains_word(q, part) for part in name.split()):
             return RouteMatch("get_recommendations", {"name": name})
+
+    for field, keywords in SCREENING_FIELD_KEYWORDS.items():
+        if any(_contains_word(q, kw) for kw in keywords):
+            return RouteMatch("get_screening_field", {"field": field})
+
+    for field, keywords in PERSONAL_INFO_FIELD_KEYWORDS.items():
+        if any(_contains_word(q, kw) for kw in keywords):
+            return RouteMatch("get_personal_info", {"field": field})
 
     if any(_contains_word(q, kw) for kw in CONTACT_KEYWORDS):
         return RouteMatch("get_contact", {})
