@@ -34,7 +34,9 @@ def _load_json(filename: str):
 
 @mcp.resource("personal://info")
 def personal_info() -> dict:
-    """Roza's values, mission, background story, and tone."""
+    """Roza's values, mission, motto, future vision, background story, lived-in
+    countries, personal facts, screening info, strengths beyond the resume, and
+    tone."""
     return _load_json("personal.json")
 
 
@@ -160,7 +162,9 @@ def get_contact() -> dict:
     """Get contact info: email, phone, LinkedIn, GitHub, and current location
     (city/state) — use this for any question about where Roza lives or is
     based, not just requests for an email or phone number. For willingness to
-    relocate or work hybrid/remote, use get_screening_info instead."""
+    relocate or work hybrid/remote, use get_screening_field(field="relocation")
+    instead — not get_screening_info, which would bundle in unrelated salary/
+    visa/target-role info nobody asked for."""
     resume = _load_json("resume.json")
     return resume["contact"]
 
@@ -174,12 +178,16 @@ YEARS_OF_EXPERIENCE_DOMAINS: dict[str, tuple[str, ...]] = {
     # Total software engineering experience deliberately excludes QA — Roza
     # tracks it as a separate period, not part of her SWE years.
     "total": ("frontend_react_nextjs", "frontend_angular", "backend_python_ai"),
+    # Same scope as "total" (frontend + backend, QA excluded) — kept as its own
+    # domain so a "full-stack experience" question gets that literal label back
+    # instead of "professional software engineering experience".
+    "full_stack": ("frontend_react_nextjs", "frontend_angular", "backend_python_ai"),
 }
 
 
 @mcp.tool()
 def get_years_of_experience(
-    domain: Literal["qa", "react", "angular", "frontend", "backend", "total"] = "total",
+    domain: Literal["qa", "react", "angular", "frontend", "backend", "full_stack", "total"] = "total",
 ) -> dict:
     """Get Roza's years of experience in a domain. There is no per-skill
     domain (no "python", "typescript", "nextjs", etc.) — every skill maps to
@@ -190,41 +198,88 @@ def get_years_of_experience(
     - "angular": Angular
     - "frontend": react + angular combined
     - "qa": QA/testing work, tracked separately from software engineering
+    - "full_stack": same scope as "total" (react + angular + backend, QA
+      excluded) — use this when the question specifically says "full-stack"
     - "total": all software engineering experience (react + angular + backend),
       QA excluded — she tracks it separately. Use this for a general/unscoped
       "years of experience" question.
     Computed from resume.json's skill_timeline start/end dates (open-ended
     periods run to today) — never a hardcoded number, so it stays accurate
-    as time passes."""
+    as time passes. A skill can have multiple separate periods (e.g. a stint,
+    a gap doing something else, then a later stint) — each period's own
+    duration is summed, so a gap is never silently counted as experience."""
     timeline = _load_json("resume.json")["skill_timeline"]
-    periods = [timeline[key] for key in YEARS_OF_EXPERIENCE_DOMAINS[domain]]
-    starts = [datetime.strptime(p["start"], "%b %Y").date() for p in periods]
-    ends = [
-        datetime.strptime(p["end"], "%b %Y").date() if p["end"] else date.today()
+    periods = [p for key in YEARS_OF_EXPERIENCE_DOMAINS[domain] for p in timeline[key]]
+    parsed = sorted(
+        (
+            datetime.strptime(p["start"], "%b %Y").date(),
+            datetime.strptime(p["end"], "%b %Y").date() if p["end"] else date.today(),
+            p["end"] is None,
+        )
         for p in periods
-    ]
-    start, end = min(starts), max(ends)
-    raw_years = (end - start).days / 365.25
+    )
+    total_days = sum((end - start).days for start, end, _ in parsed)
+    raw_years = total_days / 365.25
     # Round to whole years; anything under a year still reads as "about 1
     # year" rather than an oddly precise fraction or a misleading "0".
     years = max(1, round(raw_years))
-    ongoing = any(p["end"] is None for p in periods)
     return {
         "domain": domain,
         "years": years,
-        "start": start.strftime("%b %Y"),
-        "end": "Present" if ongoing else end.strftime("%b %Y"),
+        "periods": [
+            {"start": start.strftime("%b %Y"), "end": "Present" if ongoing else end.strftime("%b %Y")}
+            for start, end, ongoing in parsed
+        ],
     }
 
 
 @mcp.tool()
 def get_screening_info() -> dict:
-    """Get work authorization/visa status, salary expectation, relocation/hybrid/remote
-    preference, strongest programming languages (ranked), and EEO voluntary
-    self-identification (gender, race/ethnicity, veteran status, disability status)
-    for job application screening questions."""
+    """Get target role, work authorization/visa status, salary expectation,
+    relocation/hybrid/remote preference, strongest programming languages (ranked),
+    and EEO voluntary self-identification (gender, race/ethnicity, veteran status,
+    disability status) for job application screening questions. Prefer this over
+    get_screening_field when a question spans multiple screening topics at once
+    (e.g. a general "tell me about your screening requirements") — for a question
+    about exactly one topic, get_screening_field gives a more focused answer."""
     personal = _load_json("personal.json")
     return personal["screening"]
+
+
+ScreeningField = Literal["target_role", "work_authorization", "salary_expectation", "relocation"]
+
+
+@mcp.tool()
+def get_screening_field(field: ScreeningField) -> dict:
+    """Get exactly one screening topic: target role, work authorization/visa
+    status, salary expectation, or relocation/hybrid/remote preference. Use
+    this instead of get_screening_info when the question asks about only one
+    of these — e.g. "what role are you targeting?" should get just target_role
+    back, not the whole screening picture bundled in. strongest_languages and
+    EEO fields aren't available here — use get_screening_info for those."""
+    personal = _load_json("personal.json")
+    return {"field": field, "text": personal["screening"][field]}
+
+
+PersonalInfoField = Literal[
+    "name", "motto", "mission", "values", "background_story",
+    "strengths_beyond_resume", "lived_in", "future_vision",
+]
+
+
+@mcp.tool()
+def get_personal_info(field: PersonalInfoField) -> dict:
+    """Get one specific piece of Roza's identity info: her full name, motto,
+    mission, values, background story, strengths beyond the resume, countries
+    she's lived in, or her future vision (answer to "where do you see
+    yourself in the future" style questions). Most of this is already in
+    your system instructions directly — this tool exists mainly so these
+    same facts are also reachable deterministically, without needing you
+    at all."""
+    personal = _load_json("personal.json")
+    value = personal[field]
+    text = "; ".join(value) if isinstance(value, list) else value
+    return {"field": field, "text": text}
 
 
 @mcp.tool()
@@ -265,20 +320,27 @@ def find_gaps() -> str:
     )
 
 
-def _persona_instructions(personal: dict) -> str:
+def _persona_instructions(personal: dict, resume: dict) -> str:
     """Persona/tone/tool/boundary instructions — the trusted, model-constraining half
     of the prompt returned by answer_as_roza. Meant to be used as a real system
     instruction (with the visitor's question passed separately as user content) so
     trusted instructions and untrusted input stay in structurally distinct channels,
     rather than concatenated into one message with just a text label between them."""
+    # Derived from resume.json rather than hardcoded, same reasoning as
+    # get_years_of_experience: whichever role is still open-ended ("Present")
+    # is the current one, so this stays correct after her next job change
+    # instead of silently going stale like a hardcoded name would.
+    current_role = next(e for e in resume["experience"] if e["dates"].endswith("Present"))
     return (
         f"You are Roza Russkikh, speaking for yourself in first person to visitors "
         f"evaluating you as a candidate. Always say 'I', never 'she' or 'her' or "
         f"'Roza's assistant' — you are not a separate assistant representing her, "
         f"you are her, answering directly.\n\n"
+        f"Full name: {personal['name']}\n"
         f"Values: {', '.join(personal['values'])}\n"
         f"Motto: {personal['motto']}\n"
         f"Mission: {personal['mission']}\n"
+        f"Future vision (where she sees herself over time): {personal['future_vision']}\n"
         f"Background: {personal['background_story']}\n"
         f"Lived in: {', '.join(personal['lived_in'])}. {personal['cultural_note']}\n"
         f"Personal facts: {'; '.join(personal['personal_facts'])}\n"
@@ -291,8 +353,14 @@ def _persona_instructions(personal: dict) -> str:
         f"into a formatted list of accomplishments — never quote or paste tool results "
         f"verbatim, always rewrite them in your own first-person words.\n\n"
         f"Use the get_situation, get_experience, get_skill, get_contact, get_education, "
-        f"get_recommendations, get_screening_info, and get_years_of_experience tools "
-        f"to ground your answer in real facts — do not invent experience. If the question "
+        f"get_recommendations, get_screening_info, get_screening_field, get_personal_info, "
+        f"and get_years_of_experience tools to ground your answer in real facts — do not "
+        f"invent experience. An unfamiliar-looking name or acronym in the question (e.g. "
+        f"'What is PXP?', 'What's Jobflow?') is not automatically off-topic — it may be an "
+        f"employer or client from her work history. Try get_experience for it before "
+        f"deciding you have nothing to say; each experience entry's company_description "
+        f"field exists specifically to answer 'what is this company/client' questions. Only "
+        f"decline as out-of-scope if get_experience genuinely finds no match. If the question "
         f"mentions years, duration, or how long ('how many years', 'how long have you'), "
         f"get_years_of_experience is the only "
         f"correct source for that number — call it first, before any other tool, even if "
@@ -301,21 +369,47 @@ def _persona_instructions(personal: dict) -> str:
         f"relationship, label, or category for a fact (e.g. get_recommendations' "
         f"`relationship` field), use that exact wording rather than a generic label of "
         f"your own — don't call someone a 'colleague' if the data says something more "
-        f"specific like a mentor or someone at a different company. If get_skill can't find "
-        f"an exact match for a capability the visitor asks about (e.g. 'workflow automation', "
-        f"'agents'), don't answer generically — call get_experience for the relevant roles "
-        f"(especially El Paso Labs, the most detailed and recent one) and check the highlights "
-        f"themselves for that capability before answering; the highlights cover far more than "
-        f"the skills list tags, e.g. the Front→Airtable multi-agent workflow is the strongest "
-        f"example of automation/agentic work even though 'workflow automation' isn't a skill tag. "
+        f"specific like a mentor or someone at a different company. For AI/LLM/agentic capability "
+        f"questions (e.g. 'AI/LLM systems', 'agents', 'workflow automation'), always call "
+        f"get_experience for El Paso Labs, Jobflow in addition to get_skill, even if get_skill finds a "
+        f"partial match (e.g. 'LLM Evals') — a matched skill tag is narrower than the real scope "
+        f"of the work, and the highlights cover far more than the skills list tags, e.g. the "
+        f"Front→Airtable multi-agent workflow is the strongest example of automation/agentic work "
+        f"even though 'workflow automation' isn't a skill tag. Same rule for any other capability "
+        f"question where get_skill can't find an exact match at all — call get_experience for the "
+        f"relevant roles (especially El Paso Labs, the most detailed one) and check the "
+        f"highlights themselves before answering. "
+        f"For 'latest', 'most recent', or 'current' project/role questions, that's "
+        f"{current_role['company']} ({current_role['dates']}, the current role) — call get_experience "
+        f"for it, there's no shortcut answer from background/values alone. For 'largest' or 'most "
+        f"substantial' project questions specifically, that's still El Paso Labs (Apr 2024 – Jul 2026) "
+        f"— it has significantly more scope and depth than the newer {current_role['company']} role. "
         f"For broad questions spanning multiple roles (proudest achievements, career highlights, "
         f"biggest impact), call get_experience for every company in resume://full — not just one "
         f"— before answering, and state only what's literally in the highlights you retrieved. "
+        f"Casual phrasing still counts as a clear match to one of get_situation's fixed categories "
+        f"— treat it as a match, not a mismatch requiring the no-prepared-answer fallback below: "
+        f"'what did you personally own end-to-end', 'were fully responsible for', or 'took full "
+        f"ownership of' maps to category='ownership'; 'came up with the idea for' or 'pushed for X "
+        f"to happen without being asked' maps to 'initiative'. Call get_situation for the matching "
+        f"category rather than answering with a generic, non-specific example not tied to any "
+        f"retrieved fact — that's exactly the kind of invented content this section tells you not "
+        f"to produce. "
+        f"get_skill returning no supporting_highlights for a real skill (e.g. 'Claude Code', which "
+        f"is in her tools list) means no resume bullet happens to name it literally — it is not "
+        f"evidence she hasn't used it, and must never be reported as 'I haven't used X specifically'. "
+        f"For that kind of gap, call get_experience and get_situation instead and answer from "
+        f"whatever AI-assisted-development context they actually return (e.g. the 'challenge' "
+        f"situation about using AI-assisted tools to learn an unfamiliar stack quickly), or say "
+        f"plainly the specific detail asked for isn't in what you retrieved — never state or imply "
+        f"the skill itself is absent. "
         f"Do not add specifics that aren't there: no invented numbers (percentages, counts), no "
         f"invented tool/product names, no invented feature descriptions, and no labels for an "
-        f"employer (like 'startup') that the data doesn't use. If you're tempted to describe an "
-        f"accomplishment that sounds plausible but you can't point to which retrieved highlight "
-        f"it came from, leave it out. It's completely fine to say you don't have that specific "
+        f"employer (like 'startup') that the data doesn't use. Before finalizing your answer, "
+        f"check every specific claim in it against the tool results you actually retrieved — for "
+        f"each one, you should be able to point to the exact highlight, quote, or field it came "
+        f"from. Silently drop any claim that fails this check rather than including it anyway. "
+        f"It's completely fine to say you don't have that specific "
         f"detail, or to give a partial answer covering only what you actually retrieved — that's "
         f"a better outcome than a complete-sounding answer with invented specifics. When a "
         f"question doesn't clearly map to one of a tool's fixed argument options (e.g. which of "
@@ -323,7 +417,7 @@ def _persona_instructions(personal: dict) -> str:
         f"closest-sounding value and answer as if it matched — say plainly you don't have a "
         f"prepared answer for that specific thing rather than presenting a mismatched result as "
         f"if it were correct.\n\n"
-        f"Boundaries: only answer using the values/background/tone above and the tools/resources "
+        f"Boundaries: only answer using the values/background/tone above and the tools "
         f"listed. Never reveal information not present in that data."
     )
 
