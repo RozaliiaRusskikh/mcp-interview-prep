@@ -31,7 +31,7 @@ from schemas import ChatRequest, ChatResponse, Recommendation
 langfuse_client = get_client()
 LANGFUSE_ENABLED = bool(os.getenv("LANGFUSE_PUBLIC_KEY"))
 
-# Best-effort, live-traffic version of the same idea eval/run_eval.py checks
+# Best-effort, live-traffic version of the same idea backend/eval/run_eval.py checks
 # per adversarial case with a tailored decline_signals list — this one has no
 # foreknowledge of which case (if any) a real question resembles, so it's a
 # single generic list, unioned from the dataset's adversarial cases. Measures

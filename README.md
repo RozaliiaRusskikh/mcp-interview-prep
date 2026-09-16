@@ -14,7 +14,7 @@ A React + Tailwind UI talks to FastAPI over HTTP — it never talks to MCP direc
 
 ### A real caveat, by design
 
-Nothing forces Gemini to call a tool before answering (`AUTO` mode — the alternative, forcing every call, breaks multi-turn tool-calling outright; tested and reverted). This has caused real, observed failures — a fabricated relocation city, a sycophantic non-denial of skills Roza doesn't have — each fixed and locked in as a regression case in `eval/dataset.json`. `backend/llm.py` logs a warning any time Gemini answers without calling a tool, so an ungrounded answer is visible in logs instead of indistinguishable from a real one.
+Nothing forces Gemini to call a tool before answering (`AUTO` mode — the alternative, forcing every call, breaks multi-turn tool-calling outright; tested and reverted). This has caused real, observed failures — a fabricated relocation city, a sycophantic non-denial of skills Roza doesn't have — each fixed and locked in as a regression case in `backend/eval/dataset.json`. `backend/llm.py` logs a warning any time Gemini answers without calling a tool, so an ungrounded answer is visible in logs instead of indistinguishable from a real one.
 
 ## Stack
 
@@ -23,7 +23,7 @@ Nothing forces Gemini to call a tool before answering (`AUTO` mode — the alter
 - **LLM**: Gemini (`gemini-2.5-flash-lite`) via `google-genai`, Roza's own key, server-side only
 - **Frontend**: React (Vite, TypeScript) + Tailwind
 - **Tracing**: Langfuse (`backend/main.py`'s `/chat` endpoint; optional — no-ops without credentials)
-- **Eval**: deterministic offline eval harness, no LLM-as-judge (`eval/run_eval.py` + `eval/dataset.json`) — see [PLAN.md](PLAN.md)
+- **Eval**: deterministic offline eval harness, no LLM-as-judge (`backend/eval/run_eval.py` + `backend/eval/dataset.json`) — see [PLAN.md](PLAN.md)
 - **Hosting**: Render (backend), Vercel (frontend)
 
 ## Status
@@ -32,7 +32,7 @@ Nothing forces Gemini to call a tool before answering (`AUTO` mode — the alter
 
 **Backend + frontend**: built and working locally — deterministic router, Gemini fallback with tool-calling, chat UI.
 
-**Eval harness**: `eval/dataset.json` (router, LLM-fallback, and adversarial/jailbreak cases — all with real regression cases from bugs found during development) and `eval/run_eval.py` (deterministic scoring, 0.9 pass threshold, exits non-zero on regression) are built and passing.
+**Eval harness**: `backend/eval/dataset.json` (router, LLM-fallback, and adversarial/jailbreak cases — all with real regression cases from bugs found during development) and `backend/eval/run_eval.py` (deterministic scoring, 0.9 pass threshold, exits non-zero on regression) are built and passing.
 
 See [PLAN.md](PLAN.md) and [TASKS.md](TASKS.md) for full design and task-level status.
 
@@ -79,5 +79,5 @@ cd backend && uv run uvicorn main:app --reload
 cd frontend && npm install && npm run dev
 
 # Eval suite (from repo root — see backend/README.md for full details)
-uv run --project backend eval/run_eval.py
+uv run --project backend backend/eval/run_eval.py
 ```
