@@ -38,6 +38,7 @@ class Situation(CamelModel):
 class Experience(CamelModel):
     title: str
     company: str
+    company_description: str | None = None
     dates: str
     highlights: list[str]
 
@@ -54,3 +55,12 @@ class Contact(CamelModel):
     linkedin: str
     github: str
     location: str
+
+
+class Recommendation(CamelModel):
+    id: int
+    name: str
+    title: str
+    relationship: str
+    date: str
+    quote: str
