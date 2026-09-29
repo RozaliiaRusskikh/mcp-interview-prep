@@ -15,7 +15,7 @@ uv run uvicorn main:app --reload
 
 ## Eval suite
 
-Deterministic regression tests against `../eval/dataset.json` — no LLM-as-judge,
+Deterministic regression tests against `eval/dataset.json` — no LLM-as-judge,
 no backend server required (imports `router.py`/`llm.py` directly). Most cases
 call the real Gemini API, so this needs `GOOGLE_API_KEY` set and takes a
 couple of minutes; Langfuse dataset-run upload is optional (skipped silently
@@ -25,7 +25,7 @@ Run from the **repo root** (not from inside `backend/`) — `--project backend`
 is relative to the current directory:
 
 ```bash
-uv run --project backend eval/run_eval.py
+uv run --project backend backend/eval/run_eval.py
 ```
 
 Prints PASS/FAIL per case and an aggregate score, and exits `0` if it's

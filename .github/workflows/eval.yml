@@ -18,4 +18,4 @@ jobs:
       - name: Run eval suite
         env:
           GOOGLE_API_KEY: ${{ secrets.GOOGLE_API_KEY }}
-        run: uv run --project backend eval/run_eval.py
+        run: uv run --project backend backend/eval/run_eval.py

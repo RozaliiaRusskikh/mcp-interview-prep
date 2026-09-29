@@ -1,8 +1,7 @@
 import { useEffect, useRef, useState, type SubmitEvent } from "react";
 import AssistantIcon from "../components/AssistantIcon";
 import { PROMPTS } from "../constants/prompts";
-
-const BACKEND_URL = import.meta.env.VITE_BACKEND_URL ?? "http://localhost:8000";
+import { BACKEND_URL } from "../config";
 
 type Exchange = {
   id: number;
